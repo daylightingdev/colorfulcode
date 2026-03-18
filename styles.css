@@ -29,10 +29,10 @@
   --border: #E7E5E4;
   --border-hover: #D6D3D1;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
 
   --shadow-sm: 0 1px 3px rgba(28,25,23,0.04), 0 1px 2px rgba(28,25,23,0.06);
   --shadow-md: 0 4px 12px rgba(28,25,23,0.06), 0 2px 4px rgba(28,25,23,0.04);
@@ -53,6 +53,16 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.logo-text,
+.card-address,
+.card-rent-badge,
+.stat-number,
+.modal-body h2,
+.modal-price {
+  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
 }
 
 .container {
@@ -102,7 +112,7 @@ body {
 }
 
 .logo-text {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -222,7 +232,7 @@ body {
 }
 
 .hero h1 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   line-height: 1.1;
@@ -262,7 +272,7 @@ body {
 }
 
 .stat-number {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -342,7 +352,7 @@ body {
 }
 
 .section-header h2 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -512,14 +522,16 @@ body {
 }
 
 .listings-panel {
-  overflow-y: auto;
-  padding: 0 24px 40px;
+  padding: 0 24px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .split-view .listings-panel {
-  max-height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
+  overflow: hidden;
 }
 
 .map-panel {
@@ -536,9 +548,11 @@ body {
 
 /* ===== LISTINGS GRID ===== */
 .split-view .listings-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
+  flex: 1;
+  align-content: start;
 }
 
 .grid-view .listings-grid {
@@ -609,7 +623,7 @@ body {
   color: white;
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
 }
@@ -625,7 +639,7 @@ body {
 }
 
 .card-address {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 2px;
@@ -744,7 +758,7 @@ body {
 }
 
 .info-card h3 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 10px;
@@ -798,7 +812,7 @@ body {
 }
 
 .resource-card h3 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 8px;
@@ -939,7 +953,7 @@ body {
 }
 
 .modal-body h2 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 4px;
@@ -961,7 +975,7 @@ body {
 }
 
 .modal-price {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: var(--accent);
@@ -1043,7 +1057,7 @@ body {
 }
 
 .external-modal-content h3 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 8px;
@@ -1084,7 +1098,7 @@ body {
 }
 
 .map-popup strong {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 0.95rem;
   display: block;
   margin-bottom: 2px;
@@ -1097,7 +1111,7 @@ body {
 }
 
 .map-popup .popup-rent {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--accent);
@@ -1121,6 +1135,65 @@ body {
 
 .map-popup .popup-btn:hover {
   opacity: 0.9;
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 0 8px;
+}
+
+.page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.page-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.page-arrow {
+  padding: 0 6px;
+}
+
+.page-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 36px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -1166,6 +1239,12 @@ body {
   .split-view .listings-panel {
     max-height: none;
     position: static;
+  }
+
+  .split-view .listings-panel {
+    height: auto;
+    position: static;
+    overflow: visible;
   }
 
   .split-view .listings-grid {

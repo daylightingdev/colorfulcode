@@ -7,6 +7,10 @@
 
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
+// Photo proxy worker — deploy to Cloudflare Workers (free tier)
+// Set this to your deployed worker URL, e.g. 'https://stablenyc-photo-proxy.<your-subdomain>.workers.dev'
+const PHOTO_PROXY_URL = '';
+
 const DATASETS = {
   affordableHousing: `${SODA_BASE}/hg8x-zxpr.json`,
   lotteries: `${SODA_BASE}/vy5i-a666.json`,
@@ -36,13 +40,15 @@ let map;
 let markersLayer;
 let modalMap;
 let currentView = 'split';
+let currentPage = 1;
+const LISTINGS_PER_PAGE = 6; // 3 rows x 2 columns
 
 // ============================================================
-// LISTING PHOTOS — real apartment/building photography
-// Each building gets a consistent photo based on address hash
+// LISTING PHOTOS — fallback apartment photography from Unsplash
+// Used when proxy is unavailable or returns no results
 // ============================================================
 
-const LISTING_PHOTOS = [
+const FALLBACK_PHOTOS = [
   'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop',
   'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop',
   'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop',
@@ -65,9 +71,32 @@ const LISTING_PHOTOS = [
   'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=600&h=400&fit=crop',
 ];
 
-function pickPhoto(seed) {
+// Cache for proxy-fetched photos
+const photoCache = {};
+
+function pickFallbackPhoto(seed) {
   const h = typeof seed === 'string' ? hashCode(seed) : seed;
-  return LISTING_PHOTOS[h % LISTING_PHOTOS.length];
+  return FALLBACK_PHOTOS[h % FALLBACK_PHOTOS.length];
+}
+
+async function fetchListingPhoto(address, borough) {
+  const cacheKey = `${address}-${borough}`;
+  if (photoCache[cacheKey]) return photoCache[cacheKey];
+
+  if (!PHOTO_PROXY_URL) return pickFallbackPhoto(cacheKey);
+
+  try {
+    const params = new URLSearchParams({ address, borough: borough || '' });
+    const resp = await fetch(`${PHOTO_PROXY_URL}?${params}`);
+    if (!resp.ok) return pickFallbackPhoto(cacheKey);
+    const data = await resp.json();
+    if (data.photos && data.photos.length > 0) {
+      photoCache[cacheKey] = data.photos[0];
+      return data.photos[0];
+    }
+  } catch (e) { /* proxy unavailable */ }
+
+  return pickFallbackPhoto(cacheKey);
 }
 
 // ============================================================
@@ -252,7 +281,6 @@ async function fetchLotteriesBuilding() {
   return resp.json();
 }
 
-// Enrichment-only: confirmed RS buildings (not displayed as listings)
 async function fetchSpeculationWatch() {
   const params = new URLSearchParams({
     $where: 'numberofrsstabilizedunits > 0',
@@ -265,7 +293,6 @@ async function fetchSpeculationWatch() {
   return resp.json();
 }
 
-// Enrichment-only: building characteristics (not displayed as listings)
 async function fetchPLUTO() {
   const params = new URLSearchParams({
     $where: "yearbuilt > 0 AND unitsres >= 1 AND (bldgclass LIKE 'C%' OR bldgclass LIKE 'D%')",
@@ -316,7 +343,7 @@ function transformAffordableHousing(records) {
         ? new Date(r.building_completion_date).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickPhoto(address + borough),
+      image: pickFallbackPhoto(address + borough),
       dataSource: 'NYC Open Data — Affordable Housing Production',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Affordable-Housing-Production-by-Building/hg8x-zxpr',
       externalUrl: 'https://housingconnect.nyc.gov/PublicWeb/search-lotteries',
@@ -367,7 +394,7 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       availableDate: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickPhoto(address + borough),
+      image: pickFallbackPhoto(address + borough),
       dataSource: 'NYC Open Data — Housing Connect Lotteries',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y',
       externalUrl: 'https://housingconnect.nyc.gov/PublicWeb/search-lotteries',
@@ -420,8 +447,6 @@ async function loadData() {
     }
 
     // ---- Enrichment sources (NOT displayed as listings) ----
-
-    // Build PLUTO lookup by BBL for building characteristics
     const plutoLookup = {};
     if (plutoResult.status === 'fulfilled') {
       for (const r of plutoResult.value) {
@@ -436,7 +461,6 @@ async function loadData() {
       }
     }
 
-    // Build Speculation Watch lookup by BBL for confirmed RS units
     const specLookup = {};
     if (specResult.status === 'fulfilled') {
       for (const r of specResult.value) {
@@ -473,16 +497,19 @@ async function loadData() {
         if (!l.bldgClass && s.bldgClass) l.bldgClass = s.bldgClass;
       }
 
-      // Calculate RS probability and description after enrichment
       l.rsProb = calculateRSProbability(l);
       l.description = buildDescription(l);
 
-      // Build StreetEasy URL for non-HC listings
       if (l.sourceKey !== 'housingconnect' && l.sourceKey !== 'affordable') {
         l.externalUrl = buildStreetEasyUrl(l.address, l.borough, l.zip);
         l.externalSiteName = 'StreetEasy';
       }
     });
+
+    // ---- Fetch real photos via proxy (background, non-blocking) ----
+    if (PHOTO_PROXY_URL) {
+      fetchRealPhotos(allListings);
+    }
 
   } catch (err) {
     errors.push(err.message);
@@ -500,6 +527,24 @@ async function loadData() {
   }
 }
 
+// Background photo fetcher — updates listing images as they come in
+async function fetchRealPhotos(listings) {
+  // Fetch in batches of 5 to avoid hammering the proxy
+  const BATCH_SIZE = 5;
+  for (let i = 0; i < listings.length; i += BATCH_SIZE) {
+    const batch = listings.slice(i, i + BATCH_SIZE);
+    await Promise.allSettled(batch.map(async (listing) => {
+      const photo = await fetchListingPhoto(listing.address, listing.borough);
+      if (photo && photo !== listing.image) {
+        listing.image = photo;
+        // Update visible card image if rendered
+        const card = document.querySelector(`[data-id="${listing.id}"] .card-image img`);
+        if (card) card.src = photo;
+      }
+    }));
+  }
+}
+
 // ============================================================
 // MAP — StreetEasy style (CartoDB Positron + price pill markers)
 // ============================================================
@@ -511,7 +556,6 @@ function initMap() {
     zoomControl: true,
   });
 
-  // CartoDB Positron — clean, light map like StreetEasy
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
     subdomains: 'abcd',
@@ -556,7 +600,7 @@ function updateMapMarkers() {
 
     marker.bindPopup(`
       <div class="map-popup">
-        <img src="${listing.image}" alt="${escapeHtml(listing.address)}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0;display:block;">
+        <img src="${listing.image}" alt="${escapeHtml(listing.address)}" style="width:100%;height:120px;object-fit:cover;border-radius:6px 6px 0 0;display:block;">
         <div style="padding:12px;">
           <strong>${escapeHtml(listing.address)}</strong>
           <p>${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)}</p>
@@ -641,7 +685,7 @@ function showApiError(errors) {
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:16px;">
         <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/>
       </svg>
-      <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.3rem; margin-bottom:8px;">Could not connect to NYC Open Data</h3>
+      <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-size:1.3rem; margin-bottom:8px;">Could not connect to NYC Open Data</h3>
       <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 8px;">The connection may be temporarily unavailable.</p>
       ${errors.length > 0 ? `<p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:20px;">${errors.map(e => escapeHtml(e)).join('<br>')}</p>` : ''}
       <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
@@ -700,6 +744,7 @@ function applyFilters() {
     case 'date-asc': filteredListings.sort((a, b) => new Date(a.availableDate || '2099') - new Date(b.availableDate || '2099')); break;
   }
 
+  currentPage = 1;
   renderListings();
   updateMapMarkers();
 }
@@ -711,6 +756,61 @@ function resetFilters() {
   document.getElementById('filter-search').value = '';
   document.getElementById('sort-by').value = 'rent-asc';
   applyFilters();
+}
+
+// ---- Pagination ----
+function getTotalPages() {
+  return Math.max(1, Math.ceil(filteredListings.length / LISTINGS_PER_PAGE));
+}
+
+function getPageListings() {
+  const start = (currentPage - 1) * LISTINGS_PER_PAGE;
+  return filteredListings.slice(start, start + LISTINGS_PER_PAGE);
+}
+
+function goToPage(page) {
+  const total = getTotalPages();
+  currentPage = Math.max(1, Math.min(page, total));
+  renderListings();
+  // Scroll listings panel to top
+  const panel = document.getElementById('listings-panel');
+  if (panel) panel.scrollTop = 0;
+}
+
+function renderPagination() {
+  const total = getTotalPages();
+  if (total <= 1) return '';
+
+  const pages = [];
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (currentPage > 3) pages.push('...');
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(total - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (currentPage < total - 2) pages.push('...');
+    pages.push(total);
+  }
+
+  return `
+    <nav class="pagination" aria-label="Listings pagination">
+      <button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})" aria-label="Previous page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+      </button>
+      ${pages.map(p =>
+        p === '...'
+          ? '<span class="page-ellipsis">&hellip;</span>'
+          : `<button class="page-btn${p === currentPage ? ' active' : ''}" onclick="goToPage(${p})">${p}</button>`
+      ).join('')}
+      <button class="page-btn page-arrow" ${currentPage === total ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})" aria-label="Next page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+    </nav>
+  `;
 }
 
 // ---- Rendering ----
@@ -731,11 +831,14 @@ function renderListings() {
   if (filteredListings.length === 0) {
     grid.innerHTML = '';
     empty.style.display = 'block';
+    document.getElementById('pagination-container').innerHTML = '';
     return;
   }
   empty.style.display = 'none';
 
-  grid.innerHTML = filteredListings.map((l, i) => {
+  const pageListings = getPageListings();
+
+  grid.innerHTML = pageListings.map((l, i) => {
     const rs = l.rsProb;
     const unitLabel = l.affordableUnits
       ? `${l.affordableUnits} affordable units`
@@ -748,7 +851,7 @@ function renderListings() {
     if (l.numFloors) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/></svg>${l.numFloors} floors</span>`);
 
     return `
-    <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.25)}s" tabindex="0" role="button" aria-label="View ${escapeHtml(l.address)}"
+    <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.15)}s" tabindex="0" role="button" aria-label="View ${escapeHtml(l.address)}"
       onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
       <div class="card-image">
         <img src="${l.image}" alt="${escapeHtml(l.address)}" loading="lazy">
@@ -758,7 +861,6 @@ function renderListings() {
       <div class="card-body">
         <h3 class="card-address">${escapeHtml(l.address)}</h3>
         <p class="card-neighborhood">${escapeHtml(l.neighborhood)}${l.neighborhood && l.borough ? ', ' : ''}${escapeHtml(l.borough)}${l.zip ? ' ' + l.zip : ''}</p>
-        ${l.description ? `<p class="card-description">${escapeHtml(l.description)}</p>` : ''}
         <div class="card-details">
           ${details.join('')}
           ${l.lotteryStatus ? `<span class="card-detail" style="color:#0D9488;font-weight:600;">Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
@@ -770,6 +872,12 @@ function renderListings() {
       </div>
     </article>`;
   }).join('');
+
+  // Render pagination
+  const paginationContainer = document.getElementById('pagination-container');
+  if (paginationContainer) {
+    paginationContainer.innerHTML = renderPagination();
+  }
 }
 
 function escapeHtml(str) {
@@ -801,7 +909,7 @@ function openModal(id) {
 
   content.innerHTML = `
     <div style="position:relative;">
-      <img src="${listing.image}" alt="${escapeHtml(listing.address)}" style="width:100%;height:240px;object-fit:cover;border-radius:var(--radius-xl) var(--radius-xl) 0 0;display:block;">
+      <img src="${listing.image}" alt="${escapeHtml(listing.address)}" style="width:100%;height:240px;object-fit:cover;border-radius:var(--radius-md) var(--radius-md) 0 0;display:block;">
       ${hasCoords ? `<div class="modal-map-mini" id="modal-map-container"></div>` : ''}
     </div>
     <div class="modal-body">
@@ -819,11 +927,10 @@ function openModal(id) {
         <span class="modal-price">${formatRent(listing.rent)} <span>/month est.</span></span>
       </div>
 
-      <!-- RS Probability -->
-      <div style="background:${rs.color}08; border:1px solid ${rs.color}25; border-radius:var(--radius-md); padding:16px 20px; margin-bottom:20px;">
+      <div style="background:${rs.color}08; border:1px solid ${rs.color}25; border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <strong style="font-family:'Plus Jakarta Sans',sans-serif; font-size:0.95rem; color:${rs.color};">Rent Stabilization: ${rs.label} (${rs.score}%)</strong>
+          <strong style="font-family:'Bricolage Grotesque',sans-serif; font-size:0.95rem; color:${rs.color};">Rent Stabilization: ${rs.label} (${rs.score}%)</strong>
         </div>
         <div style="background:var(--bg-elevated); border-radius:100px; height:8px; margin-bottom:12px; overflow:hidden;">
           <div style="background:${rs.color}; height:100%; width:${rs.score}%; border-radius:100px;"></div>
@@ -986,7 +1093,7 @@ injectedStyle.textContent = `
   position:absolute; transform:translate(-50%, -100%);
   background:#1C1917; color:white;
   padding:5px 10px; border-radius:20px;
-  font-family:'Plus Jakarta Sans',sans-serif;
+  font-family:'Bricolage Grotesque',sans-serif;
   font-size:0.72rem; font-weight:700; white-space:nowrap;
   box-shadow:0 2px 8px rgba(0,0,0,0.2);
   cursor:pointer; transition:all 0.15s ease;
