@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StableNYC — Rent Stabilized Homes in New York City</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="2" y="10" width="10" height="16" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="16" y="4" width="10" height="22" rx="2" fill="currentColor" opacity="0.6"/>
+            <rect x="9" y="2" width="10" height="24" rx="2" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="logo-text">Stable<span class="logo-accent">NYC</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#listings">Listings</a>
+        <a href="#about">About</a>
+        <a href="#resources">Resources</a>
+      </div>
+      <button class="nav-cta" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
+        Browse Homes
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Rent Stabilized Housing</div>
+      <h1>Find Your <span class="gradient-text">Affordable Home</span> in New York City</h1>
+      <p class="hero-subtitle">Browse rent-stabilized apartments across all five boroughs. Protected rents, real homes, your city.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" id="listing-count">20</span>
+          <span class="stat-label">Available Listings</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Boroughs</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">~1M</span>
+          <span class="stat-label">Stabilized Units in NYC</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          Search Apartments
+        </button>
+        <a href="#about" class="btn btn-ghost">Learn About Rent Stabilization</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filters & Listings -->
+  <section class="listings-section" id="listings">
+    <div class="container">
+      <div class="section-header">
+        <h2>Available Apartments</h2>
+        <p>Rent-stabilized homes currently listed across NYC</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label>Borough</label>
+            <select id="filter-borough">
+              <option value="all">All Boroughs</option>
+              <option value="Manhattan">Manhattan</option>
+              <option value="Brooklyn">Brooklyn</option>
+              <option value="Queens">Queens</option>
+              <option value="Bronx">Bronx</option>
+              <option value="Staten Island">Staten Island</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Bedrooms</label>
+            <select id="filter-bedrooms">
+              <option value="all">Any</option>
+              <option value="Studio">Studio</option>
+              <option value="1">1 BR</option>
+              <option value="2">2 BR</option>
+              <option value="3">3 BR</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Max Rent</label>
+            <select id="filter-rent">
+              <option value="all">Any Price</option>
+              <option value="1500">Under $1,500</option>
+              <option value="1750">Under $1,750</option>
+              <option value="2000">Under $2,000</option>
+              <option value="2500">Under $2,500</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Pets</label>
+            <select id="filter-pet">
+              <option value="all">Any</option>
+              <option value="Dogs & Cats">Dogs & Cats</option>
+              <option value="Cats Only">Cats Only</option>
+              <option value="No Pets">No Pets</option>
+            </select>
+          </div>
+          <div class="filter-group filter-search">
+            <label>Search</label>
+            <input type="text" id="filter-search" placeholder="Neighborhood, address...">
+          </div>
+        </div>
+        <div class="filter-meta">
+          <span id="results-count">20 apartments found</span>
+          <div class="sort-group">
+            <label>Sort by</label>
+            <select id="sort-by">
+              <option value="rent-asc">Rent: Low to High</option>
+              <option value="rent-desc">Rent: High to Low</option>
+              <option value="sqft-desc">Size: Largest</option>
+              <option value="date-asc">Available Soonest</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listings Grid -->
+      <div class="listings-grid" id="listings-grid">
+        <!-- Cards inserted by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          <path d="M8 11h6" stroke-linecap="round"/>
+        </svg>
+        <h3>No apartments match your filters</h3>
+        <p>Try adjusting your search criteria to see more results.</p>
+        <button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2>What is Rent Stabilization?</h2>
+        <p>Understanding your rights as a NYC tenant</p>
+      </div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Protected Rents</h3>
+          <p>Rent increases are limited by the NYC Rent Guidelines Board, which sets maximum annual increases. Your landlord cannot raise your rent beyond these guidelines.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </div>
+          <h3>Right to Renew</h3>
+          <p>Tenants have the right to renew their lease. Landlords must offer 1- or 2-year renewal leases at the rates set by the Rent Guidelines Board.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>Which Buildings Qualify?</h3>
+          <p>Generally, buildings with 6+ units built before 1974, or those receiving certain tax benefits like J-51 or 421-a. About 1 million NYC apartments are stabilized.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3>2026 Transparency Act</h3>
+          <p>New York City's Rent Transparency Act now requires landlords to clearly disclose rent-stabilized units and post tenant rights notices in common areas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <section class="resources-section" id="resources">
+    <div class="container">
+      <div class="section-header">
+        <h2>Official Resources</h2>
+        <p>Verified tools and agencies for rent-stabilized housing</p>
+      </div>
+      <div class="resources-grid">
+        <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Official</div>
+          <h3>NYC Rent Guidelines Board</h3>
+          <p>Download official lists of buildings containing rent-stabilized apartments filed with NYS HCR.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://rsbl.nyc/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Free Tool</div>
+          <h3>RSBL.nyc</h3>
+          <p>Interactive, searchable database of rent-stabilized buildings across all NYC boroughs.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://amirentstabilized.com/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Free Tool</div>
+          <h3>Am I Rent Stabilized?</h3>
+          <p>Check if your building likely has rent-stabilized units using public data from DHCR and DOF.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://streetsmart.inc/ny/discover/rent-stabilized" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Search</div>
+          <h3>StreetSmart</h3>
+          <p>Browse 100,000+ buildings that appear to meet rent stabilization criteria in New York City.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://furmancenter.org/nyc-rent-stab-2025" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Research</div>
+          <h3>Furman Center</h3>
+          <p>In-depth analysis and data on NYC's rent-stabilized housing stock from NYU's research center.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://beta.nyc/products/tenants-map/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Map</div>
+          <h3>BetaNYC Tenants Map</h3>
+          <p>Interactive map showing the location of rent-stabilized units across the city.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-text">Stable<span class="logo-accent">NYC</span></span>
+          <p>Helping New Yorkers find affordable, rent-stabilized homes across all five boroughs.</p>
+        </div>
+        <div class="footer-disclaimer">
+          <p><strong>Disclaimer:</strong> Listings shown are sample data for demonstration purposes. Always verify rent stabilization status with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes and Community Renewal (HCR)</a>. This site is not affiliated with any government agency.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StableNYC. Data sourced from NYC Rent Guidelines Board building registrations.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Listing Detail Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+      <div class="modal-content" id="modal-content">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
