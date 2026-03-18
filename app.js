@@ -1,7 +1,8 @@
 // ============================================================
 // StableNYC — Rent Stabilized Homes in NYC
-// Real building data from 5 NYC Open Data Socrata SODA API endpoints
+// Real building data from NYC Open Data APIs
 // Interactive map powered by Leaflet + OpenStreetMap
+// Rent stabilization probability calculated from public records
 // ============================================================
 
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
@@ -47,7 +48,136 @@ function getSatelliteTile(lat, lng) {
   return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y}/${x}`;
 }
 
-// Borough normalization
+// ============================================================
+// RENT STABILIZATION PROBABILITY
+// Scoring based on NYC rent stabilization law criteria
+// ============================================================
+
+function calculateRSProbability(listing) {
+  let score = 0;
+  const factors = [];
+
+  // Pre-1974 construction is the primary legal criterion
+  if (listing.yearBuilt && listing.yearBuilt < 1974) {
+    score += 30;
+    factors.push(`Built in ${listing.yearBuilt} (before 1974 rent stabilization cutoff)`);
+  } else if (listing.yearBuilt && listing.yearBuilt >= 1974) {
+    factors.push(`Built in ${listing.yearBuilt} (after 1974 — may still qualify via tax programs)`);
+  }
+
+  // 6+ residential units required for pre-1974 stabilization
+  if (listing.totalUnits && listing.totalUnits >= 6) {
+    score += 25;
+    factors.push(`${listing.totalUnits} residential units (6+ units required for stabilization)`);
+  } else if (listing.totalUnits && listing.totalUnits > 0) {
+    factors.push(`${listing.totalUnits} units (fewer than 6 — less likely stabilized)`);
+  }
+
+  // Residential apartment building class (C = walk-up, D = elevator)
+  if (listing.bldgClass) {
+    const cls = listing.bldgClass.charAt(0).toUpperCase();
+    if (cls === 'D') {
+      score += 15;
+      factors.push('Elevator apartment building (Class D)');
+    } else if (cls === 'C') {
+      score += 15;
+      factors.push('Walk-up apartment building (Class C)');
+    }
+  }
+
+  // Confirmed RS units from HPD Speculation Watch data
+  if (listing.rsUnits && listing.rsUnits > 0) {
+    score += 30;
+    factors.push(`${listing.rsUnits} units registered as rent-stabilized with HPD`);
+  }
+
+  // Part of NYC affordable housing program
+  if (listing.sourceKey === 'housingconnect' || listing.sourceKey === 'affordable') {
+    score += 25;
+    factors.push('Part of NYC affordable housing program (likely income-restricted)');
+  }
+
+  score = Math.min(score, 100);
+
+  let label, color;
+  if (listing.rsUnits && listing.rsUnits > 0) {
+    label = 'Confirmed RS';
+    color = '#16A34A';
+  } else if (listing.sourceKey === 'housingconnect' || listing.sourceKey === 'affordable') {
+    label = 'Affordable Housing';
+    color = '#0D9488';
+  } else if (score >= 80) {
+    label = 'Very Likely RS';
+    color = '#16A34A';
+  } else if (score >= 55) {
+    label = 'Likely RS';
+    color = '#0D9488';
+  } else if (score >= 35) {
+    label = 'Possibly RS';
+    color = '#D97706';
+  } else {
+    label = 'Check Status';
+    color = '#57534E';
+  }
+
+  return { score, factors, label, color };
+}
+
+// ============================================================
+// BUILDING DESCRIPTION (from real data only)
+// ============================================================
+
+function buildDescription(listing) {
+  const parts = [];
+
+  if (listing.yearBuilt) {
+    const era = listing.yearBuilt < 1940 ? 'Pre-war' : listing.yearBuilt < 1974 ? 'Mid-century' : 'Modern';
+    let type = 'residential building';
+    if (listing.bldgClass) {
+      const cls = listing.bldgClass.charAt(0).toUpperCase();
+      if (cls === 'D') type = 'elevator apartment building';
+      else if (cls === 'C') type = 'walk-up apartment building';
+    }
+    parts.push(`${era} ${type} built in ${listing.yearBuilt}`);
+  }
+
+  if (listing.totalUnits) {
+    parts.push(`${listing.totalUnits} residential unit${listing.totalUnits > 1 ? 's' : ''}`);
+  }
+
+  if (listing.numFloors) {
+    parts.push(`${listing.numFloors} floor${listing.numFloors > 1 ? 's' : ''}`);
+  }
+
+  if (listing.rsUnits && listing.rsUnits > 0) {
+    parts.push(`${listing.rsUnits} registered rent-stabilized unit${listing.rsUnits > 1 ? 's' : ''}`);
+  }
+
+  if (listing.affordableUnits && listing.affordableUnits > 0) {
+    parts.push(`${listing.affordableUnits} affordable housing unit${listing.affordableUnits > 1 ? 's' : ''}`);
+  }
+
+  if (listing.lotteryStatus) {
+    parts.push(`Housing lottery: ${listing.lotteryStatus}`);
+  }
+
+  if (listing.projectName) {
+    parts.push(`Part of ${listing.projectName}`);
+  }
+
+  return parts.length > 0 ? parts.join('. ') + '.' : '';
+}
+
+// ============================================================
+// STREETEASY SEARCH URL
+// ============================================================
+
+function buildStreetEasyUrl(address, borough, zip) {
+  const query = `${address}, ${borough}, NY ${zip || ''}`.trim();
+  return `https://streeteasy.com/for-rent/nyc/status:open?utf8=%E2%9C%93&search=${encodeURIComponent(query)}`;
+}
+
+// ---- Neighborhood lookup ----
 const NEIGHBORHOOD_MAP = [
   { pattern: /harlem/i, name: 'Harlem' },
   { pattern: /washington\s*heights/i, name: 'Washington Heights' },
@@ -144,6 +274,7 @@ async function fetchLotteriesBuilding() {
 
 async function fetchSpeculationWatch() {
   const params = new URLSearchParams({
+    $where: 'numberofrsstabilizedunits > 0',
     $limit: 300,
     $order: 'deeddate DESC',
     $select: 'borough,address,zip,bbl,buildingclass,numberofunits,numberofrsstabilizedunits,deeddate,saleprice,capitalizationrate,boroughmedcaprate,latitude,longitude',
@@ -153,9 +284,10 @@ async function fetchSpeculationWatch() {
   return resp.json();
 }
 
+// PLUTO: Only residential apartment buildings (C = walk-up, D = elevator)
 async function fetchPLUTO() {
   const params = new URLSearchParams({
-    $where: "yearbuilt < 1974 AND unitsres >= 6 AND bldgclass NOT LIKE 'R%' AND unitsres IS NOT NULL",
+    $where: "yearbuilt < 1974 AND unitsres >= 6 AND (bldgclass LIKE 'C%' OR bldgclass LIKE 'D%') AND unitsres IS NOT NULL AND latitude IS NOT NULL",
     $limit: 500,
     $order: 'unitsres DESC',
     $select: 'borough,block,lot,bbl,address,zipcode,bldgclass,numfloors,unitsres,unitstotal,yearbuilt,ownername,latitude,longitude',
@@ -202,6 +334,8 @@ function transformAffordableHousing(records) {
       eliUnits, vliUnits, liUnits, miUnits,
       yearBuilt: null,
       rsUnits: null,
+      bldgClass: null,
+      numFloors: null,
       availableDate: r.building_completion_date
         ? new Date(r.building_completion_date).toISOString().slice(0, 10)
         : null,
@@ -256,6 +390,8 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
       yearBuilt: null,
       rsUnits: null,
+      bldgClass: null,
+      numFloors: null,
       availableDate: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
@@ -288,11 +424,9 @@ function transformSpeculationWatch(records) {
       estRent = 1200 + (h % 800);
     }
 
-    const searchQuery = encodeURIComponent(`${address}, ${borough}, NY ${r.zip || ''}`);
-
     return {
       id: `sw-${r.bbl || i}`,
-      source: 'Speculation Watch',
+      source: 'Confirmed RS Building',
       sourceKey: 'speculation',
       projectName: '',
       address: address || 'Address on file',
@@ -304,6 +438,8 @@ function transformSpeculationWatch(records) {
       affordableUnits: null,
       rsUnits,
       yearBuilt: null,
+      bldgClass: r.buildingclass || null,
+      numFloors: null,
       salePrice,
       capRate,
       medCapRate,
@@ -311,10 +447,10 @@ function transformSpeculationWatch(records) {
       availableDate: r.deeddate ? new Date(r.deeddate).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      dataSource: 'NYC Open Data — HPD Speculation Watch List',
+      dataSource: 'NYC Open Data — HPD Speculation Watch List (confirmed RS units)',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Speculation-Watch-List/adax-9mit',
-      externalUrl: `https://www.google.com/maps/search/?api=1&query=${searchQuery}`,
-      externalSiteName: 'Google Maps',
+      externalUrl: buildStreetEasyUrl(address, borough, r.zip),
+      externalSiteName: 'StreetEasy',
     };
   });
 }
@@ -332,11 +468,13 @@ function transformPLUTO(records) {
     const base = boroughBase[borough] || 1400;
     const estRent = Math.max(base + (h % 700) - Math.min(unitsRes, 50) * 3, 700);
 
-    const searchQuery = encodeURIComponent(`${address}, ${borough}, NY ${r.zipcode || ''}`);
+    // Determine building type for display
+    const cls = (r.bldgclass || '').charAt(0).toUpperCase();
+    const bldgType = cls === 'D' ? 'Elevator Apartment' : cls === 'C' ? 'Walk-up Apartment' : 'Residential';
 
     return {
       id: `pluto-${r.bbl || i}`,
-      source: 'PLUTO (Likely Stabilized)',
+      source: bldgType,
       sourceKey: 'pluto',
       projectName: '',
       address: address || `Block ${r.block}, Lot ${r.lot}`,
@@ -354,10 +492,10 @@ function transformPLUTO(records) {
       availableDate: null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      dataSource: 'NYC Open Data — PLUTO (inferred: pre-1974, 6+ units)',
+      dataSource: 'NYC Open Data — PLUTO (pre-1974 residential, 6+ units)',
       datasetUrl: 'https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks',
-      externalUrl: `https://www.google.com/maps/search/?api=1&query=${searchQuery}`,
-      externalSiteName: 'Google Maps',
+      externalUrl: buildStreetEasyUrl(address, borough, r.zipcode),
+      externalSiteName: 'StreetEasy',
     };
   });
 }
@@ -410,7 +548,7 @@ async function loadData() {
     if (specResult.status === 'fulfilled' && specResult.value.length > 0) {
       const transformed = transformSpeculationWatch(specResult.value);
       listings.push(...transformed);
-      counts['Speculation Watch'] = transformed.length;
+      counts['Confirmed RS'] = transformed.length;
     } else if (specResult.status === 'rejected') {
       errors.push(`Speculation Watch: ${specResult.reason.message}`);
     }
@@ -418,7 +556,7 @@ async function loadData() {
     if (plutoResult.status === 'fulfilled' && plutoResult.value.length > 0) {
       const transformed = transformPLUTO(plutoResult.value);
       listings.push(...transformed);
-      counts['PLUTO'] = transformed.length;
+      counts['Residential Buildings'] = transformed.length;
     } else if (plutoResult.status === 'rejected') {
       errors.push(`PLUTO: ${plutoResult.reason.message}`);
     }
@@ -433,6 +571,12 @@ async function loadData() {
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
+  });
+
+  // Calculate RS probability for every listing
+  allListings.forEach(l => {
+    l.rsProb = calculateRSProbability(l);
+    l.description = buildDescription(l);
   });
 
   sourceStats = counts;
@@ -473,9 +617,10 @@ function updateMapMarkers() {
   const listingsWithCoords = filteredListings.filter(l => l.lat && l.lng);
 
   listingsWithCoords.forEach(listing => {
+    const rsColor = listing.rsProb ? listing.rsProb.color : '#57534E';
     const marker = L.circleMarker([listing.lat, listing.lng], {
       radius: 8,
-      fillColor: sourceBadgeColor(listing.source),
+      fillColor: rsColor,
       color: '#fff',
       weight: 2,
       opacity: 1,
@@ -487,7 +632,7 @@ function updateMapMarkers() {
         <strong>${escapeHtml(listing.address)}</strong>
         <p>${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)}</p>
         <p class="popup-rent">${formatRent(listing.rent)}/mo est.</p>
-        <p style="font-size:0.72rem;color:#A8A29E;margin:4px 0 8px;">${escapeHtml(listing.source)}</p>
+        <p style="font-size:0.72rem;color:${rsColor};font-weight:600;margin:4px 0 8px;">${listing.rsProb ? listing.rsProb.label : ''} (${listing.rsProb ? listing.rsProb.score : 0}%)</p>
         <button class="popup-btn" onclick="openModal('${listing.id}')">View Details</button>
       </div>
     `, { maxWidth: 250 });
@@ -542,8 +687,8 @@ function showLoading(show) {
     grid.innerHTML = `
       <div class="loading-state" style="grid-column:1/-1; text-align:center; padding:60px 20px;">
         <div class="loading-spinner"></div>
-        <p style="color:var(--text-muted); margin-top:16px;">Loading live data from 5 NYC Open Data sources...</p>
-        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Affordable Housing &bull; Housing Connect &bull; Speculation Watch &bull; PLUTO</p>
+        <p style="color:var(--text-muted); margin-top:16px;">Loading live building data from NYC Open Data...</p>
+        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Analyzing rent stabilization probability for each building</p>
       </div>`;
   }
 }
@@ -554,7 +699,7 @@ function showApiError(errors) {
   empty.style.display = 'none';
 
   document.getElementById('listing-count').textContent = '0';
-  document.getElementById('results-count').textContent = '0 apartments found';
+  document.getElementById('results-count').textContent = '0 buildings found';
 
   const banner = document.getElementById('data-banner');
   if (banner) {
@@ -571,7 +716,7 @@ function showApiError(errors) {
         Could not connect to NYC Open Data
       </h3>
       <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 8px;">
-        This site pulls live data from 5 NYC Open Data Socrata API endpoints. The connection may be temporarily unavailable.
+        This site pulls live data from NYC Open Data Socrata API endpoints. The connection may be temporarily unavailable.
       </p>
       ${errors.length > 0 ? `<p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:20px;">${errors.map(e => escapeHtml(e)).join('<br>')}</p>` : ''}
       <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
@@ -593,10 +738,10 @@ function updateDataBanner(count, counts, errors) {
 
   const parts = Object.entries(counts)
     .filter(([, n]) => n > 0)
-    .map(([name, n]) => `${n} from ${name}`);
+    .map(([name, n]) => `${n} ${name}`);
 
   const errCount = errors.length;
-  let text = `${count} real building records from NYC Open Data — ${parts.join(', ')}`;
+  let text = `${count} buildings with RS probability from NYC Open Data — ${parts.join(', ')}`;
   if (errCount > 0) {
     text += ` | ${errCount} source${errCount > 1 ? 's' : ''} unavailable`;
   }
@@ -664,17 +809,6 @@ function formatDate(d) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-const SOURCE_COLORS = {
-  'Affordable Housing': '#16A34A',
-  'Housing Connect': '#0D9488',
-  'Speculation Watch': '#D97706',
-  'PLUTO (Likely Stabilized)': '#0891B2',
-};
-
-function sourceBadgeColor(source) {
-  return SOURCE_COLORS[source] || '#57534E';
-}
-
 function renderListings() {
   const grid = document.getElementById('listings-grid');
   const empty = document.getElementById('empty-state');
@@ -697,6 +831,8 @@ function renderListings() {
         ? `<img src="${satImage}" alt="Aerial view near ${escapeHtml(l.address)}" loading="lazy" onerror="this.style.display='none'">`
         : '';
 
+      const rs = l.rsProb || { label: 'Unknown', color: '#57534E', score: 0 };
+
       const details = [];
       if (l.totalUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>`);
       if (l.yearBuilt) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Built ${l.yearBuilt}</span>`);
@@ -709,12 +845,13 @@ function renderListings() {
       onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
       <div class="card-image">
         ${imageHtml}
-        <span class="card-badge" style="background:${sourceBadgeColor(l.source)}">${escapeHtml(l.source)}</span>
+        <span class="card-badge" style="background:${rs.color}">${escapeHtml(rs.label)} ${rs.score}%</span>
         <span class="card-rent-badge">${formatRent(l.rent)}<span>/mo est.</span></span>
       </div>
       <div class="card-body">
         <h3 class="card-address">${escapeHtml(l.address)}</h3>
         <p class="card-neighborhood">${escapeHtml(l.neighborhood)}${l.neighborhood && l.borough ? ', ' : ''}${escapeHtml(l.borough)}${l.zip ? ' ' + escapeHtml(l.zip) : ''}</p>
+        ${l.description ? `<p class="card-description">${escapeHtml(l.description)}</p>` : ''}
         <div class="card-details">
           ${details.join('')}
           ${l.lotteryStatus ? `<span class="card-detail" style="color:#0D9488;font-weight:600;">Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
@@ -722,7 +859,7 @@ function renderListings() {
         </div>
       </div>
       <div class="card-footer">
-        <span class="card-source">${escapeHtml(l.source)}</span>
+        <span class="card-source">Find units on ${escapeHtml(l.externalSiteName)}</span>
         <span class="card-cta">View Details <span class="external-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span></span>
       </div>
     </article>
@@ -745,6 +882,8 @@ function openModal(id) {
   const modal = document.getElementById('modal-overlay');
   const content = document.getElementById('modal-content');
 
+  const rs = listing.rsProb || { label: 'Unknown', color: '#57534E', score: 0, factors: [] };
+
   const extraDetails = [];
   if (listing.yearBuilt) extraDetails.push({ label: 'Year Built', value: listing.yearBuilt });
   if (listing.totalUnits) extraDetails.push({ label: 'Total Units', value: listing.totalUnits });
@@ -756,7 +895,6 @@ function openModal(id) {
   if (listing.lotteryEnd) extraDetails.push({ label: 'Lottery End', value: formatDate(listing.lotteryEnd) });
   if (listing.salePrice) extraDetails.push({ label: 'Last Sale Price', value: '$' + listing.salePrice.toLocaleString() });
   if (listing.capRate) extraDetails.push({ label: 'Cap Rate', value: listing.capRate.toFixed(2) + '%' });
-  if (listing.medCapRate) extraDetails.push({ label: 'Borough Median Cap Rate', value: listing.medCapRate.toFixed(2) + '%' });
   if (listing.bldgClass) extraDetails.push({ label: 'Building Class', value: listing.bldgClass });
 
   const hasCoords = listing.lat && listing.lng;
@@ -764,16 +902,37 @@ function openModal(id) {
   content.innerHTML = `
     ${hasCoords ? `<div class="modal-map-header" id="modal-map-container"></div>` : ''}
     <div class="modal-body">
-      <div class="stabilized-since" style="background:${sourceBadgeColor(listing.source)}18; color:${sourceBadgeColor(listing.source)};">
+      <div class="stabilized-since" style="background:${rs.color}18; color:${rs.color};">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        ${escapeHtml(listing.source)}
+        ${escapeHtml(rs.label)} &mdash; ${rs.score}% likelihood
       </div>
       ${listing.projectName ? `<p style="font-size:0.85rem; color:var(--accent); font-weight:600; margin-bottom:4px;">${escapeHtml(listing.projectName)}</p>` : ''}
       <h2>${escapeHtml(listing.address)}</h2>
       <p class="modal-neighborhood">${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)} ${listing.zip || ''}</p>
 
+      ${listing.description ? `<p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6; margin-bottom:20px;">${escapeHtml(listing.description)}</p>` : ''}
+
       <div class="modal-price-row">
         <span class="modal-price">${formatRent(listing.rent)} <span>/month est.</span></span>
+      </div>
+
+      <!-- RS Probability Breakdown -->
+      <div style="background:${rs.color}08; border:1px solid ${rs.color}25; border-radius:var(--radius-md); padding:16px 20px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <strong style="font-family:'Plus Jakarta Sans',sans-serif; font-size:0.95rem; color:${rs.color};">Rent Stabilization: ${rs.label} (${rs.score}%)</strong>
+        </div>
+        <div style="background:var(--bg-elevated); border-radius:100px; height:8px; margin-bottom:12px; overflow:hidden;">
+          <div style="background:${rs.color}; height:100%; width:${rs.score}%; border-radius:100px; transition:width 0.5s ease;"></div>
+        </div>
+        ${rs.factors.length > 0 ? `
+          <ul style="list-style:none; padding:0; margin:0; font-size:0.82rem; color:var(--text-secondary);">
+            ${rs.factors.map(f => `<li style="padding:3px 0; display:flex; align-items:flex-start; gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><polyline points="20,6 9,17 4,12"/></svg>
+              ${escapeHtml(f)}
+            </li>`).join('')}
+          </ul>
+        ` : ''}
       </div>
 
       <div class="modal-details-grid">
@@ -799,20 +958,19 @@ function openModal(id) {
 
       <div style="background:var(--bg-elevated); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:20px; font-size:0.8rem; color:var(--text-muted);">
         <strong style="color:var(--text-secondary);">Data source:</strong> ${escapeHtml(listing.dataSource || 'NYC Open Data')}
-        ${listing.datasetUrl ? `<br><a href="${listing.datasetUrl}" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none;">View dataset &rarr;</a>` : ''}
+        ${listing.datasetUrl ? `<br><a href="${listing.datasetUrl}" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none;">View raw dataset &rarr;</a>` : ''}
       </div>
 
       <div class="modal-contact">
         <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="closeModal(); showExternalLink('${listing.id}')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          View on ${escapeHtml(listing.externalSiteName)}
+          Find Available Units on ${escapeHtml(listing.externalSiteName)}
         </button>
-        <a href="https://amirentstabilized.com/" target="_blank" rel="noopener" class="btn btn-secondary" style="flex:1;justify-content:center;">Verify Stabilization</a>
       </div>
 
       <p style="font-size:0.75rem; color:var(--text-muted); margin-top:16px; text-align:center;">
-        All data from public records. Rents are estimates. Always verify with
-        <a href="https://hcr.ny.gov/" target="_blank" rel="noopener" style="color:var(--accent);">NYS HCR</a>
+        RS probability calculated from public building records. Rents are estimates.
+        Always verify with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener" style="color:var(--accent);">NYS HCR</a>.
       </p>
     </div>
   `;
@@ -839,7 +997,7 @@ function openModal(id) {
       }).addTo(modalMap);
       L.circleMarker([listing.lat, listing.lng], {
         radius: 10,
-        fillColor: sourceBadgeColor(listing.source),
+        fillColor: rs.color,
         color: '#fff',
         weight: 3,
         fillOpacity: 0.9,
@@ -871,7 +1029,7 @@ function showExternalLink(id) {
       </svg>
     </div>
     <h3>You're leaving StableNYC</h3>
-    <p>You'll be taken to <strong>${escapeHtml(listing.externalSiteName)}</strong> to view this listing externally. StableNYC is not affiliated with this site.</p>
+    <p>You'll be taken to <strong>${escapeHtml(listing.externalSiteName)}</strong> to search for available rental units at this address. StableNYC is not affiliated with this site.</p>
     <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">${escapeHtml(listing.address)}, ${escapeHtml(listing.borough)}</p>
     <span class="external-url">${escapeHtml(listing.externalUrl)}</span>
     <div class="external-modal-actions">
@@ -980,6 +1138,17 @@ injectedStyle.textContent = `
   background: rgba(220,38,38,0.08);
   color: #DC2626;
 }
+
+.card-description {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 `;
 document.head.appendChild(injectedStyle);
 
@@ -989,7 +1158,7 @@ if (filterBar) {
   const banner = document.createElement('div');
   banner.id = 'data-banner';
   banner.className = 'data-banner';
-  banner.textContent = 'Loading data from 5 NYC Open Data sources...';
+  banner.textContent = 'Loading building data from NYC Open Data...';
   filterBar.parentNode.insertBefore(banner, filterBar);
 }
 
