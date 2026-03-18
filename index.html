@@ -46,16 +46,16 @@
     <div class="hero-content">
       <div class="hero-badge">Rent Stabilized Housing</div>
       <h1>Find Your <span class="gradient-text">Affordable Home</span> in New York City</h1>
-      <p class="hero-subtitle">Live data from NYC Open Data. Affordable housing lotteries, rent-stabilized buildings, and speculation alerts across all five boroughs.</p>
+      <p class="hero-subtitle">Browse rent-stabilized and affordable apartments from NYC Open Data. Filter by borough, bedrooms, and income level. Apply directly through Housing Connect.</p>
       <div class="hero-stats">
         <div class="stat">
           <span class="stat-number" id="listing-count">--</span>
-          <span class="stat-label">Available Listings</span>
+          <span class="stat-label">Affordable Listings</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
           <span class="stat-number">5</span>
-          <span class="stat-label">Data Sources</span>
+          <span class="stat-label">Boroughs Covered</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
@@ -78,7 +78,7 @@
     <div class="container">
       <div class="section-header">
         <h2>Available Apartments</h2>
-        <p>Real building data from NYC Open Data &mdash; Affordable Housing, Housing Connect, Speculation Watch &amp; PLUTO</p>
+        <p>Rent-stabilized and affordable units from NYC Open Data &mdash; filter by bedrooms, rent, and income level</p>
       </div>
 
       <!-- Filter Bar -->
@@ -103,6 +103,16 @@
               <option value="1750">Under $1,750</option>
               <option value="2000">Under $2,000</option>
               <option value="2500">Under $2,500</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Bedrooms</label>
+            <select id="filter-bedrooms">
+              <option value="all">Any Size</option>
+              <option value="studio">Studio</option>
+              <option value="1br">1 Bedroom</option>
+              <option value="2br">2 Bedrooms</option>
+              <option value="3br">3+ Bedrooms</option>
             </select>
           </div>
           <div class="filter-group">
@@ -156,7 +166,7 @@
             <path d="M8 11h6" stroke-linecap="round"/>
           </svg>
           <h3>No apartments match your filters</h3>
-          <p>Try adjusting your search criteria to see more results.</p>
+          <p>Try adjusting your bedroom size, rent range, or borough to see more results.</p>
           <button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>
         </div>
       </div>
@@ -263,11 +273,11 @@
           <p>Helping New Yorkers find affordable, rent-stabilized homes across all five boroughs.</p>
         </div>
         <div class="footer-disclaimer">
-          <p><strong>Disclaimer:</strong> All building data is sourced from NYC Open Data public records. Estimated rents are calculated from public data and may not reflect current asking rents. Always verify rent stabilization status with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes and Community Renewal (HCR)</a>. This site is not affiliated with any government agency.</p>
+          <p><strong>Disclaimer:</strong> Listings sourced from NYC Open Data (Affordable Housing Production &amp; Housing Connect). Rent estimates are based on HUD Area Median Income guidelines and may not reflect actual asking rents. Apply through <a href="https://housingconnect.nyc.gov/" target="_blank" rel="noopener">Housing Connect</a> for lottery units. Verify stabilization status with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS HCR</a>. Not affiliated with any government agency.</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StableNYC. Data sourced from NYC Open Data &mdash; Affordable Housing, Housing Connect, Speculation Watch, PLUTO.</p>
+        <p>&copy; 2026 StableNYC. Data sourced from NYC Open Data &mdash; Affordable Housing Production, Housing Connect Lotteries, PLUTO.</p>
       </div>
     </div>
   </footer>

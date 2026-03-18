@@ -160,22 +160,28 @@ function calculateRSProbability(listing) {
 function buildDescription(listing) {
   const parts = [];
 
-  if (listing.yearBuilt) {
-    const era = listing.yearBuilt < 1940 ? 'Pre-war' : listing.yearBuilt < 1974 ? 'Mid-century' : 'Modern';
-    let type = 'residential building';
-    if (listing.bldgClass) {
-      const cls = listing.bldgClass.charAt(0).toUpperCase();
-      if (cls === 'D') type = 'elevator apartment building';
-      else if (cls === 'C') type = 'walk-up apartment building';
-    }
-    parts.push(`${era} ${type} built in ${listing.yearBuilt}`);
+  // Unit-focused description
+  const brParts = [];
+  if (listing.bedrooms) {
+    if (listing.bedrooms.studio > 0) brParts.push('studios');
+    if (listing.bedrooms.br1 > 0) brParts.push('1-bedrooms');
+    if (listing.bedrooms.br2 > 0) brParts.push('2-bedrooms');
+    if (listing.bedrooms.br3 > 0) brParts.push('3-bedrooms');
+  }
+  if (brParts.length > 0) {
+    parts.push(`Available unit sizes: ${brParts.join(', ')}`);
   }
 
-  if (listing.totalUnits) parts.push(`${listing.totalUnits} residential unit${listing.totalUnits > 1 ? 's' : ''}`);
-  if (listing.numFloors) parts.push(`${listing.numFloors} floor${listing.numFloors > 1 ? 's' : ''}`);
-  if (listing.rsUnits > 0) parts.push(`${listing.rsUnits} registered rent-stabilized unit${listing.rsUnits > 1 ? 's' : ''}`);
-  if (listing.affordableUnits > 0) parts.push(`${listing.affordableUnits} affordable unit${listing.affordableUnits > 1 ? 's' : ''}`);
+  if (listing.rentalUnits > 0) parts.push(`${listing.rentalUnits} rental units in this development`);
+  else if (listing.affordableUnits > 0) parts.push(`${listing.affordableUnits} affordable units`);
+
+  if (listing.incomeTiers && listing.incomeTiers.length > 0) {
+    const tiers = listing.incomeTiers.map(t => t.label).join(', ');
+    parts.push(`Income levels: ${tiers}`);
+  }
+
   if (listing.lotteryStatus) parts.push(`Housing lottery: ${listing.lotteryStatus}`);
+  if (listing.constructionType) parts.push(listing.constructionType);
   if (listing.projectName) parts.push(listing.projectName);
 
   return parts.length > 0 ? parts.join('. ') + '.' : '';
@@ -252,7 +258,7 @@ async function fetchAffordableHousing() {
     $where: 'extremely_low_income_units>0',
     $limit: 500,
     $order: 'project_start_date DESC',
-    $select: 'project_id,project_name,building_id,house_number,street_name,borough,postcode,bbl,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,project_start_date',
+    $select: 'project_id,project_name,building_id,house_number,street_name,borough,postcode,bbl,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,middle_income_units,studio_units,_1_br_units,_2_br_units,_3_br_units,_4_br_units,_5_br_units,counted_rental_units,project_start_date,reporting_construction_type,extended_affordability_status,prevailing_wage_status',
   });
   const resp = await fetch(`${DATASETS.affordableHousing}?${params}`);
   if (!resp.ok) throw new Error(`Affordable Housing API: ${resp.status}`);
@@ -309,6 +315,26 @@ async function fetchPLUTO() {
 // TRANSFORMERS — only HC + Affordable Housing become listings
 // ============================================================
 
+// 2025 NYC AMI-based rent estimates by income level (HUD/HPD guidelines)
+// These are approximate max rents for a 1BR at each income tier
+const AMI_RENT_RANGES = {
+  eli: { label: 'Extremely Low Income', short: 'ELI', max30: 587, max50: 978, color: '#DC2626' },
+  vli: { label: 'Very Low Income', short: 'VLI', max: 1174, color: '#D97706' },
+  li:  { label: 'Low Income', short: 'LI', max: 1564, color: '#0D9488' },
+  mi:  { label: 'Moderate Income', short: 'MI', max: 2151, color: '#2563EB' },
+  mid: { label: 'Middle Income', short: 'MID', max: 2738, color: '#7C3AED' },
+};
+
+function estimateRentFromIncome(eliUnits, vliUnits, liUnits, miUnits, midUnits) {
+  // Return the rent range for the lowest income tier with units
+  if (eliUnits > 0) return { low: 500, high: 978, tier: AMI_RENT_RANGES.eli };
+  if (vliUnits > 0) return { low: 800, high: 1174, tier: AMI_RENT_RANGES.vli };
+  if (liUnits > 0) return { low: 1100, high: 1564, tier: AMI_RENT_RANGES.li };
+  if (miUnits > 0) return { low: 1400, high: 2151, tier: AMI_RENT_RANGES.mi };
+  if (midUnits > 0) return { low: 1800, high: 2738, tier: AMI_RENT_RANGES.mid };
+  return { low: 800, high: 1500, tier: AMI_RENT_RANGES.li };
+}
+
 function transformAffordableHousing(records) {
   return records.map((r, i) => {
     const borough = normBorough(r.borough);
@@ -317,15 +343,30 @@ function transformAffordableHousing(records) {
     const vliUnits = parseInt(r.very_low_income_units) || 0;
     const liUnits = parseInt(r.low_income_units) || 0;
     const miUnits = parseInt(r.moderate_income_units) || 0;
-    const affordableUnits = eliUnits + vliUnits + liUnits + miUnits;
+    const midUnits = parseInt(r.middle_income_units) || 0;
+    const affordableUnits = eliUnits + vliUnits + liUnits + miUnits + midUnits;
+    const rentalUnits = parseInt(r.counted_rental_units) || affordableUnits;
     const address = `${r.house_number || ''} ${r.street_name || ''}`.trim();
-    const h = hashCode(address + borough);
 
-    let estRent;
-    if (eliUnits > 0) estRent = 700 + (h % 500);
-    else if (vliUnits > 0) estRent = 1000 + (h % 500);
-    else if (liUnits > 0) estRent = 1300 + (h % 600);
-    else estRent = 1600 + (h % 600);
+    // Bedroom breakdown
+    const bedrooms = {
+      studio: parseInt(r.studio_units) || 0,
+      br1: parseInt(r._1_br_units) || 0,
+      br2: parseInt(r._2_br_units) || 0,
+      br3: parseInt(r._3_br_units) || 0,
+      br4: parseInt(r._4_br_units) || 0,
+      br5: parseInt(r._5_br_units) || 0,
+    };
+
+    const rentRange = estimateRentFromIncome(eliUnits, vliUnits, liUnits, miUnits, midUnits);
+
+    // Income tiers available
+    const incomeTiers = [];
+    if (eliUnits > 0) incomeTiers.push({ ...AMI_RENT_RANGES.eli, units: eliUnits });
+    if (vliUnits > 0) incomeTiers.push({ ...AMI_RENT_RANGES.vli, units: vliUnits });
+    if (liUnits > 0) incomeTiers.push({ ...AMI_RENT_RANGES.li, units: liUnits });
+    if (miUnits > 0) incomeTiers.push({ ...AMI_RENT_RANGES.mi, units: miUnits });
+    if (midUnits > 0) incomeTiers.push({ ...AMI_RENT_RANGES.mid, units: midUnits });
 
     return {
       id: `ah-${r.building_id || i}`,
@@ -336,9 +377,14 @@ function transformAffordableHousing(records) {
       neighborhood: guessNeighborhood(address, borough) || borough,
       borough, zip: r.postcode || '',
       bbl: r.bbl || null,
-      rent: estRent,
-      totalUnits, affordableUnits,
-      eliUnits, vliUnits, liUnits, miUnits,
+      rent: rentRange.low,
+      rentHigh: rentRange.high,
+      rentTier: rentRange.tier,
+      totalUnits, affordableUnits, rentalUnits,
+      eliUnits, vliUnits, liUnits, miUnits, midUnits,
+      incomeTiers,
+      bedrooms,
+      constructionType: r.reporting_construction_type || '',
       yearBuilt: null, rsUnits: null, bldgClass: null, numFloors: null,
       availableDate: r.project_start_date
         ? new Date(r.project_start_date).toISOString().slice(0, 10) : null,
@@ -359,15 +405,15 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
     const address = `${r.house_number || ''} ${r.street_name || ''}`.trim();
     const bbl = r.address_bbl || null;
     const bin = r.address_buildingidentificationnumber || null;
-    const h = hashCode(address + (bbl || '') + borough);
     const totalUnits = parseInt(r.unit_count) || 0;
-    const affordableUnits = totalUnits; // HC listings are all affordable
-
-    const estRent = 1000 + (h % 800);
+    const affordableUnits = totalUnits;
 
     const lottery = lotteryLookup[r.lottery_id] || {};
     const status = lottery.lottery_status || '';
     const lotteryEnd = lottery.lottery_end_date || '';
+
+    // HC lotteries are typically affordable — estimate based on typical HC range
+    const rentRange = { low: 800, high: 1800, tier: AMI_RENT_RANGES.li };
 
     return {
       id: `hc-${bbl || bin || i}-${r.lottery_id || ''}`,
@@ -378,9 +424,13 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       neighborhood: guessNeighborhood(address, borough) || borough,
       borough, zip: r.address_zipcode || '',
       bbl,
-      rent: estRent,
-      totalUnits, affordableUnits,
-      eliUnits: 0, vliUnits: 0, liUnits: 0, miUnits: 0,
+      rent: rentRange.low,
+      rentHigh: rentRange.high,
+      rentTier: rentRange.tier,
+      totalUnits, affordableUnits, rentalUnits: affordableUnits,
+      eliUnits: 0, vliUnits: 0, liUnits: 0, miUnits: 0, midUnits: 0,
+      incomeTiers: [],
+      bedrooms: { studio: 0, br1: 0, br2: 0, br3: 0, br4: 0, br5: 0 },
       lotteryStatus: status,
       lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
       yearBuilt: null, rsUnits: null, bldgClass: null, numFloors: null,
@@ -576,9 +626,11 @@ function updateMapMarkers() {
   const withCoords = filteredListings.filter(l => l.lat && l.lng);
 
   withCoords.forEach(listing => {
-    const priceLabel = formatPriceShort(listing.rent);
-    const unitLabel = listing.affordableUnits
-      ? `${listing.affordableUnits} units`
+    const priceLabel = listing.rentHigh
+      ? `${formatPriceShort(listing.rent)}-${formatPriceShort(listing.rentHigh)}`
+      : formatPriceShort(listing.rent);
+    const unitLabel = listing.rentalUnits
+      ? `${listing.rentalUnits} units`
       : listing.totalUnits
         ? `${listing.totalUnits} units`
         : '';
@@ -600,10 +652,10 @@ function updateMapMarkers() {
         <div style="padding:12px;">
           <strong>${escapeHtml(listing.address)}</strong>
           <p>${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)}</p>
-          <p class="popup-rent">${formatRent(listing.rent)}/mo est.</p>
-          <p style="font-size:0.72rem;color:${listing.rsProb.color};font-weight:600;margin:2px 0 0;">${listing.rsProb.label} (${listing.rsProb.score}%)</p>
-          ${listing.affordableUnits ? `<p style="font-size:0.75rem;color:var(--text-secondary);margin:4px 0 0;">${listing.affordableUnits} affordable units available</p>` : ''}
-          ${listing.totalUnits ? `<p style="font-size:0.75rem;color:var(--text-secondary);margin:2px 0 0;">${listing.totalUnits} total units in building</p>` : ''}
+          <p class="popup-rent">${formatRent(listing.rent)}${listing.rentHigh ? '&ndash;' + formatRent(listing.rentHigh) : ''}/mo</p>
+          <p style="font-size:0.72rem;color:${listing.rsProb.color};font-weight:600;margin:2px 0 0;">${listing.rsProb.label}</p>
+          ${listing.rentalUnits ? `<p style="font-size:0.75rem;color:var(--text-secondary);margin:4px 0 0;">${listing.rentalUnits} rental units</p>` : ''}
+          ${listing.lotteryStatus ? `<p style="font-size:0.75rem;color:#0D9488;font-weight:600;margin:2px 0 0;">Lottery: ${escapeHtml(listing.lotteryStatus)}</p>` : ''}
           <button class="popup-btn" onclick="openModal('${listing.id}')">View Details</button>
         </div>
       </div>
@@ -661,8 +713,8 @@ function showLoading(show) {
     grid.innerHTML = `
       <div class="loading-state" style="grid-column:1/-1; text-align:center; padding:60px 20px;">
         <div class="loading-spinner"></div>
-        <p style="color:var(--text-muted); margin-top:16px;">Loading available units from NYC Open Data...</p>
-        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Checking rent stabilization status for each building</p>
+        <p style="color:var(--text-muted); margin-top:16px;">Loading affordable apartments from NYC Open Data...</p>
+        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:8px;">Fetching bedroom sizes, income levels, and rent ranges</p>
       </div>`;
   }
 }
@@ -698,7 +750,7 @@ function updateDataBanner(count, counts, errors) {
 
   const parts = Object.entries(counts).filter(([, n]) => n > 0).map(([name, n]) => `${n} ${name}`);
   const errCount = errors.length;
-  let text = `${count} available buildings — ${parts.join(', ')} — RS probability enriched with PLUTO + HPD data`;
+  let text = `${count} affordable listings — ${parts.join(', ')} — rent estimates based on NYC AMI guidelines`;
   if (errCount > 0) text += ` | ${errCount} source${errCount > 1 ? 's' : ''} unavailable`;
   banner.textContent = text;
   banner.className = errCount > 0 ? 'data-banner partial' : 'data-banner live';
@@ -721,6 +773,7 @@ function populateSourceFilter() {
 function applyFilters() {
   const borough = document.getElementById('filter-borough').value;
   const maxRent = document.getElementById('filter-rent').value;
+  const bedroomFilter = document.getElementById('filter-bedrooms').value;
   const source = document.getElementById('filter-source').value;
   const search = document.getElementById('filter-search').value.toLowerCase().trim();
   const sortBy = document.getElementById('sort-by').value;
@@ -729,6 +782,12 @@ function applyFilters() {
     if (borough !== 'all' && l.borough !== borough) return false;
     if (maxRent !== 'all' && l.rent > parseInt(maxRent)) return false;
     if (source !== 'all' && l.source !== source) return false;
+    if (bedroomFilter !== 'all' && l.bedrooms) {
+      if (bedroomFilter === 'studio' && l.bedrooms.studio <= 0) return false;
+      if (bedroomFilter === '1br' && l.bedrooms.br1 <= 0) return false;
+      if (bedroomFilter === '2br' && l.bedrooms.br2 <= 0) return false;
+      if (bedroomFilter === '3br' && (l.bedrooms.br3 + l.bedrooms.br4 + l.bedrooms.br5) <= 0) return false;
+    }
     if (search && !`${l.address} ${l.neighborhood} ${l.borough} ${l.projectName || ''} ${l.source}`.toLowerCase().includes(search)) return false;
     return true;
   });
@@ -748,6 +807,7 @@ function applyFilters() {
 function resetFilters() {
   document.getElementById('filter-borough').value = 'all';
   document.getElementById('filter-rent').value = 'all';
+  document.getElementById('filter-bedrooms').value = 'all';
   document.getElementById('filter-source').value = 'all';
   document.getElementById('filter-search').value = '';
   document.getElementById('sort-by').value = 'rent-asc';
@@ -822,7 +882,7 @@ function renderListings() {
   const empty = document.getElementById('empty-state');
   const count = document.getElementById('results-count');
 
-  count.textContent = `${filteredListings.length} building${filteredListings.length !== 1 ? 's' : ''} with available units`;
+  count.textContent = `${filteredListings.length} listing${filteredListings.length !== 1 ? 's' : ''} found`;
 
   if (filteredListings.length === 0) {
     grid.innerHTML = '';
@@ -836,35 +896,54 @@ function renderListings() {
 
   grid.innerHTML = pageListings.map((l, i) => {
     const rs = l.rsProb;
-    const unitLabel = l.affordableUnits
-      ? `${l.affordableUnits} affordable units`
-      : l.totalUnits ? `${l.totalUnits} units` : '';
 
-    const details = [];
-    if (l.totalUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>`);
-    if (l.yearBuilt) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Built ${l.yearBuilt}</span>`);
-    if (l.rsUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>${l.rsUnits} RS units</span>`);
-    if (l.numFloors) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/></svg>${l.numFloors} floors</span>`);
+    // Bedroom summary
+    const brParts = [];
+    if (l.bedrooms) {
+      if (l.bedrooms.studio > 0) brParts.push(`${l.bedrooms.studio} Studio`);
+      if (l.bedrooms.br1 > 0) brParts.push(`${l.bedrooms.br1} 1BR`);
+      if (l.bedrooms.br2 > 0) brParts.push(`${l.bedrooms.br2} 2BR`);
+      if (l.bedrooms.br3 > 0) brParts.push(`${l.bedrooms.br3} 3BR`);
+      if (l.bedrooms.br4 > 0) brParts.push(`${l.bedrooms.br4} 4BR`);
+      if (l.bedrooms.br5 > 0) brParts.push(`${l.bedrooms.br5} 5BR`);
+    }
+    const bedroomSummary = brParts.length > 0 ? brParts.join(' &middot; ') : '';
+
+    // Income tier badges
+    const tierBadges = (l.incomeTiers || []).map(t =>
+      `<span class="income-badge" style="background:${t.color}15;color:${t.color};border:1px solid ${t.color}30;">${t.short} (${t.units})</span>`
+    ).join('');
+
+    // Rent display
+    const rentDisplay = l.rentHigh && l.rentHigh !== l.rent
+      ? `${formatRent(l.rent)}&ndash;${formatRent(l.rentHigh)}`
+      : `${formatRent(l.rent)}`;
+
+    // Available units count
+    const unitCount = l.rentalUnits || l.affordableUnits || l.totalUnits || 0;
 
     return `
     <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.15)}s" tabindex="0" role="button" aria-label="View ${escapeHtml(l.address)}"
       onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
       <div class="card-image">
         <img src="${l.image}" alt="${escapeHtml(l.address)}" loading="lazy">
-        <span class="card-badge" style="background:${rs.color}">${rs.label} ${rs.score}%</span>
-        <span class="card-rent-badge">${formatRent(l.rent)}<span>/mo est.</span></span>
+        <span class="card-badge" style="background:${rs.color}">${rs.label}</span>
+        <span class="card-rent-badge">${rentDisplay}<span>/mo</span></span>
       </div>
       <div class="card-body">
         <h3 class="card-address">${escapeHtml(l.address)}</h3>
         <p class="card-neighborhood">${escapeHtml(l.neighborhood)}${l.neighborhood && l.borough ? ', ' : ''}${escapeHtml(l.borough)}${l.zip ? ' ' + l.zip : ''}</p>
+        ${bedroomSummary ? `<p class="card-bedrooms">${bedroomSummary}</p>` : ''}
+        ${tierBadges ? `<div class="card-income-tiers">${tierBadges}</div>` : ''}
         <div class="card-details">
-          ${details.join('')}
-          ${l.lotteryStatus ? `<span class="card-detail" style="color:#0D9488;font-weight:600;">Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
+          ${unitCount ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${unitCount} rental units</span>` : ''}
+          ${l.lotteryStatus ? `<span class="card-detail lottery-status" style="color:${l.lotteryStatus.toLowerCase().includes('open') ? '#16A34A' : '#D97706'};font-weight:600;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
+          ${l.lotteryEnd ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Deadline: ${formatDate(l.lotteryEnd)}</span>` : ''}
         </div>
       </div>
       <div class="card-footer">
-        <span class="card-source">${unitLabel || escapeHtml(l.source)}</span>
-        <span class="card-cta">View Listing <span class="external-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span></span>
+        <span class="card-source">${escapeHtml(l.source)}</span>
+        <span class="card-cta">View Details</span>
       </div>
     </article>`;
   }).join('');
@@ -891,15 +970,24 @@ function openModal(id) {
   const content = document.getElementById('modal-content');
   const rs = listing.rsProb;
 
+  // Unit-level details
+  const brParts = [];
+  if (listing.bedrooms) {
+    if (listing.bedrooms.studio > 0) brParts.push(`${listing.bedrooms.studio} Studio`);
+    if (listing.bedrooms.br1 > 0) brParts.push(`${listing.bedrooms.br1} 1-Bedroom`);
+    if (listing.bedrooms.br2 > 0) brParts.push(`${listing.bedrooms.br2} 2-Bedroom`);
+    if (listing.bedrooms.br3 > 0) brParts.push(`${listing.bedrooms.br3} 3-Bedroom`);
+    if (listing.bedrooms.br4 > 0) brParts.push(`${listing.bedrooms.br4} 4-Bedroom`);
+    if (listing.bedrooms.br5 > 0) brParts.push(`${listing.bedrooms.br5} 5-Bedroom`);
+  }
+
   const extraDetails = [];
-  if (listing.yearBuilt) extraDetails.push({ label: 'Year Built', value: listing.yearBuilt });
-  if (listing.totalUnits) extraDetails.push({ label: 'Total Units', value: listing.totalUnits });
-  if (listing.affordableUnits) extraDetails.push({ label: 'Affordable Units', value: listing.affordableUnits });
-  if (listing.rsUnits) extraDetails.push({ label: 'Confirmed RS Units', value: listing.rsUnits });
-  if (listing.numFloors) extraDetails.push({ label: 'Floors', value: listing.numFloors });
+  if (listing.rentalUnits) extraDetails.push({ label: 'Rental Units', value: listing.rentalUnits });
   if (listing.lotteryStatus) extraDetails.push({ label: 'Lottery Status', value: listing.lotteryStatus });
-  if (listing.lotteryEnd) extraDetails.push({ label: 'Lottery End', value: formatDate(listing.lotteryEnd) });
-  if (listing.bldgClass) extraDetails.push({ label: 'Building Class', value: listing.bldgClass });
+  if (listing.lotteryEnd) extraDetails.push({ label: 'Application Deadline', value: formatDate(listing.lotteryEnd) });
+  if (listing.constructionType) extraDetails.push({ label: 'Type', value: listing.constructionType });
+  if (listing.yearBuilt) extraDetails.push({ label: 'Year Built', value: listing.yearBuilt });
+  if (listing.numFloors) extraDetails.push({ label: 'Floors', value: listing.numFloors });
 
   const hasCoords = listing.lat && listing.lng;
 
@@ -917,23 +1005,38 @@ function openModal(id) {
       <h2>${escapeHtml(listing.address)}</h2>
       <p class="modal-neighborhood">${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)} ${listing.zip || ''}</p>
 
-      ${listing.description ? `<p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6; margin-bottom:20px;">${escapeHtml(listing.description)}</p>` : ''}
-
       <div class="modal-price-row">
-        <span class="modal-price">${formatRent(listing.rent)} <span>/month est.</span></span>
+        <span class="modal-price">${formatRent(listing.rent)}${listing.rentHigh ? `&ndash;${formatRent(listing.rentHigh)}` : ''} <span>/month</span></span>
+        ${listing.rentTier ? `<span style="font-size:0.8rem; color:${listing.rentTier.color}; font-weight:600;">${escapeHtml(listing.rentTier.label)}</span>` : ''}
       </div>
 
-      <div style="background:${rs.color}08; border:1px solid ${rs.color}25; border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <strong style="font-family:'Bricolage Grotesque',sans-serif; font-size:0.95rem; color:${rs.color};">Rent Stabilization: ${rs.label} (${rs.score}%)</strong>
+      ${brParts.length > 0 ? `
+      <div style="background:var(--bg-elevated); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:16px;">
+        <strong style="font-size:0.82rem; color:var(--text-secondary); display:block; margin-bottom:8px;">Unit Sizes Available</strong>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          ${brParts.map(b => `<span style="background:var(--bg-card); border:1px solid var(--border); border-radius:6px; padding:5px 12px; font-size:0.82rem; font-weight:500;">${b}</span>`).join('')}
         </div>
-        <div style="background:var(--bg-elevated); border-radius:100px; height:8px; margin-bottom:12px; overflow:hidden;">
-          <div style="background:${rs.color}; height:100%; width:${rs.score}%; border-radius:100px;"></div>
+      </div>` : ''}
+
+      ${(listing.incomeTiers || []).length > 0 ? `
+      <div style="background:var(--bg-elevated); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:16px;">
+        <strong style="font-size:0.82rem; color:var(--text-secondary); display:block; margin-bottom:8px;">Income Levels &amp; Unit Count</strong>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${listing.incomeTiers.map(t => `<div style="display:flex; align-items:center; justify-content:space-between; font-size:0.85rem;">
+            <span style="color:${t.color}; font-weight:600;">${escapeHtml(t.label)}</span>
+            <span style="color:var(--text-secondary);">${t.units} units</span>
+          </div>`).join('')}
         </div>
-        ${rs.factors.length > 0 ? `<ul style="list-style:none; padding:0; margin:0; font-size:0.82rem; color:var(--text-secondary);">
-          ${rs.factors.map(f => `<li style="padding:3px 0; display:flex; align-items:flex-start; gap:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><polyline points="20,6 9,17 4,12"/></svg>
+      </div>` : ''}
+
+      <div style="background:${rs.color}08; border:1px solid ${rs.color}25; border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <strong style="font-size:0.85rem; color:${rs.color};">${rs.label} (${rs.score}%)</strong>
+        </div>
+        ${rs.factors.length > 0 ? `<ul style="list-style:none; padding:0; margin:0; font-size:0.8rem; color:var(--text-secondary);">
+          ${rs.factors.map(f => `<li style="padding:2px 0; display:flex; align-items:flex-start; gap:6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${rs.color}" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><polyline points="20,6 9,17 4,12"/></svg>
             ${escapeHtml(f)}
           </li>`).join('')}
         </ul>` : ''}
@@ -950,10 +1053,10 @@ function openModal(id) {
       </div>
 
       <div class="modal-contact">
-        <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="closeModal(); showExternalLink('${listing.id}')">
+        <a href="${listing.externalUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1;justify-content:center;text-decoration:none;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          View on ${escapeHtml(listing.externalSiteName)}
-        </button>
+          Apply on ${escapeHtml(listing.externalSiteName)}
+        </a>
       </div>
 
       <p style="font-size:0.75rem; color:var(--text-muted); margin-top:16px; text-align:center;">
@@ -1053,7 +1156,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
 
-['filter-borough', 'filter-rent', 'filter-source', 'sort-by'].forEach(id => {
+['filter-borough', 'filter-rent', 'filter-bedrooms', 'filter-source', 'sort-by'].forEach(id => {
   document.getElementById(id).addEventListener('change', applyFilters);
 });
 document.getElementById('filter-search').addEventListener('input', debounce(applyFilters, 300));
