@@ -249,10 +249,10 @@ function hashCode(str) {
 
 async function fetchAffordableHousing() {
   const params = new URLSearchParams({
-    $where: "program_group='Multifamily' AND extremely_low_income_units>0",
+    $where: 'extremely_low_income_units>0',
     $limit: 500,
     $order: 'project_start_date DESC',
-    $select: 'project_id,project_name,building_id,house_number,street_name,city,borough,postcode,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,building_completion_date,project_start_date',
+    $select: 'project_id,project_name,building_id,house_number,street_name,borough,postcode,bbl,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,project_start_date',
   });
   const resp = await fetch(`${DATASETS.affordableHousing}?${params}`);
   if (!resp.ok) throw new Error(`Affordable Housing API: ${resp.status}`);
@@ -263,7 +263,7 @@ async function fetchLotteries() {
   const params = new URLSearchParams({
     $limit: 300,
     $order: 'lottery_start_date DESC',
-    $select: 'lottery_id,project_name,lottery_start_date,lottery_end_date,lottery_status,number_of_units,number_of_buildings',
+    $select: 'lottery_id,lottery_name,lottery_start_date,lottery_end_date,lottery_status,unit_count,building_count',
   });
   const resp = await fetch(`${DATASETS.lotteries}?${params}`);
   if (!resp.ok) throw new Error(`Housing Connect Lotteries API: ${resp.status}`);
@@ -274,19 +274,20 @@ async function fetchLotteriesBuilding() {
   const params = new URLSearchParams({
     $limit: 500,
     $order: 'lottery_id DESC',
-    $select: 'lottery_id,project_name,building_address,borough,postcode,community_board,bbl,bin,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,middle_income_units,latitude,longitude',
+    $select: 'lottery_id,lottery_name,house_number,street_name,borough,address_zipcode,address_bbl,address_buildingidentificationnumber,unit_count,address_latitude,address_longitude',
   });
   const resp = await fetch(`${DATASETS.lotteriesBuilding}?${params}`);
   if (!resp.ok) throw new Error(`Housing Connect Buildings API: ${resp.status}`);
   return resp.json();
 }
 
+// Speculation Watch dataset tracks property sales, not RS units directly.
+// We use it to flag buildings recently sold (speculation risk).
 async function fetchSpeculationWatch() {
   const params = new URLSearchParams({
-    $where: 'numberofrsstabilizedunits > 0',
     $limit: 500,
-    $order: 'deeddate DESC',
-    $select: 'bbl,address,borough,zip,numberofunits,numberofrsstabilizedunits,buildingclass',
+    $order: 'deed_date DESC',
+    $select: 'bbl,hnum_lo,str_name,borough,postcode,price,deed_date',
   });
   const resp = await fetch(`${DATASETS.speculationWatch}?${params}`);
   if (!resp.ok) throw new Error(`Speculation Watch API: ${resp.status}`);
@@ -332,15 +333,15 @@ function transformAffordableHousing(records) {
       sourceKey: 'affordable',
       projectName: r.project_name || '',
       address: address || 'Address on file with HPD',
-      neighborhood: guessNeighborhood(address, r.city) || r.city || borough,
+      neighborhood: guessNeighborhood(address, borough) || borough,
       borough, zip: r.postcode || '',
-      bbl: null,
+      bbl: r.bbl || null,
       rent: estRent,
       totalUnits, affordableUnits,
       eliUnits, vliUnits, liUnits, miUnits,
       yearBuilt: null, rsUnits: null, bldgClass: null, numFloors: null,
-      availableDate: r.building_completion_date
-        ? new Date(r.building_completion_date).toISOString().slice(0, 10) : null,
+      availableDate: r.project_start_date
+        ? new Date(r.project_start_date).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
       image: pickFallbackPhoto(address + borough),
@@ -355,45 +356,37 @@ function transformAffordableHousing(records) {
 function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
   return buildingRecords.map((r, i) => {
     const borough = normBorough(r.borough);
-    const address = r.building_address || '';
-    const h = hashCode(address + (r.bbl || '') + borough);
-    const totalUnits = parseInt(r.total_units) || 0;
-    const eliUnits = parseInt(r.extremely_low_income_units) || 0;
-    const vliUnits = parseInt(r.very_low_income_units) || 0;
-    const liUnits = parseInt(r.low_income_units) || 0;
-    const miUnits = parseInt(r.moderate_income_units) || 0;
-    const midUnits = parseInt(r.middle_income_units) || 0;
-    const affordableUnits = eliUnits + vliUnits + liUnits + miUnits + midUnits;
+    const address = `${r.house_number || ''} ${r.street_name || ''}`.trim();
+    const bbl = r.address_bbl || null;
+    const bin = r.address_buildingidentificationnumber || null;
+    const h = hashCode(address + (bbl || '') + borough);
+    const totalUnits = parseInt(r.unit_count) || 0;
+    const affordableUnits = totalUnits; // HC listings are all affordable
 
-    let estRent;
-    if (eliUnits > 0) estRent = 600 + (h % 500);
-    else if (vliUnits > 0) estRent = 950 + (h % 500);
-    else if (liUnits > 0) estRent = 1250 + (h % 600);
-    else if (miUnits > 0) estRent = 1500 + (h % 600);
-    else estRent = 1700 + (h % 600);
+    const estRent = 1000 + (h % 800);
 
     const lottery = lotteryLookup[r.lottery_id] || {};
     const status = lottery.lottery_status || '';
     const lotteryEnd = lottery.lottery_end_date || '';
 
     return {
-      id: `hc-${r.bbl || r.bin || i}-${r.lottery_id || ''}`,
+      id: `hc-${bbl || bin || i}-${r.lottery_id || ''}`,
       source: 'Housing Connect',
       sourceKey: 'housingconnect',
-      projectName: r.project_name || lottery.project_name || '',
+      projectName: r.lottery_name || lottery.lottery_name || '',
       address: address || 'Address on file with HPD',
       neighborhood: guessNeighborhood(address, borough) || borough,
-      borough, zip: r.postcode || '',
-      bbl: r.bbl || null,
+      borough, zip: r.address_zipcode || '',
+      bbl,
       rent: estRent,
       totalUnits, affordableUnits,
-      eliUnits, vliUnits, liUnits, miUnits,
+      eliUnits: 0, vliUnits: 0, liUnits: 0, miUnits: 0,
       lotteryStatus: status,
       lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
       yearBuilt: null, rsUnits: null, bldgClass: null, numFloors: null,
       availableDate: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : null,
-      lat: parseFloat(r.latitude) || null,
-      lng: parseFloat(r.longitude) || null,
+      lat: parseFloat(r.address_latitude) || null,
+      lng: parseFloat(r.address_longitude) || null,
       image: pickFallbackPhoto(address + borough),
       dataSource: 'NYC Open Data — Housing Connect Lotteries',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y',
@@ -435,7 +428,9 @@ async function loadData() {
 
     const lotteryLookup = {};
     if (lotteriesResult.status === 'fulfilled') {
-      for (const l of lotteriesResult.value) lotteryLookup[l.lottery_id] = l;
+      for (const l of lotteriesResult.value) {
+        lotteryLookup[l.lottery_id] = l;
+      }
     }
 
     if (lotBldgResult.status === 'fulfilled' && lotBldgResult.value.length > 0) {
@@ -461,13 +456,14 @@ async function loadData() {
       }
     }
 
+    // Speculation Watch — flags recently sold buildings (speculation risk)
     const specLookup = {};
     if (specResult.status === 'fulfilled') {
       for (const r of specResult.value) {
         if (r.bbl) {
           specLookup[r.bbl] = {
-            rsUnits: parseInt(r.numberofrsstabilizedunits) || 0,
-            bldgClass: r.buildingclass || null,
+            recentSalePrice: parseInt(r.price) || null,
+            saleDate: r.deed_date || null,
           };
         }
       }
@@ -493,8 +489,8 @@ async function loadData() {
       }
       if (l.bbl && specLookup[l.bbl]) {
         const s = specLookup[l.bbl];
-        if (!l.rsUnits && s.rsUnits > 0) l.rsUnits = s.rsUnits;
-        if (!l.bldgClass && s.bldgClass) l.bldgClass = s.bldgClass;
+        l.recentSalePrice = s.recentSalePrice;
+        l.saleDate = s.saleDate;
       }
 
       l.rsProb = calculateRSProbability(l);
