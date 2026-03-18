@@ -263,25 +263,13 @@ function generateFeatures(borough, seed) {
   return [...new Set(picked)];
 }
 
-// ---- Fallback local data ----
-async function fetchLocalListings() {
-  try {
-    const resp = await fetch('listings.json');
-    if (!resp.ok) throw new Error('Local data not found');
-    return resp.json();
-  } catch {
-    return [];
-  }
-}
-
 // ---- Main data load ----
 async function loadData() {
   showLoading(true);
   let listings = [];
-  let usedLiveData = false;
+  const errors = [];
 
   try {
-    // Try both APIs in parallel
     const [ahData, hpdData] = await Promise.allSettled([
       fetchAffordableHousing(),
       fetchHPDRegistrations(),
@@ -289,26 +277,17 @@ async function loadData() {
 
     if (ahData.status === 'fulfilled' && ahData.value.length > 0) {
       listings.push(...transformAffordableHousing(ahData.value));
-      usedLiveData = true;
+    } else if (ahData.status === 'rejected') {
+      errors.push(`Affordable Housing API: ${ahData.reason.message}`);
     }
 
     if (hpdData.status === 'fulfilled' && hpdData.value.length > 0) {
       listings.push(...transformHPDRegistrations(hpdData.value));
-      usedLiveData = true;
+    } else if (hpdData.status === 'rejected') {
+      errors.push(`HPD Registrations API: ${hpdData.reason.message}`);
     }
   } catch (err) {
-    console.warn('Live API fetch failed, using local data:', err);
-  }
-
-  // Fallback to local sample data if APIs fail
-  if (listings.length === 0) {
-    const local = await fetchLocalListings();
-    listings = local.map((l, i) => ({
-      ...l,
-      source: 'Sample Listing',
-      dataSource: 'Sample data for demonstration',
-      datasetUrl: null,
-    }));
+    errors.push(err.message);
   }
 
   // De-duplicate by address
@@ -321,8 +300,13 @@ async function loadData() {
   });
 
   showLoading(false);
-  updateDataBanner(usedLiveData, allListings.length);
-  applyFilters();
+
+  if (allListings.length === 0) {
+    showApiError(errors);
+  } else {
+    updateDataBanner(allListings.length);
+    applyFilters();
+  }
 }
 
 // ---- UI: Loading ----
@@ -337,14 +321,50 @@ function showLoading(show) {
   }
 }
 
-function updateDataBanner(isLive, count) {
+function showApiError(errors) {
+  const grid = document.getElementById('listings-grid');
+  const empty = document.getElementById('empty-state');
+  empty.style.display = 'none';
+
+  document.getElementById('listing-count').textContent = '0';
+  document.getElementById('results-count').textContent = '0 apartments found';
+
+  const banner = document.getElementById('data-banner');
+  if (banner) {
+    banner.textContent = 'Unable to load live data from NYC Open Data';
+    banner.className = 'data-banner error';
+  }
+
+  grid.innerHTML = `
+    <div style="grid-column: 1/-1; text-align:center; padding:60px 24px;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:16px;">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+      </svg>
+      <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.3rem; margin-bottom:8px;">
+        Could not connect to NYC Open Data
+      </h3>
+      <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 8px;">
+        This site pulls live data from the NYC Open Data Socrata API. The connection may be temporarily unavailable.
+      </p>
+      ${errors.length > 0 ? `<p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:20px;">${errors.map(e => escapeHtml(e)).join('<br>')}</p>` : ''}
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="loadData()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 105.64-11.36L3 10"/></svg>
+          Retry
+        </button>
+        <a href="https://data.cityofnewyork.us/Housing-Development/Affordable-Housing-Production-by-Building/hg8x-zxpr" target="_blank" rel="noopener" class="btn btn-secondary">
+          View Data on NYC Open Data
+        </a>
+      </div>
+    </div>`;
+}
+
+function updateDataBanner(count) {
   document.getElementById('listing-count').textContent = count;
   const banner = document.getElementById('data-banner');
   if (banner) {
-    banner.textContent = isLive
-      ? `Showing ${count} listings from NYC Open Data (live)`
-      : `Showing ${count} sample listings (API unavailable)`;
-    banner.className = isLive ? 'data-banner live' : 'data-banner sample';
+    banner.textContent = `Showing ${count} listings from NYC Open Data (live)`;
+    banner.className = 'data-banner live';
   }
 }
 
@@ -607,9 +627,9 @@ spinnerStyle.textContent = `
   background: rgba(16,185,129,0.1);
   color: var(--success);
 }
-.data-banner.sample {
-  background: rgba(245,158,11,0.1);
-  color: var(--warning);
+.data-banner.error {
+  background: rgba(239,68,68,0.1);
+  color: #EF4444;
 }
 `;
 document.head.appendChild(spinnerStyle);
