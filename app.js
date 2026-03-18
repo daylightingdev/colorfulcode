@@ -51,7 +51,7 @@ async function fetchLotteries() {
   const params = new URLSearchParams({
     $limit: 500,
     $order: 'lottery_start_date DESC',
-    $select: 'lottery_id,lottery_name,lottery_start_date,lottery_end_date,lottery_status,unit_count,building_count',
+    $select: 'lottery_id,lottery_name,lottery_start_date,lottery_end_date,lottery_status,unit_count,building_count,unit_distribution_studio,unit_distribution_1_bedroom,unit_distribution_2_bedrooms,unit_distribution_3_bedrooms,unit_distribution_4_bedroom',
   });
   const resp = await fetch(`${DATASETS.lotteries}?${params}`);
   if (!resp.ok) throw new Error(`Housing Connect Lotteries API: ${resp.status}`);
@@ -88,6 +88,15 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       const lotteryEnd = lottery.lottery_end_date || '';
       const lotteryId = r.lottery_id || '';
 
+      // Bedroom distribution from the lottery-level dataset
+      const bedrooms = {
+        studio: parseInt(lottery.unit_distribution_studio) || 0,
+        oneBr: parseInt(lottery.unit_distribution_1_bedroom) || 0,
+        twoBr: parseInt(lottery.unit_distribution_2_bedrooms) || 0,
+        threeBr: parseInt(lottery.unit_distribution_3_bedrooms) || 0,
+        fourBr: parseInt(lottery.unit_distribution_4_bedroom) || 0,
+      };
+
       return {
         id: `hc-${lotteryId}-${bbl || bin || i}`,
         lotteryId,
@@ -98,6 +107,7 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
         zip: r.address_zipcode || '',
         bbl,
         totalUnits,
+        bedrooms,
         lotteryStatus: status,
         lotteryStart: lotteryStart ? new Date(lotteryStart).toISOString().slice(0, 10) : '',
         lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
@@ -279,6 +289,17 @@ function formatDate(d) {
   return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+function bedroomSummary(br) {
+  if (!br) return '';
+  const parts = [];
+  if (br.studio) parts.push(`${br.studio} Studio`);
+  if (br.oneBr) parts.push(`${br.oneBr} 1BR`);
+  if (br.twoBr) parts.push(`${br.twoBr} 2BR`);
+  if (br.threeBr) parts.push(`${br.threeBr} 3BR`);
+  if (br.fourBr) parts.push(`${br.fourBr} 4BR+`);
+  return parts.join(', ');
+}
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str || '';
@@ -342,6 +363,7 @@ function updateDataBanner(count, errors) {
 function applyFilters() {
   const borough = document.getElementById('filter-borough').value;
   const status = document.getElementById('filter-status').value;
+  const bedroomFilter = document.getElementById('filter-bedrooms').value;
   const search = document.getElementById('filter-search').value.toLowerCase().trim();
   const sortBy = document.getElementById('sort-by').value;
 
@@ -352,6 +374,14 @@ function applyFilters() {
       if (status === 'open' && !s.includes('open') && !s.includes('accepting')) return false;
       if (status === 'upcoming' && !s.includes('upcoming')) return false;
       if (status === 'closed' && !s.includes('closed') && !s.includes('filled')) return false;
+    }
+    if (bedroomFilter !== 'all' && l.bedrooms) {
+      const br = l.bedrooms;
+      if (bedroomFilter === 'studio' && !br.studio) return false;
+      if (bedroomFilter === '1br' && !br.oneBr) return false;
+      if (bedroomFilter === '2br' && !br.twoBr) return false;
+      if (bedroomFilter === '3br' && !br.threeBr) return false;
+      if (bedroomFilter === '4br' && !br.fourBr) return false;
     }
     if (search && !`${l.address} ${l.borough} ${l.projectName || ''}`.toLowerCase().includes(search)) return false;
     return true;
@@ -372,6 +402,7 @@ function applyFilters() {
 function resetFilters() {
   document.getElementById('filter-borough').value = 'all';
   document.getElementById('filter-status').value = 'all';
+  document.getElementById('filter-bedrooms').value = 'all';
   document.getElementById('filter-search').value = '';
   document.getElementById('sort-by').value = 'date-desc';
   applyFilters();
@@ -471,6 +502,7 @@ function renderListings() {
           ${l.totalUnits ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>` : ''}
           ${l.lotteryEnd ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Deadline: ${formatDate(l.lotteryEnd)}</span>` : ''}
         </div>
+        ${bedroomSummary(l.bedrooms) ? `<p class="card-bedrooms">${escapeHtml(bedroomSummary(l.bedrooms))}</p>` : ''}
       </div>
       <div class="card-footer">
         <a href="${l.externalUrl}" target="_blank" rel="noopener" class="card-apply-link" onclick="event.stopPropagation()">
@@ -518,6 +550,7 @@ function openModal(id) {
 
       <div class="modal-details-grid">
         ${listing.totalUnits ? `<div class="modal-detail-item"><span class="modal-detail-label">Units</span><span class="modal-detail-value">${listing.totalUnits}</span></div>` : ''}
+        ${bedroomSummary(listing.bedrooms) ? `<div class="modal-detail-item"><span class="modal-detail-label">Unit Sizes</span><span class="modal-detail-value">${escapeHtml(bedroomSummary(listing.bedrooms))}</span></div>` : ''}
         ${listing.lotteryStatus ? `<div class="modal-detail-item"><span class="modal-detail-label">Lottery Status</span><span class="modal-detail-value" style="color:${statusColor}; font-weight:600;">${escapeHtml(listing.lotteryStatus)}</span></div>` : ''}
         ${listing.lotteryStart ? `<div class="modal-detail-item"><span class="modal-detail-label">Lottery Opened</span><span class="modal-detail-value">${formatDate(listing.lotteryStart)}</span></div>` : ''}
         ${listing.lotteryEnd ? `<div class="modal-detail-item"><span class="modal-detail-label">Application Deadline</span><span class="modal-detail-value">${formatDate(listing.lotteryEnd)}</span></div>` : ''}
@@ -592,7 +625,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
 
-['filter-borough', 'filter-status', 'sort-by'].forEach(id => {
+['filter-borough', 'filter-status', 'filter-bedrooms', 'sort-by'].forEach(id => {
   document.getElementById(id).addEventListener('change', applyFilters);
 });
 document.getElementById('filter-search').addEventListener('input', debounce(applyFilters, 300));
@@ -678,6 +711,14 @@ injectedStyle.textContent = `
 .card-project {
   font-size:0.82rem; color:var(--accent); font-weight:600;
   margin-bottom:2px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* Bedroom summary on card */
+.card-bedrooms {
+  font-size:0.78rem; color:var(--text-secondary);
+  margin:6px 0 0; padding-top:6px;
+  border-top:1px solid var(--border);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
