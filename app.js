@@ -9,7 +9,7 @@ const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
 // Photo proxy worker — deploy to Cloudflare Workers (free tier)
 // Set this to your deployed worker URL, e.g. 'https://stablenyc-photo-proxy.<your-subdomain>.workers.dev'
-const PHOTO_PROXY_URL = '';
+const PHOTO_PROXY_URL = 'https://stablenyc-photo-proxy.rsnyc.workers.dev';
 
 const DATASETS = {
   affordableHousing: `${SODA_BASE}/hg8x-zxpr.json`,
