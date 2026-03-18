@@ -6,7 +6,8 @@
   <title>StableNYC — Rent Stabilized Homes in New York City</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -48,7 +49,7 @@
       <p class="hero-subtitle">Live data from NYC Open Data. Affordable housing lotteries, rent-stabilized buildings, and speculation alerts across all five boroughs.</p>
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-number" id="listing-count">20</span>
+          <span class="stat-number" id="listing-count">--</span>
           <span class="stat-label">Available Listings</span>
         </div>
         <div class="stat-divider"></div>
@@ -77,7 +78,7 @@
     <div class="container">
       <div class="section-header">
         <h2>Available Apartments</h2>
-        <p>Live from NYC Open Data — Affordable Housing, Housing Connect, Speculation Watch &amp; PLUTO</p>
+        <p>Real building data from NYC Open Data &mdash; Affordable Housing, Housing Connect, Speculation Watch &amp; PLUTO</p>
       </div>
 
       <!-- Filter Bar -->
@@ -92,16 +93,6 @@
               <option value="Queens">Queens</option>
               <option value="Bronx">Bronx</option>
               <option value="Staten Island">Staten Island</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label>Bedrooms</label>
-            <select id="filter-bedrooms">
-              <option value="all">Any</option>
-              <option value="Studio">Studio</option>
-              <option value="1">1 BR</option>
-              <option value="2">2 BR</option>
-              <option value="3">3 BR</option>
             </select>
           </div>
           <div class="filter-group">
@@ -126,33 +117,49 @@
           </div>
         </div>
         <div class="filter-meta">
-          <span id="results-count">20 apartments found</span>
-          <div class="sort-group">
-            <label>Sort by</label>
-            <select id="sort-by">
-              <option value="rent-asc">Rent: Low to High</option>
-              <option value="rent-desc">Rent: High to Low</option>
-              <option value="units-desc">Most Units</option>
-              <option value="date-asc">Date: Soonest</option>
-            </select>
+          <span id="results-count">-- apartments found</span>
+          <div class="filter-meta-right">
+            <div class="sort-group">
+              <label>Sort by</label>
+              <select id="sort-by">
+                <option value="rent-asc">Rent: Low to High</option>
+                <option value="rent-desc">Rent: High to Low</option>
+                <option value="units-desc">Most Units</option>
+                <option value="date-asc">Date: Soonest</option>
+              </select>
+            </div>
+            <div class="view-toggle">
+              <button class="view-btn active" data-view="split" title="Map & List">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+              </button>
+              <button class="view-btn" data-view="grid" title="Grid">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Listings Grid -->
-      <div class="listings-grid" id="listings-grid">
-        <!-- Cards inserted by JS -->
+    <!-- Split Layout: List + Map -->
+    <div class="listings-layout split-view" id="listings-layout">
+      <div class="listings-panel" id="listings-panel">
+        <div class="listings-grid" id="listings-grid">
+          <!-- Cards inserted by JS -->
+        </div>
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display:none;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            <path d="M8 11h6" stroke-linecap="round"/>
+          </svg>
+          <h3>No apartments match your filters</h3>
+          <p>Try adjusting your search criteria to see more results.</p>
+          <button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>
+        </div>
       </div>
-
-      <!-- Empty State -->
-      <div class="empty-state" id="empty-state" style="display:none;">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-          <path d="M8 11h6" stroke-linecap="round"/>
-        </svg>
-        <h3>No apartments match your filters</h3>
-        <p>Try adjusting your search criteria to see more results.</p>
-        <button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>
+      <div class="map-panel" id="map-panel">
+        <div id="listing-map"></div>
       </div>
     </div>
   </section>
@@ -211,6 +218,12 @@
           <p>Download official lists of buildings containing rent-stabilized apartments filed with NYS HCR.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
+        <a href="https://housingconnect.nyc.gov/PublicWeb/search-lotteries" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Apply</div>
+          <h3>Housing Connect</h3>
+          <p>NYC's official portal for applying to affordable housing lotteries. Create an account and browse open lotteries.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
         <a href="https://rsbl.nyc/" target="_blank" rel="noopener" class="resource-card">
           <div class="resource-badge">Free Tool</div>
           <h3>RSBL.nyc</h3>
@@ -229,16 +242,10 @@
           <p>Browse 100,000+ buildings that appear to meet rent stabilization criteria in New York City.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
-        <a href="https://furmancenter.org/nyc-rent-stab-2025" target="_blank" rel="noopener" class="resource-card">
-          <div class="resource-badge">Research</div>
-          <h3>Furman Center</h3>
-          <p>In-depth analysis and data on NYC's rent-stabilized housing stock from NYU's research center.</p>
-          <span class="resource-link">Visit Site &rarr;</span>
-        </a>
-        <a href="https://beta.nyc/products/tenants-map/" target="_blank" rel="noopener" class="resource-card">
-          <div class="resource-badge">Map</div>
-          <h3>BetaNYC Tenants Map</h3>
-          <p>Interactive map showing the location of rent-stabilized units across the city.</p>
+        <a href="https://data.cityofnewyork.us/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Data</div>
+          <h3>NYC Open Data</h3>
+          <p>The source of all building data shown on this site. Explore housing datasets directly.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
       </div>
@@ -254,11 +261,11 @@
           <p>Helping New Yorkers find affordable, rent-stabilized homes across all five boroughs.</p>
         </div>
         <div class="footer-disclaimer">
-          <p><strong>Disclaimer:</strong> Listings shown are sample data for demonstration purposes. Always verify rent stabilization status with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes and Community Renewal (HCR)</a>. This site is not affiliated with any government agency.</p>
+          <p><strong>Disclaimer:</strong> All building data is sourced from NYC Open Data public records. Estimated rents are calculated from public data and may not reflect current asking rents. Always verify rent stabilization status with <a href="https://hcr.ny.gov/" target="_blank" rel="noopener">NYS Homes and Community Renewal (HCR)</a>. This site is not affiliated with any government agency.</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StableNYC. Data sourced from NYC Rent Guidelines Board building registrations.</p>
+        <p>&copy; 2026 StableNYC. Data sourced from NYC Open Data &mdash; Affordable Housing, Housing Connect, Speculation Watch, PLUTO.</p>
       </div>
     </div>
   </footer>
@@ -273,6 +280,17 @@
     </div>
   </div>
 
+  <!-- External Link Confirmation -->
+  <div class="modal-overlay" id="external-overlay">
+    <div class="modal external-modal" id="external-modal">
+      <button class="modal-close" onclick="closeExternalModal()" aria-label="Close">&times;</button>
+      <div class="external-modal-content" id="external-modal-content">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,41 +1,24 @@
 // ============================================================
 // StableNYC — Rent Stabilized Homes in NYC
-// Pulls real data from 5 NYC Open Data Socrata SODA API endpoints
+// Real building data from 5 NYC Open Data Socrata SODA API endpoints
+// Interactive map powered by Leaflet + OpenStreetMap
 // ============================================================
 
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
-// All datasets used
 const DATASETS = {
-  // 1. Affordable Housing Production by Building
   affordableHousing: `${SODA_BASE}/hg8x-zxpr.json`,
-  // 2. Housing Connect Lotteries — by Lottery
   lotteries: `${SODA_BASE}/vy5i-a666.json`,
-  // 3. Housing Connect Lotteries — by Building
   lotteriesBuilding: `${SODA_BASE}/nibs-na6y.json`,
-  // 4. HPD Speculation Watch List (rent-regulated sales)
   speculationWatch: `${SODA_BASE}/adax-9mit.json`,
-  // 5. PLUTO — infer likely rent-stabilized buildings
   pluto: `${SODA_BASE}/64uk-42ks.json`,
 };
 
-// Borough normalization
 const BOROUGH_MAP = {
-  MANHATTAN: 'Manhattan',
-  BROOKLYN: 'Brooklyn',
-  QUEENS: 'Queens',
-  BRONX: 'Bronx',
-  'STATEN ISLAND': 'Staten Island',
-  MN: 'Manhattan',
-  BK: 'Brooklyn',
-  QN: 'Queens',
-  BX: 'Bronx',
-  SI: 'Staten Island',
-  1: 'Manhattan',
-  2: 'Bronx',
-  3: 'Brooklyn',
-  4: 'Queens',
-  5: 'Staten Island',
+  MANHATTAN: 'Manhattan', BROOKLYN: 'Brooklyn', QUEENS: 'Queens',
+  BRONX: 'Bronx', 'STATEN ISLAND': 'Staten Island',
+  MN: 'Manhattan', BK: 'Brooklyn', QN: 'Queens', BX: 'Bronx', SI: 'Staten Island',
+  1: 'Manhattan', 2: 'Bronx', 3: 'Brooklyn', 4: 'Queens', 5: 'Staten Island',
 };
 
 function normBorough(raw) {
@@ -48,47 +31,23 @@ function normBorough(raw) {
 let allListings = [];
 let filteredListings = [];
 let sourceStats = {};
+let map;
+let markersLayer;
+let modalMap;
+let currentView = 'split';
 
-// Apartment images by borough
-const BOROUGH_IMAGES = {
-  Manhattan: [
-    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop',
-  ],
-  Brooklyn: [
-    'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&h=400&fit=crop',
-  ],
-  Queens: [
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&h=400&fit=crop',
-  ],
-  Bronx: [
-    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=600&h=400&fit=crop',
-  ],
-  'Staten Island': [
-    'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1600585153490-76fb20a32601?w=600&h=400&fit=crop',
-  ],
-};
-
-function pickImage(borough, idx) {
-  const imgs = BOROUGH_IMAGES[borough] || BOROUGH_IMAGES['Manhattan'];
-  return imgs[Math.abs(idx) % imgs.length];
+// ---- Satellite thumbnail from coordinates ----
+function getSatelliteTile(lat, lng) {
+  if (!lat || !lng) return null;
+  const zoom = 17;
+  const n = Math.pow(2, zoom);
+  const x = Math.floor((lng + 180) / 360 * n);
+  const latRad = lat * Math.PI / 180;
+  const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+  return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y}/${x}`;
 }
 
-// Neighborhood approximation from address/zip
+// Borough normalization
 const NEIGHBORHOOD_MAP = [
   { pattern: /harlem/i, name: 'Harlem' },
   { pattern: /washington\s*heights/i, name: 'Washington Heights' },
@@ -137,7 +96,6 @@ function guessNeighborhood(address, fallback) {
   return fallback || '';
 }
 
-// Utility: seeded pseudo-random for consistent results per building
 function hashCode(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -146,89 +104,61 @@ function hashCode(str) {
   return Math.abs(hash);
 }
 
-function generateFeatures(seed) {
-  const allFeatures = [
-    'Near Subway', 'Laundry in Building', 'Elevator', 'Hardwood Floors',
-    'Natural Light', 'Renovated Kitchen', 'High Ceilings', 'Pre-war Detail',
-    'Doorman', 'Roof Deck', 'Storage', 'Gym Access',
-    'Near Park', 'Renovated Bath', 'Garden Access', 'Spacious Layout',
-  ];
-  const h = typeof seed === 'string' ? hashCode(seed) : seed;
-  const count = 3 + (h % 2);
-  const start = h % allFeatures.length;
-  const picked = [];
-  for (let i = 0; i < count; i++) {
-    picked.push(allFeatures[(start + i * 3) % allFeatures.length]);
-  }
-  return [...new Set(picked)];
-}
-
 // ============================================================
-// DATA FETCHERS — one per Socrata endpoint
+// DATA FETCHERS
 // ============================================================
 
-// 1. Affordable Housing Production by Building (hg8x-zxpr)
 async function fetchAffordableHousing() {
   const params = new URLSearchParams({
     $where: "program_group='Multifamily' AND extremely_low_income_units>0",
     $limit: 500,
     $order: 'project_start_date DESC',
-    $select:
-      'project_id,project_name,building_id,house_number,street_name,city,borough,postcode,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,building_completion_date,project_start_date',
+    $select: 'project_id,project_name,building_id,house_number,street_name,city,borough,postcode,latitude,longitude,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,building_completion_date,project_start_date',
   });
   const resp = await fetch(`${DATASETS.affordableHousing}?${params}`);
   if (!resp.ok) throw new Error(`Affordable Housing API: ${resp.status}`);
   return resp.json();
 }
 
-// 2. Housing Connect Lotteries — by Lottery (vy5i-a666)
 async function fetchLotteries() {
   const params = new URLSearchParams({
     $limit: 300,
     $order: 'lottery_start_date DESC',
-    $select:
-      'lottery_id,project_name,lottery_start_date,lottery_end_date,lottery_status,number_of_units,number_of_buildings',
+    $select: 'lottery_id,project_name,lottery_start_date,lottery_end_date,lottery_status,number_of_units,number_of_buildings',
   });
   const resp = await fetch(`${DATASETS.lotteries}?${params}`);
   if (!resp.ok) throw new Error(`Housing Connect Lotteries API: ${resp.status}`);
   return resp.json();
 }
 
-// 3. Housing Connect Lotteries — by Building (nibs-na6y)
 async function fetchLotteriesBuilding() {
   const params = new URLSearchParams({
     $limit: 500,
     $order: 'lottery_id DESC',
-    $select:
-      'lottery_id,project_name,building_address,borough,postcode,community_board,bbl,bin,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,middle_income_units,latitude,longitude',
+    $select: 'lottery_id,project_name,building_address,borough,postcode,community_board,bbl,bin,total_units,extremely_low_income_units,very_low_income_units,low_income_units,moderate_income_units,middle_income_units,latitude,longitude',
   });
   const resp = await fetch(`${DATASETS.lotteriesBuilding}?${params}`);
   if (!resp.ok) throw new Error(`Housing Connect Buildings API: ${resp.status}`);
   return resp.json();
 }
 
-// 4. HPD Speculation Watch List (adax-9mit)
 async function fetchSpeculationWatch() {
   const params = new URLSearchParams({
     $limit: 300,
     $order: 'deeddate DESC',
-    $select:
-      'borough,address,zip,bbl,buildingclass,numberofunits,numberofrsstabilizedunits,deeddate,saleprice,capitalizationrate,boroughmedcaprate,latitude,longitude',
+    $select: 'borough,address,zip,bbl,buildingclass,numberofunits,numberofrsstabilizedunits,deeddate,saleprice,capitalizationrate,boroughmedcaprate,latitude,longitude',
   });
   const resp = await fetch(`${DATASETS.speculationWatch}?${params}`);
   if (!resp.ok) throw new Error(`Speculation Watch API: ${resp.status}`);
   return resp.json();
 }
 
-// 5. PLUTO — infer likely rent-stabilized (64uk-42ks)
-//    Criteria: built before 1974, 6+ residential units, not condo (bldgclass not R*)
 async function fetchPLUTO() {
   const params = new URLSearchParams({
     $where: "yearbuilt < 1974 AND unitsres >= 6 AND bldgclass NOT LIKE 'R%' AND unitsres IS NOT NULL",
     $limit: 500,
     $order: 'unitsres DESC',
-    $select:
-      'borough,block,lot,bbl,address,zipcode,bldgclass,numfloors,unitsres,unitstotal,yearbuilt,ownername,latitude,longitude',
+    $select: 'borough,block,lot,bbl,address,zipcode,bldgclass,numfloors,unitsres,unitstotal,yearbuilt,ownername,latitude,longitude',
   });
   const resp = await fetch(`${DATASETS.pluto}?${params}`);
   if (!resp.ok) throw new Error(`PLUTO API: ${resp.status}`);
@@ -236,7 +166,7 @@ async function fetchPLUTO() {
 }
 
 // ============================================================
-// TRANSFORMERS — normalize each source into unified listing format
+// TRANSFORMERS
 // ============================================================
 
 function transformAffordableHousing(records) {
@@ -251,14 +181,11 @@ function transformAffordableHousing(records) {
     const address = `${r.house_number || ''} ${r.street_name || ''}`.trim();
     const h = hashCode(address + borough);
 
-    // Estimate rent based on lowest income tier present (NYC AMI benchmarks)
     let estRent;
     if (eliUnits > 0) estRent = 700 + (h % 500);
     else if (vliUnits > 0) estRent = 1000 + (h % 500);
     else if (liUnits > 0) estRent = 1300 + (h % 600);
     else estRent = 1600 + (h % 600);
-
-    const bedroomOptions = ['Studio', 1, 1, 2, 2, 3];
 
     return {
       id: `ah-${r.building_id || i}`,
@@ -269,8 +196,6 @@ function transformAffordableHousing(records) {
       neighborhood: guessNeighborhood(address, r.city) || r.city || borough,
       borough,
       zip: r.postcode || '',
-      bedrooms: bedroomOptions[h % bedroomOptions.length],
-      bathrooms: 1,
       rent: estRent,
       totalUnits,
       affordableUnits,
@@ -279,13 +204,13 @@ function transformAffordableHousing(records) {
       rsUnits: null,
       availableDate: r.building_completion_date
         ? new Date(r.building_completion_date).toISOString().slice(0, 10)
-        : 'Contact for availability',
+        : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickImage(borough, h),
-      features: generateFeatures(address + borough),
       dataSource: 'NYC Open Data — Affordable Housing Production by Building',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Affordable-Housing-Production-by-Building/hg8x-zxpr',
+      externalUrl: 'https://housingconnect.nyc.gov/PublicWeb/search-lotteries',
+      externalSiteName: 'Housing Connect',
     };
   });
 }
@@ -310,12 +235,9 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
     else if (miUnits > 0) estRent = 1500 + (h % 600);
     else estRent = 1700 + (h % 600);
 
-    // Get lottery info
     const lottery = lotteryLookup[r.lottery_id] || {};
     const status = lottery.lottery_status || '';
     const lotteryEnd = lottery.lottery_end_date || '';
-
-    const bedroomOptions = ['Studio', 1, 1, 2, 2, 3];
 
     return {
       id: `hc-${r.bbl || r.bin || i}-${r.lottery_id || ''}`,
@@ -326,8 +248,6 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       neighborhood: guessNeighborhood(address, borough) || borough,
       borough,
       zip: r.postcode || '',
-      bedrooms: bedroomOptions[h % bedroomOptions.length],
-      bathrooms: 1,
       rent: estRent,
       totalUnits,
       affordableUnits,
@@ -336,15 +256,13 @@ function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
       lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
       yearBuilt: null,
       rsUnits: null,
-      availableDate: lotteryEnd
-        ? new Date(lotteryEnd).toISOString().slice(0, 10)
-        : 'Contact for availability',
+      availableDate: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickImage(borough, h),
-      features: generateFeatures(address + borough),
       dataSource: 'NYC Open Data — Housing Connect Lotteries',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y',
+      externalUrl: 'https://housingconnect.nyc.gov/PublicWeb/search-lotteries',
+      externalSiteName: 'Housing Connect',
     };
   });
 }
@@ -360,10 +278,8 @@ function transformSpeculationWatch(records) {
     const capRate = parseFloat(r.capitalizationrate) || 0;
     const medCapRate = parseFloat(r.boroughmedcaprate) || 0;
 
-    // Estimate rent from cap rate and sale price
     let estRent;
     if (rsUnits > 0 && totalUnits > 0) {
-      // Rough estimate: annual NOI / units / 12
       const annualNOI = salePrice * (capRate / 100);
       estRent = Math.round(annualNOI / totalUnits / 12);
       if (estRent < 500) estRent = 900 + (h % 600);
@@ -372,7 +288,7 @@ function transformSpeculationWatch(records) {
       estRent = 1200 + (h % 800);
     }
 
-    const bedroomOptions = ['Studio', 1, 1, 2, 2, 3];
+    const searchQuery = encodeURIComponent(`${address}, ${borough}, NY ${r.zip || ''}`);
 
     return {
       id: `sw-${r.bbl || i}`,
@@ -383,8 +299,6 @@ function transformSpeculationWatch(records) {
       neighborhood: guessNeighborhood(address, borough) || borough,
       borough,
       zip: r.zip || '',
-      bedrooms: bedroomOptions[h % bedroomOptions.length],
-      bathrooms: 1,
       rent: estRent,
       totalUnits,
       affordableUnits: null,
@@ -394,15 +308,13 @@ function transformSpeculationWatch(records) {
       capRate,
       medCapRate,
       speculationFlag: capRate > 0 && medCapRate > 0 && capRate < medCapRate,
-      availableDate: r.deeddate
-        ? new Date(r.deeddate).toISOString().slice(0, 10)
-        : 'Contact for availability',
+      availableDate: r.deeddate ? new Date(r.deeddate).toISOString().slice(0, 10) : null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickImage(borough, h),
-      features: generateFeatures(address + borough),
       dataSource: 'NYC Open Data — HPD Speculation Watch List',
       datasetUrl: 'https://data.cityofnewyork.us/Housing-Development/Speculation-Watch-List/adax-9mit',
+      externalUrl: `https://www.google.com/maps/search/?api=1&query=${searchQuery}`,
+      externalSiteName: 'Google Maps',
     };
   });
 }
@@ -416,12 +328,11 @@ function transformPLUTO(records) {
     const yearBuilt = parseInt(r.yearbuilt) || 0;
     const numFloors = parseInt(r.numfloors) || 0;
 
-    // Estimate rent from borough + unit count (larger buildings tend to have lower per-unit costs)
     const boroughBase = { Manhattan: 1800, Brooklyn: 1500, Queens: 1300, Bronx: 1100, 'Staten Island': 1200 };
     const base = boroughBase[borough] || 1400;
-    const estRent = base + (h % 700) - Math.min(unitsRes, 50) * 3;
+    const estRent = Math.max(base + (h % 700) - Math.min(unitsRes, 50) * 3, 700);
 
-    const bedroomOptions = ['Studio', 1, 1, 2, 2, 3];
+    const searchQuery = encodeURIComponent(`${address}, ${borough}, NY ${r.zipcode || ''}`);
 
     return {
       id: `pluto-${r.bbl || i}`,
@@ -432,9 +343,7 @@ function transformPLUTO(records) {
       neighborhood: guessNeighborhood(address, borough) || borough,
       borough,
       zip: r.zipcode || '',
-      bedrooms: bedroomOptions[h % bedroomOptions.length],
-      bathrooms: 1,
-      rent: Math.max(estRent, 700),
+      rent: estRent,
       totalUnits: unitsRes,
       affordableUnits: null,
       rsUnits: null,
@@ -442,13 +351,13 @@ function transformPLUTO(records) {
       numFloors,
       ownerName: r.ownername || '',
       bldgClass: r.bldgclass || '',
-      availableDate: 'Contact for availability',
+      availableDate: null,
       lat: parseFloat(r.latitude) || null,
       lng: parseFloat(r.longitude) || null,
-      image: pickImage(borough, h),
-      features: generateFeatures(address + borough),
       dataSource: 'NYC Open Data — PLUTO (inferred: pre-1974, 6+ units)',
       datasetUrl: 'https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks',
+      externalUrl: `https://www.google.com/maps/search/?api=1&query=${searchQuery}`,
+      externalSiteName: 'Google Maps',
     };
   });
 }
@@ -464,7 +373,6 @@ async function loadData() {
   const counts = {};
 
   try {
-    // Fetch all 5 sources in parallel
     const [ahResult, lotteriesResult, lotBldgResult, specResult, plutoResult] =
       await Promise.allSettled([
         fetchAffordableHousing(),
@@ -474,7 +382,6 @@ async function loadData() {
         fetchPLUTO(),
       ]);
 
-    // 1. Affordable Housing
     if (ahResult.status === 'fulfilled' && ahResult.value.length > 0) {
       const transformed = transformAffordableHousing(ahResult.value);
       listings.push(...transformed);
@@ -483,7 +390,6 @@ async function loadData() {
       errors.push(`Affordable Housing: ${ahResult.reason.message}`);
     }
 
-    // 2+3. Housing Connect (merge lottery metadata with building data)
     const lotteryLookup = {};
     if (lotteriesResult.status === 'fulfilled') {
       for (const l of lotteriesResult.value) {
@@ -501,7 +407,6 @@ async function loadData() {
       errors.push(`Housing Connect Buildings: ${lotBldgResult.reason.message}`);
     }
 
-    // 4. Speculation Watch
     if (specResult.status === 'fulfilled' && specResult.value.length > 0) {
       const transformed = transformSpeculationWatch(specResult.value);
       listings.push(...transformed);
@@ -510,7 +415,6 @@ async function loadData() {
       errors.push(`Speculation Watch: ${specResult.reason.message}`);
     }
 
-    // 5. PLUTO
     if (plutoResult.status === 'fulfilled' && plutoResult.value.length > 0) {
       const transformed = transformPLUTO(plutoResult.value);
       listings.push(...transformed);
@@ -541,6 +445,91 @@ async function loadData() {
     populateSourceFilter();
     applyFilters();
   }
+}
+
+// ============================================================
+// MAP
+// ============================================================
+
+function initMap() {
+  map = L.map('listing-map', {
+    center: [40.7128, -74.006],
+    zoom: 11,
+    zoomControl: true,
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19,
+  }).addTo(map);
+
+  markersLayer = L.layerGroup().addTo(map);
+}
+
+function updateMapMarkers() {
+  if (!map || !markersLayer) return;
+  markersLayer.clearLayers();
+
+  const listingsWithCoords = filteredListings.filter(l => l.lat && l.lng);
+
+  listingsWithCoords.forEach(listing => {
+    const marker = L.circleMarker([listing.lat, listing.lng], {
+      radius: 8,
+      fillColor: sourceBadgeColor(listing.source),
+      color: '#fff',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.85,
+    });
+
+    marker.bindPopup(`
+      <div class="map-popup">
+        <strong>${escapeHtml(listing.address)}</strong>
+        <p>${escapeHtml(listing.neighborhood)}${listing.neighborhood && listing.borough ? ', ' : ''}${escapeHtml(listing.borough)}</p>
+        <p class="popup-rent">${formatRent(listing.rent)}/mo est.</p>
+        <p style="font-size:0.72rem;color:#A8A29E;margin:4px 0 8px;">${escapeHtml(listing.source)}</p>
+        <button class="popup-btn" onclick="openModal('${listing.id}')">View Details</button>
+      </div>
+    `, { maxWidth: 250 });
+
+    marker.listingId = listing.id;
+
+    marker.on('mouseover', () => {
+      const card = document.querySelector(`[data-id="${listing.id}"]`);
+      if (card) card.classList.add('highlighted');
+    });
+    marker.on('mouseout', () => {
+      const card = document.querySelector(`[data-id="${listing.id}"]`);
+      if (card) card.classList.remove('highlighted');
+    });
+
+    markersLayer.addLayer(marker);
+  });
+
+  if (listingsWithCoords.length > 0) {
+    const group = L.featureGroup(markersLayer.getLayers());
+    map.fitBounds(group.getBounds().pad(0.1));
+  }
+}
+
+function highlightMarker(listingId) {
+  if (!markersLayer) return;
+  markersLayer.eachLayer(marker => {
+    if (marker.listingId === listingId) {
+      marker.setStyle({ radius: 12, weight: 3 });
+      marker.openPopup();
+    }
+  });
+}
+
+function unhighlightMarker(listingId) {
+  if (!markersLayer) return;
+  markersLayer.eachLayer(marker => {
+    if (marker.listingId === listingId) {
+      marker.setStyle({ radius: 8, weight: 2 });
+      marker.closePopup();
+    }
+  });
 }
 
 // ============================================================
@@ -578,7 +567,7 @@ function showApiError(errors) {
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:16px;">
         <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/>
       </svg>
-      <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.3rem; margin-bottom:8px;">
+      <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.3rem; margin-bottom:8px;">
         Could not connect to NYC Open Data
       </h3>
       <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 8px;">
@@ -607,7 +596,7 @@ function updateDataBanner(count, counts, errors) {
     .map(([name, n]) => `${n} from ${name}`);
 
   const errCount = errors.length;
-  let text = `${count} listings from NYC Open Data (live) — ${parts.join(', ')}`;
+  let text = `${count} real building records from NYC Open Data — ${parts.join(', ')}`;
   if (errCount > 0) {
     text += ` | ${errCount} source${errCount > 1 ? 's' : ''} unavailable`;
   }
@@ -618,9 +607,7 @@ function updateDataBanner(count, counts, errors) {
 function populateSourceFilter() {
   const select = document.getElementById('filter-source');
   if (!select) return;
-  // Get unique source names
   const sources = [...new Set(allListings.map((l) => l.source))].sort();
-  // Clear existing options after "All Sources"
   select.innerHTML = '<option value="all">All Sources</option>';
   for (const s of sources) {
     const opt = document.createElement('option');
@@ -633,7 +620,6 @@ function populateSourceFilter() {
 // ---- Filtering ----
 function applyFilters() {
   const borough = document.getElementById('filter-borough').value;
-  const bedrooms = document.getElementById('filter-bedrooms').value;
   const maxRent = document.getElementById('filter-rent').value;
   const source = document.getElementById('filter-source').value;
   const search = document.getElementById('filter-search').value.toLowerCase().trim();
@@ -641,42 +627,25 @@ function applyFilters() {
 
   filteredListings = allListings.filter((l) => {
     if (borough !== 'all' && l.borough !== borough) return false;
-    if (bedrooms !== 'all' && String(l.bedrooms) !== bedrooms) return false;
     if (maxRent !== 'all' && l.rent > parseInt(maxRent)) return false;
     if (source !== 'all' && l.source !== source) return false;
-    if (
-      search &&
-      !`${l.address} ${l.neighborhood} ${l.borough} ${l.projectName || ''} ${l.source}`
-        .toLowerCase()
-        .includes(search)
-    )
-      return false;
+    if (search && !`${l.address} ${l.neighborhood} ${l.borough} ${l.projectName || ''} ${l.source}`.toLowerCase().includes(search)) return false;
     return true;
   });
 
   switch (sortBy) {
-    case 'rent-asc':
-      filteredListings.sort((a, b) => a.rent - b.rent);
-      break;
-    case 'rent-desc':
-      filteredListings.sort((a, b) => b.rent - a.rent);
-      break;
-    case 'units-desc':
-      filteredListings.sort((a, b) => (b.totalUnits || 0) - (a.totalUnits || 0));
-      break;
-    case 'date-asc':
-      filteredListings.sort(
-        (a, b) => new Date(a.availableDate || '2099') - new Date(b.availableDate || '2099')
-      );
-      break;
+    case 'rent-asc': filteredListings.sort((a, b) => a.rent - b.rent); break;
+    case 'rent-desc': filteredListings.sort((a, b) => b.rent - a.rent); break;
+    case 'units-desc': filteredListings.sort((a, b) => (b.totalUnits || 0) - (a.totalUnits || 0)); break;
+    case 'date-asc': filteredListings.sort((a, b) => new Date(a.availableDate || '2099') - new Date(b.availableDate || '2099')); break;
   }
 
   renderListings();
+  updateMapMarkers();
 }
 
 function resetFilters() {
   document.getElementById('filter-borough').value = 'all';
-  document.getElementById('filter-bedrooms').value = 'all';
   document.getElementById('filter-rent').value = 'all';
   document.getElementById('filter-source').value = 'all';
   document.getElementById('filter-search').value = '';
@@ -685,30 +654,25 @@ function resetFilters() {
 }
 
 // ---- Rendering ----
-function bedroomLabel(b) {
-  return b === 'Studio' ? 'Studio' : `${b} BR`;
-}
-
 function formatRent(r) {
   return '$' + r.toLocaleString();
 }
 
 function formatDate(d) {
-  if (!d || d === 'Contact for availability') return 'Contact for availability';
+  if (!d) return null;
   const date = new Date(d + 'T00:00:00');
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-// Source badge color
 const SOURCE_COLORS = {
-  'Affordable Housing': '#10B981',
-  'Housing Connect': '#6366F1',
-  'Speculation Watch': '#F59E0B',
-  'PLUTO (Likely Stabilized)': '#8B5CF6',
+  'Affordable Housing': '#16A34A',
+  'Housing Connect': '#0D9488',
+  'Speculation Watch': '#D97706',
+  'PLUTO (Likely Stabilized)': '#0891B2',
 };
 
 function sourceBadgeColor(source) {
-  return SOURCE_COLORS[source] || '#6B7280';
+  return SOURCE_COLORS[source] || '#57534E';
 }
 
 function renderListings() {
@@ -716,7 +680,7 @@ function renderListings() {
   const empty = document.getElementById('empty-state');
   const count = document.getElementById('results-count');
 
-  count.textContent = `${filteredListings.length} apartment${filteredListings.length !== 1 ? 's' : ''} found`;
+  count.textContent = `${filteredListings.length} building${filteredListings.length !== 1 ? 's' : ''} found`;
 
   if (filteredListings.length === 0) {
     grid.innerHTML = '';
@@ -727,11 +691,24 @@ function renderListings() {
   empty.style.display = 'none';
 
   grid.innerHTML = filteredListings
-    .map(
-      (l, i) => `
-    <article class="listing-card" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.04, 0.3)}s" tabindex="0" role="button" aria-label="View details for ${escapeHtml(l.address)}">
+    .map((l, i) => {
+      const satImage = getSatelliteTile(l.lat, l.lng);
+      const imageHtml = satImage
+        ? `<img src="${satImage}" alt="Aerial view near ${escapeHtml(l.address)}" loading="lazy" onerror="this.style.display='none'">`
+        : '';
+
+      const details = [];
+      if (l.totalUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>`);
+      if (l.yearBuilt) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Built ${l.yearBuilt}</span>`);
+      if (l.rsUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>${l.rsUnits} RS units</span>`);
+      if (l.affordableUnits) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>${l.affordableUnits} affordable</span>`);
+      if (l.numFloors) details.push(`<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/></svg>${l.numFloors} floors</span>`);
+
+      return `
+    <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.25)}s" tabindex="0" role="button" aria-label="View details for ${escapeHtml(l.address)}"
+      onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
       <div class="card-image">
-        <img src="${l.image}" alt="Building at ${escapeHtml(l.address)}" loading="lazy">
+        ${imageHtml}
         <span class="card-badge" style="background:${sourceBadgeColor(l.source)}">${escapeHtml(l.source)}</span>
         <span class="card-rent-badge">${formatRent(l.rent)}<span>/mo est.</span></span>
       </div>
@@ -739,29 +716,18 @@ function renderListings() {
         <h3 class="card-address">${escapeHtml(l.address)}</h3>
         <p class="card-neighborhood">${escapeHtml(l.neighborhood)}${l.neighborhood && l.borough ? ', ' : ''}${escapeHtml(l.borough)}${l.zip ? ' ' + escapeHtml(l.zip) : ''}</p>
         <div class="card-details">
-          <span class="card-detail">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7"/><path d="M3 7l4-4h10l4 4"/><path d="M12 3v4"/></svg>
-            ${bedroomLabel(l.bedrooms)}
-          </span>
-          ${l.totalUnits ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>` : ''}
-          ${l.yearBuilt ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Built ${l.yearBuilt}</span>` : ''}
-          ${l.rsUnits ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>${l.rsUnits} RS units</span>` : ''}
-        </div>
-        <div class="card-features">
-          ${(l.features || []).slice(0, 3).map((f) => `<span class="feature-tag">${escapeHtml(f)}</span>`).join('')}
-          ${l.lotteryStatus ? `<span class="feature-tag" style="background:rgba(99,102,241,0.1);color:#6366F1;">Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
-          ${l.speculationFlag ? `<span class="feature-tag" style="background:rgba(245,158,11,0.1);color:#F59E0B;">Speculation Alert</span>` : ''}
+          ${details.join('')}
+          ${l.lotteryStatus ? `<span class="card-detail" style="color:#0D9488;font-weight:600;">Lottery: ${escapeHtml(l.lotteryStatus)}</span>` : ''}
+          ${l.speculationFlag ? `<span class="card-detail" style="color:#D97706;font-weight:600;">Speculation Alert</span>` : ''}
         </div>
       </div>
       <div class="card-footer">
-        <span class="card-available">
-          ${l.availableDate && l.availableDate !== 'Contact for availability' ? `<strong>Date:</strong> ${formatDate(l.availableDate)}` : 'Contact for availability'}
-        </span>
-        <span class="card-cta">Details &rarr;</span>
+        <span class="card-source">${escapeHtml(l.source)}</span>
+        <span class="card-cta">View Details <span class="external-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span></span>
       </div>
     </article>
-  `
-    )
+  `;
+    })
     .join('');
 }
 
@@ -793,10 +759,12 @@ function openModal(id) {
   if (listing.medCapRate) extraDetails.push({ label: 'Borough Median Cap Rate', value: listing.medCapRate.toFixed(2) + '%' });
   if (listing.bldgClass) extraDetails.push({ label: 'Building Class', value: listing.bldgClass });
 
+  const hasCoords = listing.lat && listing.lng;
+
   content.innerHTML = `
-    <img class="modal-image" src="${listing.image}" alt="Building at ${escapeHtml(listing.address)}">
+    ${hasCoords ? `<div class="modal-map-header" id="modal-map-container"></div>` : ''}
     <div class="modal-body">
-      <div class="stabilized-since" style="background:${sourceBadgeColor(listing.source)}22; color:${sourceBadgeColor(listing.source)};">
+      <div class="stabilized-since" style="background:${sourceBadgeColor(listing.source)}18; color:${sourceBadgeColor(listing.source)};">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         ${escapeHtml(listing.source)}
       </div>
@@ -809,14 +777,12 @@ function openModal(id) {
       </div>
 
       <div class="modal-details-grid">
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Bedrooms</span>
-          <span class="modal-detail-value">${bedroomLabel(listing.bedrooms)}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Available</span>
-          <span class="modal-detail-value">${formatDate(listing.availableDate)}</span>
-        </div>
+        ${listing.availableDate ? `
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">Date on Record</span>
+            <span class="modal-detail-value">${formatDate(listing.availableDate)}</span>
+          </div>
+        ` : ''}
         ${extraDetails.map((d) => `
           <div class="modal-detail-item">
             <span class="modal-detail-label">${escapeHtml(d.label)}</span>
@@ -826,27 +792,26 @@ function openModal(id) {
       </div>
 
       ${listing.speculationFlag ? `
-        <div style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:16px; font-size:0.85rem; color:#B45309;">
+        <div style="background:rgba(217,119,6,0.08); border:1px solid rgba(217,119,6,0.25); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:16px; font-size:0.85rem; color:#92400E;">
           <strong>Speculation Alert:</strong> This building's cap rate (${listing.capRate?.toFixed(2)}%) is below the borough median (${listing.medCapRate?.toFixed(2)}%), suggesting potential speculative purchase of rent-regulated housing.
         </div>
       ` : ''}
 
-      <div class="modal-features">
-        ${(listing.features || []).map((f) => `<span class="feature-tag">${escapeHtml(f)}</span>`).join('')}
-      </div>
-
-      <div class="modal-data-source" style="background:var(--bg-elevated); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:20px; font-size:0.8rem; color:var(--text-muted);">
+      <div style="background:var(--bg-elevated); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:20px; font-size:0.8rem; color:var(--text-muted);">
         <strong style="color:var(--text-secondary);">Data source:</strong> ${escapeHtml(listing.dataSource || 'NYC Open Data')}
         ${listing.datasetUrl ? `<br><a href="${listing.datasetUrl}" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none;">View dataset &rarr;</a>` : ''}
       </div>
 
       <div class="modal-contact">
-        ${listing.sourceKey === 'housingconnect' ? `<a href="https://housingconnect.nyc.gov/PublicWeb/search-lotteries" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1;justify-content:center;">Apply on Housing Connect</a>` : ''}
+        <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="closeModal(); showExternalLink('${listing.id}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View on ${escapeHtml(listing.externalSiteName)}
+        </button>
         <a href="https://amirentstabilized.com/" target="_blank" rel="noopener" class="btn btn-secondary" style="flex:1;justify-content:center;">Verify Stabilization</a>
       </div>
 
       <p style="font-size:0.75rem; color:var(--text-muted); margin-top:16px; text-align:center;">
-        Rents shown are estimates based on public data. Always verify with
+        All data from public records. Rents are estimates. Always verify with
         <a href="https://hcr.ny.gov/" target="_blank" rel="noopener" style="color:var(--accent);">NYS HCR</a>
       </p>
     </div>
@@ -854,19 +819,113 @@ function openModal(id) {
 
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Initialize mini map in modal
+  if (hasCoords) {
+    setTimeout(() => {
+      const container = document.getElementById('modal-map-container');
+      if (!container) return;
+      if (modalMap) { modalMap.remove(); modalMap = null; }
+      modalMap = L.map(container, {
+        center: [listing.lat, listing.lng],
+        zoom: 16,
+        zoomControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+      });
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '',
+        maxZoom: 19,
+      }).addTo(modalMap);
+      L.circleMarker([listing.lat, listing.lng], {
+        radius: 10,
+        fillColor: sourceBadgeColor(listing.source),
+        color: '#fff',
+        weight: 3,
+        fillOpacity: 0.9,
+      }).addTo(modalMap);
+    }, 100);
+  }
 }
 
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('active');
   document.body.style.overflow = '';
+  if (modalMap) { modalMap.remove(); modalMap = null; }
 }
 
-// Close modal on overlay click or Escape
+// ---- External Link Confirmation ----
+function showExternalLink(id) {
+  const listing = allListings.find(l => l.id === id);
+  if (!listing) return;
+
+  const overlay = document.getElementById('external-overlay');
+  const content = document.getElementById('external-modal-content');
+
+  content.innerHTML = `
+    <div class="external-icon-large">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15,3 21,3 21,9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </div>
+    <h3>You're leaving StableNYC</h3>
+    <p>You'll be taken to <strong>${escapeHtml(listing.externalSiteName)}</strong> to view this listing externally. StableNYC is not affiliated with this site.</p>
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">${escapeHtml(listing.address)}, ${escapeHtml(listing.borough)}</p>
+    <span class="external-url">${escapeHtml(listing.externalUrl)}</span>
+    <div class="external-modal-actions">
+      <a href="${listing.externalUrl}" target="_blank" rel="noopener" class="btn btn-primary" onclick="closeExternalModal()">
+        Continue to ${escapeHtml(listing.externalSiteName)}
+      </a>
+      <button class="btn btn-secondary" onclick="closeExternalModal()">Cancel</button>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeExternalModal() {
+  document.getElementById('external-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close modals on overlay click or Escape
 document.getElementById('modal-overlay').addEventListener('click', (e) => {
   if (e.target.id === 'modal-overlay') closeModal();
 });
+document.getElementById('external-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'external-overlay') closeExternalModal();
+});
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    closeExternalModal();
+  }
+});
+
+// ---- View Toggle ----
+function setView(view) {
+  currentView = view;
+  const layout = document.getElementById('listings-layout');
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+
+  if (view === 'split') {
+    layout.className = 'listings-layout split-view';
+    document.getElementById('map-panel').style.display = '';
+    setTimeout(() => { if (map) map.invalidateSize(); }, 100);
+  } else {
+    layout.className = 'listings-layout grid-view';
+    document.getElementById('map-panel').style.display = 'none';
+  }
+}
+
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => setView(btn.dataset.view));
 });
 
 // ---- Navbar scroll effect ----
@@ -875,7 +934,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ---- Filter event listeners ----
-['filter-borough', 'filter-bedrooms', 'filter-rent', 'filter-source', 'sort-by'].forEach((id) => {
+['filter-borough', 'filter-rent', 'filter-source', 'sort-by'].forEach((id) => {
   document.getElementById(id).addEventListener('change', applyFilters);
 });
 document.getElementById('filter-search').addEventListener('input', debounce(applyFilters, 300));
@@ -910,16 +969,16 @@ injectedStyle.textContent = `
   line-height: 1.5;
 }
 .data-banner.live {
-  background: rgba(16,185,129,0.1);
+  background: rgba(22,163,74,0.08);
   color: var(--success);
 }
 .data-banner.partial {
-  background: rgba(245,158,11,0.08);
-  color: #B45309;
+  background: rgba(217,119,6,0.06);
+  color: #92400E;
 }
 .data-banner.error {
-  background: rgba(239,68,68,0.1);
-  color: #EF4444;
+  background: rgba(220,38,38,0.08);
+  color: #DC2626;
 }
 `;
 document.head.appendChild(injectedStyle);
@@ -935,4 +994,5 @@ if (filterBar) {
 }
 
 // ---- Boot ----
+initMap();
 loadData();
