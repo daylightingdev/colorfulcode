@@ -604,8 +604,165 @@ function resetFilters() {
 }
 
 // ============================================================
-// PLACEHOLDER: Parts 8-10 will be added next
-// - Map initialization + markers
+// PART 8: MAP INITIALIZATION + MARKERS
+// ============================================================
+
+function initMap() {
+  map = L.map('listing-map', {
+    center: [40.7128, -74.006],
+    zoom: 11,
+    zoomControl: true,
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20,
+  }).addTo(map);
+
+  markersLayer = L.layerGroup().addTo(map);
+}
+
+function updateMapMarkers() {
+  if (!map || !markersLayer) return;
+  markersLayer.clearLayers();
+
+  const withCoords = filteredListings.filter(l => l.lat && l.lng);
+
+  withCoords.forEach(listing => {
+    const priceLabel = listing.price ? `$${listing.price.toLocaleString()}` : 'RS';
+
+    const icon = L.divIcon({
+      className: 'price-marker-wrapper',
+      html: `<div class="price-pill" data-listing-id="${listing.id}">
+        ${escapeHtml(priceLabel)}
+      </div>`,
+      iconSize: [0, 0],
+      iconAnchor: [0, 0],
+    });
+
+    const bedroomLabel = listing.bedrooms === 0 ? 'Studio' : `${listing.bedrooms}BR`;
+
+    const marker = L.marker([listing.lat, listing.lng], { icon });
+
+    marker.bindPopup(`
+      <div class="map-popup">
+        <div style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+            <span class="rs-badge-small">RS Building</span>
+          </div>
+          <strong>${escapeHtml(listing.address)}</strong>
+          <p>${escapeHtml(listing.neighborhood || listing.borough)}</p>
+          <p style="font-size:0.95rem;font-weight:700;color:var(--accent);margin:4px 0;">
+            $${(listing.price || 0).toLocaleString()}/mo &middot; ${bedroomLabel}
+          </p>
+          <button class="popup-btn" onclick="openModal('${listing.id}')">View Details</button>
+        </div>
+      </div>
+    `, { maxWidth: 260, minWidth: 200 });
+
+    marker.listingId = listing.id;
+
+    marker.on('mouseover', () => {
+      const card = document.querySelector(`[data-id="${listing.id}"]`);
+      if (card) card.classList.add('highlighted');
+      const pill = document.querySelector(`.price-pill[data-listing-id="${listing.id}"]`);
+      if (pill) pill.classList.add('active');
+    });
+    marker.on('mouseout', () => {
+      const card = document.querySelector(`[data-id="${listing.id}"]`);
+      if (card) card.classList.remove('highlighted');
+      const pill = document.querySelector(`.price-pill[data-listing-id="${listing.id}"]`);
+      if (pill) pill.classList.remove('active');
+    });
+
+    markersLayer.addLayer(marker);
+  });
+
+  if (withCoords.length > 0) {
+    const group = L.featureGroup(markersLayer.getLayers());
+    map.fitBounds(group.getBounds().pad(0.1));
+  }
+}
+
+function highlightMarker(listingId) {
+  if (!markersLayer) return;
+  const pill = document.querySelector(`.price-pill[data-listing-id="${listingId}"]`);
+  if (pill) pill.classList.add('active');
+  markersLayer.eachLayer(marker => {
+    if (marker.listingId === listingId) marker.openPopup();
+  });
+}
+
+function unhighlightMarker(listingId) {
+  if (!markersLayer) return;
+  const pill = document.querySelector(`.price-pill[data-listing-id="${listingId}"]`);
+  if (pill) pill.classList.remove('active');
+  markersLayer.eachLayer(marker => {
+    if (marker.listingId === listingId) marker.closePopup();
+  });
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function formatPrice(price) {
+  if (!price) return 'Contact for price';
+  return `$${price.toLocaleString()}`;
+}
+
+function formatBedrooms(br) {
+  if (br === 0) return 'Studio';
+  if (br === 1) return '1 Bed';
+  return `${br} Beds`;
+}
+
+function formatDate(d) {
+  if (!d) return null;
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function sourceLabel(source) {
+  if (source === 'streeteasy') return 'StreetEasy';
+  if (source === 'craigslist') return 'Craigslist';
+  if (source === 'facebook') return 'Facebook';
+  return source || 'Listing';
+}
+
+function showLoading(show) {
+  const grid = document.getElementById('listings-grid');
+  if (show) {
+    grid.innerHTML = `
+      <div class="loading-state" style="grid-column:1/-1; text-align:center; padding:60px 20px;">
+        <div class="loading-spinner"></div>
+        <p style="color:var(--text-muted); margin-top:16px;">Matching listings to DHCR rent stabilization registry...</p>
+      </div>`;
+  }
+}
+
+function updateStats() {
+  document.getElementById('listing-count').textContent = allListings.length;
+  const boroughs = new Set(allListings.map(l => l.borough).filter(Boolean));
+  const boroughCountEl = document.getElementById('borough-count');
+  if (boroughCountEl) boroughCountEl.textContent = boroughs.size;
+  const bldgCountEl = document.getElementById('building-count');
+  if (bldgCountEl) bldgCountEl.textContent = RS_BUILDINGS.length;
+}
+
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); };
+}
+
+// ============================================================
+// PLACEHOLDER: Parts 9-10 will be added next
 // - Card rendering + pagination
 // - Modal + events + boot
 // ============================================================
