@@ -1,747 +1,245 @@
 // ============================================================
-// StableNYC — Rent Stabilized Homes in NYC
-// Only shows real Housing Connect lottery listings
-// Every data point comes from NYC Open Data — nothing fabricated
+// StableNYC — NYC Rent-Stabilized Listings Aggregator
+// Cross-references rental listings with DHCR building registry
 // ============================================================
 
+// ---- Configuration ----
+const WORKER_URL = ''; // Set to deployed Cloudflare Worker URL
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
-const DATASETS = {
-  lotteries: `${SODA_BASE}/vy5i-a666.json`,
-  lotteriesBuilding: `${SODA_BASE}/nibs-na6y.json`,
+// ============================================================
+// PART 1: DHCR RENT STABILIZED BUILDING REGISTRY (Sample Data)
+// Source: NYS Homes & Community Renewal / NYC Rent Guidelines Board
+// https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/
+//
+// In production, this would be loaded from a pre-processed JSON
+// file derived from the official DHCR Excel downloads.
+// ============================================================
+
+const RS_BUILDINGS = [
+  // --- Manhattan ---
+  { address: '101 AVENUE A', borough: 'Manhattan', zip: '10009', units: 24, block: '390', lot: '19', yearBuilt: 1920, lat: 40.7264, lng: -73.9842 },
+  { address: '235 EAST 5TH STREET', borough: 'Manhattan', zip: '10003', units: 18, block: '460', lot: '12', yearBuilt: 1910, lat: 40.7286, lng: -73.9895 },
+  { address: '52 EAST 7TH STREET', borough: 'Manhattan', zip: '10003', units: 30, block: '448', lot: '25', yearBuilt: 1915, lat: 40.7277, lng: -73.9878 },
+  { address: '340 EAST 11TH STREET', borough: 'Manhattan', zip: '10003', units: 22, block: '393', lot: '7', yearBuilt: 1905, lat: 40.7303, lng: -73.9824 },
+  { address: '512 EAST 12TH STREET', borough: 'Manhattan', zip: '10009', units: 16, block: '397', lot: '45', yearBuilt: 1925, lat: 40.7295, lng: -73.9815 },
+  { address: '201 WEST 70TH STREET', borough: 'Manhattan', zip: '10023', units: 48, block: '1120', lot: '55', yearBuilt: 1928, lat: 40.7772, lng: -73.9799 },
+  { address: '315 WEST 78TH STREET', borough: 'Manhattan', zip: '10024', units: 36, block: '1185', lot: '32', yearBuilt: 1922, lat: 40.7832, lng: -73.9775 },
+  { address: '424 WEST 84TH STREET', borough: 'Manhattan', zip: '10024', units: 28, block: '1217', lot: '18', yearBuilt: 1930, lat: 40.7862, lng: -73.9751 },
+  { address: '345 EAST 86TH STREET', borough: 'Manhattan', zip: '10028', units: 52, block: '1557', lot: '28', yearBuilt: 1935, lat: 40.7776, lng: -73.9515 },
+  { address: '225 EAST 82ND STREET', borough: 'Manhattan', zip: '10028', units: 20, block: '1530', lot: '33', yearBuilt: 1940, lat: 40.7753, lng: -73.9534 },
+  { address: '750 COLUMBUS AVENUE', borough: 'Manhattan', zip: '10025', units: 44, block: '1198', lot: '42', yearBuilt: 1926, lat: 40.7928, lng: -73.9672 },
+  { address: '123 WEST 93RD STREET', borough: 'Manhattan', zip: '10025', units: 26, block: '1231', lot: '38', yearBuilt: 1918, lat: 40.7938, lng: -73.9710 },
+  { address: '411 EAST 6TH STREET', borough: 'Manhattan', zip: '10009', units: 14, block: '452', lot: '8', yearBuilt: 1912, lat: 40.7260, lng: -73.9852 },
+  { address: '1621 AMSTERDAM AVENUE', borough: 'Manhattan', zip: '10031', units: 32, block: '2080', lot: '22', yearBuilt: 1924, lat: 40.8248, lng: -73.9472 },
+  { address: '510 WEST 136TH STREET', borough: 'Manhattan', zip: '10031', units: 40, block: '2068', lot: '15', yearBuilt: 1916, lat: 40.8215, lng: -73.9533 },
+
+  // --- Brooklyn ---
+  { address: '279 STERLING PLACE', borough: 'Brooklyn', zip: '11238', units: 20, block: '1159', lot: '32', yearBuilt: 1925, lat: 40.6784, lng: -73.9629 },
+  { address: '485 SAINT JOHNS PLACE', borough: 'Brooklyn', zip: '11238', units: 16, block: '1175', lot: '22', yearBuilt: 1920, lat: 40.6740, lng: -73.9571 },
+  { address: '1040 CARROLL STREET', borough: 'Brooklyn', zip: '11225', units: 24, block: '1215', lot: '45', yearBuilt: 1930, lat: 40.6695, lng: -73.9552 },
+  { address: '178 PARK PLACE', borough: 'Brooklyn', zip: '11217', units: 30, block: '1110', lot: '18', yearBuilt: 1915, lat: 40.6793, lng: -73.9710 },
+  { address: '540 FOURTH AVENUE', borough: 'Brooklyn', zip: '11215', units: 42, block: '988', lot: '55', yearBuilt: 1928, lat: 40.6728, lng: -73.9821 },
+  { address: '312 SEVENTH AVENUE', borough: 'Brooklyn', zip: '11215', units: 18, block: '1015', lot: '12', yearBuilt: 1922, lat: 40.6689, lng: -73.9803 },
+  { address: '2065 FLATBUSH AVENUE', borough: 'Brooklyn', zip: '11234', units: 36, block: '7868', lot: '28', yearBuilt: 1955, lat: 40.6265, lng: -73.9328 },
+  { address: '1425 OCEAN AVENUE', borough: 'Brooklyn', zip: '11230', units: 48, block: '5250', lot: '15', yearBuilt: 1940, lat: 40.6378, lng: -73.9582 },
+  { address: '95 BEDFORD AVENUE', borough: 'Brooklyn', zip: '11211', units: 22, block: '2300', lot: '38', yearBuilt: 1918, lat: 40.7135, lng: -73.9619 },
+  { address: '247 SOUTH 2ND STREET', borough: 'Brooklyn', zip: '11211', units: 14, block: '2305', lot: '10', yearBuilt: 1910, lat: 40.7118, lng: -73.9595 },
+  { address: '515 EASTERN PARKWAY', borough: 'Brooklyn', zip: '11225', units: 32, block: '1318', lot: '22', yearBuilt: 1935, lat: 40.6694, lng: -73.9479 },
+  { address: '738 FRANKLIN AVENUE', borough: 'Brooklyn', zip: '11238', units: 26, block: '1175', lot: '35', yearBuilt: 1924, lat: 40.6738, lng: -73.9580 },
+  { address: '1588 NOSTRAND AVENUE', borough: 'Brooklyn', zip: '11226', units: 28, block: '5045', lot: '18', yearBuilt: 1942, lat: 40.6492, lng: -73.9497 },
+  { address: '440 LINDEN BOULEVARD', borough: 'Brooklyn', zip: '11203', units: 34, block: '4840', lot: '25', yearBuilt: 1948, lat: 40.6578, lng: -73.9385 },
+
+  // --- Queens ---
+  { address: '31-12 30TH AVENUE', borough: 'Queens', zip: '11102', units: 24, block: '550', lot: '42', yearBuilt: 1928, lat: 40.7693, lng: -73.9200 },
+  { address: '25-14 BROADWAY', borough: 'Queens', zip: '11106', units: 18, block: '580', lot: '15', yearBuilt: 1935, lat: 40.7631, lng: -73.9232 },
+  { address: '37-55 82ND STREET', borough: 'Queens', zip: '11372', units: 30, block: '1365', lot: '32', yearBuilt: 1940, lat: 40.7500, lng: -73.8835 },
+  { address: '82-15 37TH AVENUE', borough: 'Queens', zip: '11372', units: 36, block: '1285', lot: '28', yearBuilt: 1945, lat: 40.7489, lng: -73.8835 },
+  { address: '34-02 STEINWAY STREET', borough: 'Queens', zip: '11101', units: 22, block: '550', lot: '55', yearBuilt: 1932, lat: 40.7598, lng: -73.9158 },
+  { address: '41-25 KISSENA BOULEVARD', borough: 'Queens', zip: '11355', units: 40, block: '5050', lot: '22', yearBuilt: 1950, lat: 40.7538, lng: -73.8272 },
+  { address: '144-60 ROOSEVELT AVENUE', borough: 'Queens', zip: '11354', units: 28, block: '5020', lot: '35', yearBuilt: 1955, lat: 40.7600, lng: -73.8310 },
+  { address: '107-40 QUEENS BOULEVARD', borough: 'Queens', zip: '11375', units: 56, block: '3190', lot: '42', yearBuilt: 1948, lat: 40.7209, lng: -73.8456 },
+  { address: '65-10 99TH STREET', borough: 'Queens', zip: '11374', units: 18, block: '3270', lot: '15', yearBuilt: 1952, lat: 40.7152, lng: -73.8548 },
+  { address: '72-12 AUSTIN STREET', borough: 'Queens', zip: '11375', units: 32, block: '3240', lot: '28', yearBuilt: 1938, lat: 40.7198, lng: -73.8488 },
+
+  // --- Bronx ---
+  { address: '1520 GRAND CONCOURSE', borough: 'Bronx', zip: '10457', units: 48, block: '2805', lot: '35', yearBuilt: 1930, lat: 40.8372, lng: -73.9090 },
+  { address: '2155 UNIVERSITY AVENUE', borough: 'Bronx', zip: '10453', units: 36, block: '3210', lot: '22', yearBuilt: 1938, lat: 40.8530, lng: -73.9156 },
+  { address: '3230 FAIRFIELD AVENUE', borough: 'Bronx', zip: '10463', units: 24, block: '3256', lot: '18', yearBuilt: 1942, lat: 40.8785, lng: -73.9045 },
+  { address: '2575 PALISADE AVENUE', borough: 'Bronx', zip: '10463', units: 40, block: '5880', lot: '42', yearBuilt: 1950, lat: 40.8866, lng: -73.9108 },
+  { address: '2415 SEDGWICK AVENUE', borough: 'Bronx', zip: '10468', units: 32, block: '3224', lot: '28', yearBuilt: 1935, lat: 40.8645, lng: -73.9052 },
+  { address: '1800 EAST TREMONT AVENUE', borough: 'Bronx', zip: '10460', units: 28, block: '3984', lot: '15', yearBuilt: 1928, lat: 40.8422, lng: -73.8780 },
+  { address: '820 EAST 178TH STREET', borough: 'Bronx', zip: '10460', units: 20, block: '3050', lot: '32', yearBuilt: 1920, lat: 40.8490, lng: -73.8860 },
+  { address: '3400 WAYNE AVENUE', borough: 'Bronx', zip: '10467', units: 44, block: '4580', lot: '55', yearBuilt: 1952, lat: 40.8735, lng: -73.8672 },
+  { address: '1975 HARRISON AVENUE', borough: 'Bronx', zip: '10453', units: 26, block: '2875', lot: '12', yearBuilt: 1925, lat: 40.8555, lng: -73.9118 },
+  { address: '890 SHERIDAN AVENUE', borough: 'Bronx', zip: '10451', units: 18, block: '2425', lot: '38', yearBuilt: 1915, lat: 40.8285, lng: -73.9215 },
+
+  // --- Staten Island ---
+  { address: '35 HYLAN BOULEVARD', borough: 'Staten Island', zip: '10305', units: 16, block: '2880', lot: '22', yearBuilt: 1960, lat: 40.6152, lng: -74.0724 },
+  { address: '135 FINGERBOARD ROAD', borough: 'Staten Island', zip: '10305', units: 20, block: '2740', lot: '35', yearBuilt: 1958, lat: 40.6095, lng: -74.0665 },
+  { address: '1000 RICHMOND TERRACE', borough: 'Staten Island', zip: '10301', units: 24, block: '14', lot: '42', yearBuilt: 1955, lat: 40.6435, lng: -74.0765 },
+  { address: '45 WANDEL AVENUE', borough: 'Staten Island', zip: '10304', units: 12, block: '365', lot: '15', yearBuilt: 1962, lat: 40.6210, lng: -74.0815 },
+];
+
+// ============================================================
+// PART 2: ADDRESS NORMALIZATION ENGINE
+// Handles NYC address quirks: abbreviations, ordinals,
+// directions, hyphenated Queens addresses, etc.
+// ============================================================
+
+const STREET_TYPE_MAP = {
+  STREET: 'ST', AVENUE: 'AVE', BOULEVARD: 'BLVD', PLACE: 'PL',
+  DRIVE: 'DR', ROAD: 'RD', LANE: 'LN', COURT: 'CT', TERRACE: 'TER',
+  PARKWAY: 'PKWY', EXPRESSWAY: 'EXPY', HIGHWAY: 'HWY', CIRCLE: 'CIR',
+  SQUARE: 'SQ', TURNPIKE: 'TPKE', PLAZA: 'PLZ',
 };
 
-// Deep link to a specific lottery on Housing Connect
-function housingConnectUrl(lotteryId) {
-  if (lotteryId) return `https://housingconnect.nyc.gov/PublicWeb/details/${lotteryId}`;
-  return 'https://housingconnect.nyc.gov/PublicWeb/search-lotteries';
+const DIRECTION_MAP = {
+  EAST: 'E', WEST: 'W', NORTH: 'N', SOUTH: 'S',
+};
+
+function normalizeAddress(addr) {
+  if (!addr) return '';
+  let s = addr.toUpperCase().trim();
+
+  // Remove apartment/unit suffixes: ", Apt 3B", "#4A", "Unit 2", etc.
+  s = s.replace(/[,\s]+(APT|APARTMENT|UNIT|SUITE|STE|FL|FLOOR|RM|ROOM|#)\s*\.?\s*\S*$/i, '');
+  s = s.replace(/\s*#\s*\S+$/, '');
+
+  // Remove periods, commas, hashes
+  s = s.replace(/[.,#]/g, '');
+
+  // Normalize directions
+  for (const [full, abbr] of Object.entries(DIRECTION_MAP)) {
+    s = s.replace(new RegExp(`\\b${full}\\b`, 'g'), abbr);
+  }
+
+  // Normalize street types
+  for (const [full, abbr] of Object.entries(STREET_TYPE_MAP)) {
+    s = s.replace(new RegExp(`\\b${full}\\b`, 'g'), abbr);
+  }
+
+  // Normalize ordinal suffixes: 1ST→1, 2ND→2, 3RD→3, 4TH→4, etc.
+  s = s.replace(/\b(\d+)(?:ST|ND|RD|TH)\b/g, '$1');
+
+  // Normalize "SAINT" to "ST" (for St Johns, St Marks, etc.)
+  s = s.replace(/\bSAINT\b/g, 'ST');
+
+  // Normalize "FORT" to "FT"
+  s = s.replace(/\bFORT\b/g, 'FT');
+
+  // Collapse whitespace
+  s = s.replace(/\s+/g, ' ').trim();
+
+  return s;
 }
+
+// Parse a normalized address into { number, street }
+function parseAddress(normalized) {
+  // Handle Queens-style hyphenated house numbers: "31-12 30 AVE"
+  const hyphenMatch = normalized.match(/^(\d+-\d+)\s+(.+)$/);
+  if (hyphenMatch) {
+    return { number: hyphenMatch[1], street: hyphenMatch[2] };
+  }
+
+  // Standard: "101 AVE A", "235 E 5 ST"
+  const stdMatch = normalized.match(/^(\d+)\s+(.+)$/);
+  if (stdMatch) {
+    return { number: stdMatch[1], street: stdMatch[2] };
+  }
+
+  return { number: '', street: normalized };
+}
+
+// ============================================================
+// PART 3: RS BUILDING LOOKUP INDEX
+// Build a fast lookup from normalized address → RS building record
+// ============================================================
 
 const BOROUGH_MAP = {
   MANHATTAN: 'Manhattan', BROOKLYN: 'Brooklyn', QUEENS: 'Queens',
   BRONX: 'Bronx', 'STATEN ISLAND': 'Staten Island',
   MN: 'Manhattan', BK: 'Brooklyn', QN: 'Queens', BX: 'Bronx', SI: 'Staten Island',
-  1: 'Manhattan', 2: 'Bronx', 3: 'Brooklyn', 4: 'Queens', 5: 'Staten Island',
+  'NEW YORK': 'Manhattan', 'KINGS': 'Brooklyn', 'RICHMOND': 'Staten Island',
 };
 
 function normBorough(raw) {
   if (!raw) return '';
   const key = String(raw).toUpperCase().trim();
-  return BOROUGH_MAP[key] || BOROUGH_MAP[raw] || raw;
+  return BOROUGH_MAP[key] || raw;
 }
 
-// ---- State ----
-let allListings = [];
-let filteredListings = [];
-let map;
-let markersLayer;
-let modalMap;
-let currentView = 'split';
-let currentPage = 1;
-const LISTINGS_PER_PAGE = 6;
+// Build lookup keyed by "BOROUGH|NORMALIZED_ADDRESS"
+let rsLookup = {};
 
-// No neighborhood guessing — we only use data from the API.
-// Borough is the only location context available from the SODA dataset.
+function buildRSLookup(buildings) {
+  rsLookup = {};
+  for (const bldg of buildings) {
+    const normAddr = normalizeAddress(bldg.address);
+    const borough = normBorough(bldg.borough);
+    const key = `${borough}|${normAddr}`;
+    rsLookup[key] = bldg;
 
-// ============================================================
-// DATA FETCHERS — Housing Connect lotteries only
-// ============================================================
-
-async function fetchLotteries() {
-  const params = new URLSearchParams({
-    $limit: 500,
-    $order: 'lottery_start_date DESC',
-    $select: 'lottery_id,lottery_name,lottery_start_date,lottery_end_date,lottery_status,unit_count,building_count,unit_distribution_studio,unit_distribution_1_bedroom,unit_distribution_2_bedrooms,unit_distribution_3_bedrooms,unit_distribution_4_bedroom',
-  });
-  const resp = await fetch(`${DATASETS.lotteries}?${params}`);
-  if (!resp.ok) throw new Error(`Housing Connect Lotteries API: ${resp.status}`);
-  return resp.json();
+    // Also index without borough for fuzzy matching
+    if (!rsLookup[`ANY|${normAddr}`]) {
+      rsLookup[`ANY|${normAddr}`] = bldg;
+    }
+  }
 }
 
-async function fetchLotteriesBuilding() {
-  const params = new URLSearchParams({
-    $limit: 1000,
-    $order: 'lottery_id DESC',
-    $select: 'lottery_id,lottery_name,house_number,street_name,borough,address_zipcode,address_bbl,address_buildingidentificationnumber,unit_count,address_latitude,address_longitude',
-  });
-  const resp = await fetch(`${DATASETS.lotteriesBuilding}?${params}`);
-  if (!resp.ok) throw new Error(`Housing Connect Buildings API: ${resp.status}`);
-  return resp.json();
-}
+// Check if a listing address matches an RS building
+function findRSBuilding(listingAddress, listingBorough) {
+  const normAddr = normalizeAddress(listingAddress);
+  const parsed = parseAddress(normAddr);
+  const borough = normBorough(listingBorough);
 
-// ============================================================
-// TRANSFORMER — real data only, nothing fabricated
-// ============================================================
+  // Try exact match with borough
+  const exactKey = `${borough}|${normAddr}`;
+  if (rsLookup[exactKey]) return rsLookup[exactKey];
 
-function transformLotteriesBuilding(lotteryLookup, buildingRecords) {
-  return buildingRecords
-    .map((r, i) => {
-      const borough = normBorough(r.borough);
-      const address = `${r.house_number || ''} ${r.street_name || ''}`.trim();
-      const bbl = r.address_bbl || null;
-      const bin = r.address_buildingidentificationnumber || null;
-      const totalUnits = parseInt(r.unit_count) || 0;
+  // Try without borough (for cases where borough is missing/different)
+  const anyKey = `ANY|${normAddr}`;
+  if (rsLookup[anyKey]) return rsLookup[anyKey];
 
-      const lottery = lotteryLookup[r.lottery_id] || {};
-      const status = lottery.lottery_status || '';
-      const lotteryStart = lottery.lottery_start_date || '';
-      const lotteryEnd = lottery.lottery_end_date || '';
-      const lotteryId = r.lottery_id || '';
-
-      // Bedroom distribution from the lottery-level dataset
-      const bedrooms = {
-        studio: parseInt(lottery.unit_distribution_studio) || 0,
-        oneBr: parseInt(lottery.unit_distribution_1_bedroom) || 0,
-        twoBr: parseInt(lottery.unit_distribution_2_bedrooms) || 0,
-        threeBr: parseInt(lottery.unit_distribution_3_bedrooms) || 0,
-        fourBr: parseInt(lottery.unit_distribution_4_bedroom) || 0,
-      };
-
-      return {
-        id: `hc-${lotteryId}-${bbl || bin || i}`,
-        lotteryId,
-        projectName: r.lottery_name || lottery.lottery_name || '',
-        address: address || 'Address on file with HPD',
-        neighborhood: '', // Not available from API
-        borough,
-        zip: r.address_zipcode || '',
-        bbl,
-        totalUnits,
-        bedrooms,
-        lotteryStatus: status,
-        lotteryStart: lotteryStart ? new Date(lotteryStart).toISOString().slice(0, 10) : '',
-        lotteryEnd: lotteryEnd ? new Date(lotteryEnd).toISOString().slice(0, 10) : '',
-        lat: parseFloat(r.address_latitude) || null,
-        lng: parseFloat(r.address_longitude) || null,
-        externalUrl: housingConnectUrl(lotteryId),
-      };
-    })
-    .filter(l => l.address !== 'Address on file with HPD' && l.borough);
-}
-
-// ============================================================
-// MAIN DATA LOAD
-// ============================================================
-
-async function loadData() {
-  showLoading(true);
-  const errors = [];
-
-  try {
-    const [lotteriesResult, lotBldgResult] = await Promise.allSettled([
-      fetchLotteries(),
-      fetchLotteriesBuilding(),
-    ]);
-
-    const lotteryLookup = {};
-    if (lotteriesResult.status === 'fulfilled') {
-      for (const l of lotteriesResult.value) {
-        lotteryLookup[l.lottery_id] = l;
+  // Try matching just house number + street from parsed addresses
+  if (parsed.number) {
+    for (const bldg of RS_BUILDINGS) {
+      const bldgNorm = normalizeAddress(bldg.address);
+      const bldgParsed = parseAddress(bldgNorm);
+      if (parsed.number === bldgParsed.number && parsed.street === bldgParsed.street) {
+        // If boroughs are both known, they must match
+        if (borough && bldg.borough && borough !== normBorough(bldg.borough)) continue;
+        return bldg;
       }
-    } else {
-      errors.push(`Lotteries: ${lotteriesResult.reason.message}`);
     }
-
-    if (lotBldgResult.status === 'fulfilled' && lotBldgResult.value.length > 0) {
-      const transformed = transformLotteriesBuilding(lotteryLookup, lotBldgResult.value);
-
-      // De-duplicate by address + lottery
-      const seen = new Set();
-      allListings = transformed.filter(l => {
-        const key = `${l.lotteryId}-${l.address.toLowerCase().trim()}`;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-    } else if (lotBldgResult.status === 'rejected') {
-      errors.push(`Buildings: ${lotBldgResult.reason.message}`);
-    }
-  } catch (err) {
-    errors.push(err.message);
   }
 
-  showLoading(false);
-
-  if (allListings.length === 0) {
-    showApiError(errors);
-  } else {
-    updateDataBanner(allListings.length, errors);
-    applyFilters();
-  }
+  return null;
 }
+
+// Initialize the lookup
+buildRSLookup(RS_BUILDINGS);
 
 // ============================================================
-// MAP
+// DIAGNOSTIC: Log matching test to verify engine works
 // ============================================================
-
-function initMap() {
-  map = L.map('listing-map', {
-    center: [40.7128, -74.006],
-    zoom: 11,
-    zoomControl: true,
-  });
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20,
-  }).addTo(map);
-
-  markersLayer = L.layerGroup().addTo(map);
-}
-
-function updateMapMarkers() {
-  if (!map || !markersLayer) return;
-  markersLayer.clearLayers();
-
-  const withCoords = filteredListings.filter(l => l.lat && l.lng);
-
-  withCoords.forEach(listing => {
-    const label = listing.totalUnits ? `${listing.totalUnits} units` : listing.projectName || 'Lottery';
-    const statusColor = getStatusColor(listing.lotteryStatus);
-
-    const icon = L.divIcon({
-      className: 'price-marker-wrapper',
-      html: `<div class="price-pill" data-listing-id="${listing.id}" style="background:${statusColor}">
-        ${escapeHtml(label)}
-      </div>`,
-      iconSize: [0, 0],
-      iconAnchor: [0, 0],
-    });
-
-    const marker = L.marker([listing.lat, listing.lng], { icon });
-
-    marker.bindPopup(`
-      <div class="map-popup">
-        <div style="padding:12px;">
-          <strong>${escapeHtml(listing.address)}</strong>
-          <p>${escapeHtml(listing.borough)}</p>
-          ${listing.projectName ? `<p style="font-size:0.8rem; color:var(--accent); font-weight:600; margin:4px 0 0;">${escapeHtml(listing.projectName)}</p>` : ''}
-          ${listing.totalUnits ? `<p style="font-size:0.8rem; color:var(--text-secondary); margin:4px 0 0;">${listing.totalUnits} units</p>` : ''}
-          <p style="font-size:0.78rem; color:${statusColor}; font-weight:600; margin:4px 0 0;">${escapeHtml(listing.lotteryStatus || 'Status on Housing Connect')}</p>
-          <button class="popup-btn" onclick="openModal('${listing.id}')">View Details</button>
-        </div>
-      </div>
-    `, { maxWidth: 260, minWidth: 200 });
-
-    marker.listingId = listing.id;
-
-    marker.on('mouseover', () => {
-      const card = document.querySelector(`[data-id="${listing.id}"]`);
-      if (card) card.classList.add('highlighted');
-      const pill = document.querySelector(`.price-pill[data-listing-id="${listing.id}"]`);
-      if (pill) pill.classList.add('active');
-    });
-    marker.on('mouseout', () => {
-      const card = document.querySelector(`[data-id="${listing.id}"]`);
-      if (card) card.classList.remove('highlighted');
-      const pill = document.querySelector(`.price-pill[data-listing-id="${listing.id}"]`);
-      if (pill) pill.classList.remove('active');
-    });
-
-    markersLayer.addLayer(marker);
-  });
-
-  if (withCoords.length > 0) {
-    const group = L.featureGroup(markersLayer.getLayers());
-    map.fitBounds(group.getBounds().pad(0.1));
-  }
-}
-
-function highlightMarker(listingId) {
-  if (!markersLayer) return;
-  const pill = document.querySelector(`.price-pill[data-listing-id="${listingId}"]`);
-  if (pill) pill.classList.add('active');
-  markersLayer.eachLayer(marker => {
-    if (marker.listingId === listingId) marker.openPopup();
-  });
-}
-
-function unhighlightMarker(listingId) {
-  if (!markersLayer) return;
-  const pill = document.querySelector(`.price-pill[data-listing-id="${listingId}"]`);
-  if (pill) pill.classList.remove('active');
-  markersLayer.eachLayer(marker => {
-    if (marker.listingId === listingId) marker.closePopup();
-  });
-}
+console.log('[StableNYC] RS Building lookup built:', Object.keys(rsLookup).length, 'keys');
+console.log('[StableNYC] Address matching tests:');
+console.log('  "101 Avenue A, Apt 3B" →', findRSBuilding('101 Avenue A, Apt 3B', 'Manhattan')?.address || 'NO MATCH');
+console.log('  "235 E 5th St, #4A" →', findRSBuilding('235 E 5th St, #4A', 'Manhattan')?.address || 'NO MATCH');
+console.log('  "315 W. 78th Street" →', findRSBuilding('315 W. 78th Street', 'Manhattan')?.address || 'NO MATCH');
+console.log('  "82-15 37th Avenue" →', findRSBuilding('82-15 37th Avenue', 'Queens')?.address || 'NO MATCH');
+console.log('  "485 Saint Johns Place" →', findRSBuilding('485 Saint Johns Place', 'Brooklyn')?.address || 'NO MATCH');
+console.log('  "999 Fake Street" →', findRSBuilding('999 Fake Street', 'Manhattan')?.address || 'NO MATCH');
 
 // ============================================================
-// UI HELPERS
+// PLACEHOLDER: Parts 4-8 will be added next
+// - Sample rental listings
+// - State management
+// - Map initialization
+// - Filter/sort logic
+// - Card rendering
+// - Modal
+// - Event listeners
+// - Boot sequence
 // ============================================================
-
-function getStatusColor(status) {
-  if (!status) return '#78716C';
-  const s = status.toLowerCase();
-  if (s.includes('open') || s.includes('accepting')) return '#16A34A';
-  if (s.includes('upcoming')) return '#2563EB';
-  if (s.includes('closed') || s.includes('filled')) return '#DC2626';
-  return '#D97706';
-}
-
-function getStatusLabel(status) {
-  if (!status) return 'See Housing Connect';
-  return status;
-}
-
-function formatDate(d) {
-  if (!d) return null;
-  return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function bedroomSummary(br) {
-  if (!br) return '';
-  const parts = [];
-  if (br.studio) parts.push(`${br.studio} Studio`);
-  if (br.oneBr) parts.push(`${br.oneBr} 1BR`);
-  if (br.twoBr) parts.push(`${br.twoBr} 2BR`);
-  if (br.threeBr) parts.push(`${br.threeBr} 3BR`);
-  if (br.fourBr) parts.push(`${br.fourBr} 4BR+`);
-  return parts.join(', ');
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str || '';
-  return div.innerHTML;
-}
-
-function showLoading(show) {
-  const grid = document.getElementById('listings-grid');
-  if (show) {
-    grid.innerHTML = `
-      <div class="loading-state" style="grid-column:1/-1; text-align:center; padding:60px 20px;">
-        <div class="loading-spinner"></div>
-        <p style="color:var(--text-muted); margin-top:16px;">Loading Housing Connect lotteries from NYC Open Data...</p>
-      </div>`;
-  }
-}
-
-function showApiError(errors) {
-  const grid = document.getElementById('listings-grid');
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('listing-count').textContent = '0';
-  document.getElementById('results-count').textContent = '0 listings found';
-
-  const banner = document.getElementById('data-banner');
-  if (banner) { banner.textContent = 'Unable to load data'; banner.className = 'data-banner error'; }
-
-  grid.innerHTML = `
-    <div style="grid-column:1/-1; text-align:center; padding:60px 24px;">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin-bottom:16px;">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/>
-      </svg>
-      <h3 style="font-family:'Bricolage Grotesque',sans-serif; font-size:1.3rem; margin-bottom:8px;">Could not connect to NYC Open Data</h3>
-      <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 8px;">The connection may be temporarily unavailable.</p>
-      ${errors.length > 0 ? `<p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:20px;">${errors.map(e => escapeHtml(e)).join('<br>')}</p>` : ''}
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="loadData()">Retry</button>
-        <a href="https://housingconnect.nyc.gov/PublicWeb/search-lotteries" target="_blank" rel="noopener" class="btn btn-secondary">Browse Housing Connect</a>
-      </div>
-    </div>`;
-}
-
-function updateDataBanner(count, errors) {
-  document.getElementById('listing-count').textContent = count;
-
-  // Count boroughs from actual data
-  const boroughs = new Set(allListings.map(l => l.borough).filter(Boolean));
-  const boroughCountEl = document.getElementById('borough-count');
-  if (boroughCountEl) boroughCountEl.textContent = boroughs.size;
-
-  const banner = document.getElementById('data-banner');
-  if (!banner) return;
-
-  const errCount = errors.length;
-  let text = `${count} Housing Connect lottery listings — data from NYC Open Data`;
-  if (errCount > 0) text += ` | ${errCount} source${errCount > 1 ? 's' : ''} unavailable`;
-  banner.textContent = text;
-  banner.className = errCount > 0 ? 'data-banner partial' : 'data-banner live';
-}
-
-// ---- Filtering ----
-function applyFilters() {
-  const borough = document.getElementById('filter-borough').value;
-  const status = document.getElementById('filter-status').value;
-  const bedroomFilter = document.getElementById('filter-bedrooms').value;
-  const search = document.getElementById('filter-search').value.toLowerCase().trim();
-  const sortBy = document.getElementById('sort-by').value;
-
-  filteredListings = allListings.filter(l => {
-    if (borough !== 'all' && l.borough !== borough) return false;
-    if (status !== 'all') {
-      const s = (l.lotteryStatus || '').toLowerCase();
-      if (status === 'open' && !s.includes('open') && !s.includes('accepting')) return false;
-      if (status === 'upcoming' && !s.includes('upcoming')) return false;
-      if (status === 'closed' && !s.includes('closed') && !s.includes('filled')) return false;
-    }
-    if (bedroomFilter !== 'all' && l.bedrooms) {
-      const br = l.bedrooms;
-      if (bedroomFilter === 'studio' && !br.studio) return false;
-      if (bedroomFilter === '1br' && !br.oneBr) return false;
-      if (bedroomFilter === '2br' && !br.twoBr) return false;
-      if (bedroomFilter === '3br' && !br.threeBr) return false;
-      if (bedroomFilter === '4br' && !br.fourBr) return false;
-    }
-    if (search && !`${l.address} ${l.borough} ${l.projectName || ''}`.toLowerCase().includes(search)) return false;
-    return true;
-  });
-
-  switch (sortBy) {
-    case 'date-asc': filteredListings.sort((a, b) => new Date(a.lotteryEnd || '2099') - new Date(b.lotteryEnd || '2099')); break;
-    case 'date-desc': filteredListings.sort((a, b) => new Date(b.lotteryStart || '1900') - new Date(a.lotteryStart || '1900')); break;
-    case 'units-desc': filteredListings.sort((a, b) => (b.totalUnits || 0) - (a.totalUnits || 0)); break;
-    case 'borough': filteredListings.sort((a, b) => a.borough.localeCompare(b.borough)); break;
-  }
-
-  currentPage = 1;
-  renderListings();
-  updateMapMarkers();
-}
-
-function resetFilters() {
-  document.getElementById('filter-borough').value = 'all';
-  document.getElementById('filter-status').value = 'all';
-  document.getElementById('filter-bedrooms').value = 'all';
-  document.getElementById('filter-search').value = '';
-  document.getElementById('sort-by').value = 'date-desc';
-  applyFilters();
-}
-
-// ---- Pagination ----
-function getTotalPages() {
-  return Math.max(1, Math.ceil(filteredListings.length / LISTINGS_PER_PAGE));
-}
-
-function getPageListings() {
-  const start = (currentPage - 1) * LISTINGS_PER_PAGE;
-  return filteredListings.slice(start, start + LISTINGS_PER_PAGE);
-}
-
-function goToPage(page) {
-  const total = getTotalPages();
-  currentPage = Math.max(1, Math.min(page, total));
-  renderListings();
-  const panel = document.getElementById('listings-panel');
-  if (panel) panel.scrollTop = 0;
-}
-
-function renderPagination() {
-  const total = getTotalPages();
-  if (total <= 1) return '';
-
-  const pages = [];
-  const maxVisible = 7;
-
-  if (total <= maxVisible) {
-    for (let i = 1; i <= total; i++) pages.push(i);
-  } else {
-    pages.push(1);
-    if (currentPage > 3) pages.push('...');
-    const start = Math.max(2, currentPage - 1);
-    const end = Math.min(total - 1, currentPage + 1);
-    for (let i = start; i <= end; i++) pages.push(i);
-    if (currentPage < total - 2) pages.push('...');
-    pages.push(total);
-  }
-
-  return `
-    <nav class="pagination" aria-label="Listings pagination">
-      <button class="page-btn page-arrow" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})" aria-label="Previous page">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
-      </button>
-      ${pages.map(p =>
-        p === '...'
-          ? '<span class="page-ellipsis">&hellip;</span>'
-          : `<button class="page-btn${p === currentPage ? ' active' : ''}" onclick="goToPage(${p})">${p}</button>`
-      ).join('')}
-      <button class="page-btn page-arrow" ${currentPage === total ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})" aria-label="Next page">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-      </button>
-    </nav>
-  `;
-}
-
-// ============================================================
-// RENDER LISTING CARDS — no photos, no fake rents, data only
-// ============================================================
-
-function renderListings() {
-  const grid = document.getElementById('listings-grid');
-  const empty = document.getElementById('empty-state');
-  const count = document.getElementById('results-count');
-
-  count.textContent = `${filteredListings.length} lottery listing${filteredListings.length !== 1 ? 's' : ''} found`;
-
-  if (filteredListings.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
-    document.getElementById('pagination-container').innerHTML = '';
-    return;
-  }
-  empty.style.display = 'none';
-
-  const pageListings = getPageListings();
-
-  grid.innerHTML = pageListings.map((l, i) => {
-    const statusColor = getStatusColor(l.lotteryStatus);
-    const statusLabel = getStatusLabel(l.lotteryStatus);
-
-    return `
-    <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.15)}s" tabindex="0" role="button" aria-label="View ${escapeHtml(l.address)}"
-      onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
-      <div class="card-status-header" style="background:${statusColor};">
-        <span class="status-dot"></span>
-        ${escapeHtml(statusLabel)}
-      </div>
-      <div class="card-body">
-        ${l.projectName ? `<p class="card-project">${escapeHtml(l.projectName)}</p>` : ''}
-        <h3 class="card-address">${escapeHtml(l.address)}</h3>
-        <p class="card-neighborhood">${escapeHtml(l.borough)}${l.zip ? ' ' + l.zip : ''}</p>
-        <div class="card-details">
-          ${l.totalUnits ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>${l.totalUnits} units</span>` : ''}
-          ${l.lotteryEnd ? `<span class="card-detail"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Deadline: ${formatDate(l.lotteryEnd)}</span>` : ''}
-        </div>
-        ${bedroomSummary(l.bedrooms) ? `<p class="card-bedrooms">${escapeHtml(bedroomSummary(l.bedrooms))}</p>` : ''}
-      </div>
-      <div class="card-footer">
-        <a href="${l.externalUrl}" target="_blank" rel="noopener" class="card-apply-link" onclick="event.stopPropagation()">
-          View on Housing Connect
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-      </div>
-    </article>`;
-  }).join('');
-
-  const paginationContainer = document.getElementById('pagination-container');
-  if (paginationContainer) {
-    paginationContainer.innerHTML = renderPagination();
-  }
-}
-
-// ============================================================
-// DETAIL MODAL — shows only real data, links to actual listing
-// ============================================================
-
-function openModal(id) {
-  const listing = allListings.find(l => l.id === id);
-  if (!listing) return;
-
-  const modal = document.getElementById('modal-overlay');
-  const content = document.getElementById('modal-content');
-  const statusColor = getStatusColor(listing.lotteryStatus);
-  const hasCoords = listing.lat && listing.lng;
-
-  content.innerHTML = `
-    <div class="modal-header-status" style="background:${statusColor};">
-      <span class="status-dot"></span>
-      ${escapeHtml(getStatusLabel(listing.lotteryStatus))}
-    </div>
-    ${hasCoords ? `<div class="modal-map-full" id="modal-map-container"></div>` : ''}
-    <div class="modal-body">
-      ${listing.projectName ? `<p style="font-size:0.9rem; color:var(--accent); font-weight:600; margin-bottom:4px;">${escapeHtml(listing.projectName)}</p>` : ''}
-      <h2>${escapeHtml(listing.address)}</h2>
-      <p class="modal-neighborhood">${escapeHtml(listing.borough)} ${listing.zip || ''}</p>
-
-      <div class="modal-info-callout">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-        <span>Rent amounts, photos, bedroom details, and income requirements are available on the Housing Connect listing page.</span>
-      </div>
-
-      <div class="modal-details-grid">
-        ${listing.totalUnits ? `<div class="modal-detail-item"><span class="modal-detail-label">Units</span><span class="modal-detail-value">${listing.totalUnits}</span></div>` : ''}
-        ${bedroomSummary(listing.bedrooms) ? `<div class="modal-detail-item"><span class="modal-detail-label">Unit Sizes</span><span class="modal-detail-value">${escapeHtml(bedroomSummary(listing.bedrooms))}</span></div>` : ''}
-        ${listing.lotteryStatus ? `<div class="modal-detail-item"><span class="modal-detail-label">Lottery Status</span><span class="modal-detail-value" style="color:${statusColor}; font-weight:600;">${escapeHtml(listing.lotteryStatus)}</span></div>` : ''}
-        ${listing.lotteryStart ? `<div class="modal-detail-item"><span class="modal-detail-label">Lottery Opened</span><span class="modal-detail-value">${formatDate(listing.lotteryStart)}</span></div>` : ''}
-        ${listing.lotteryEnd ? `<div class="modal-detail-item"><span class="modal-detail-label">Application Deadline</span><span class="modal-detail-value">${formatDate(listing.lotteryEnd)}</span></div>` : ''}
-        <div class="modal-detail-item"><span class="modal-detail-label">Borough</span><span class="modal-detail-value">${escapeHtml(listing.borough)}</span></div>
-        ${listing.zip ? `<div class="modal-detail-item"><span class="modal-detail-label">ZIP Code</span><span class="modal-detail-value">${escapeHtml(listing.zip)}</span></div>` : ''}
-      </div>
-
-      <div class="modal-contact">
-        <a href="${listing.externalUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1;justify-content:center;text-decoration:none;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          View Full Listing on Housing Connect
-        </a>
-      </div>
-
-      <p style="font-size:0.75rem; color:var(--text-muted); margin-top:16px; text-align:center;">
-        Data from <a href="https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y" target="_blank" rel="noopener" style="color:var(--accent);">NYC Open Data</a>. See Housing Connect for complete listing details.
-      </p>
-    </div>
-  `;
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-
-  if (hasCoords) {
-    setTimeout(() => {
-      const container = document.getElementById('modal-map-container');
-      if (!container) return;
-      if (modalMap) { modalMap.remove(); modalMap = null; }
-      modalMap = L.map(container, {
-        center: [listing.lat, listing.lng],
-        zoom: 15,
-        zoomControl: false,
-        dragging: true,
-        scrollWheelZoom: false,
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '', subdomains: 'abcd', maxZoom: 20,
-      }).addTo(modalMap);
-      L.circleMarker([listing.lat, listing.lng], {
-        radius: 10, fillColor: statusColor, color: '#fff', weight: 3, fillOpacity: 0.9,
-      }).addTo(modalMap);
-    }, 150);
-  }
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-  document.body.style.overflow = '';
-  if (modalMap) { modalMap.remove(); modalMap = null; }
-}
-
-// ---- Event Listeners ----
-document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target.id === 'modal-overlay') closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-function setView(view) {
-  currentView = view;
-  const layout = document.getElementById('listings-layout');
-  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
-  if (view === 'split') {
-    layout.className = 'listings-layout split-view';
-    document.getElementById('map-panel').style.display = '';
-    setTimeout(() => { if (map) map.invalidateSize(); }, 100);
-  } else {
-    layout.className = 'listings-layout grid-view';
-    document.getElementById('map-panel').style.display = 'none';
-  }
-}
-document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
-
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
-});
-
-['filter-borough', 'filter-status', 'filter-bedrooms', 'sort-by'].forEach(id => {
-  document.getElementById(id).addEventListener('change', applyFilters);
-});
-document.getElementById('filter-search').addEventListener('input', debounce(applyFilters, 300));
-
-function debounce(fn, delay) {
-  let timer;
-  return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); };
-}
-
-// ---- Injected styles ----
-const injectedStyle = document.createElement('style');
-injectedStyle.textContent = `
-.loading-spinner {
-  width: 40px; height: 40px; margin: 0 auto;
-  border: 3px solid var(--border); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.data-banner { text-align:center; padding:10px 16px; font-size:0.8rem; font-weight:500; border-radius:var(--radius-sm); margin-bottom:16px; line-height:1.5; }
-.data-banner.live { background:rgba(22,163,74,0.08); color:var(--success); }
-.data-banner.partial { background:rgba(217,119,6,0.06); color:#92400E; }
-.data-banner.error { background:rgba(220,38,38,0.08); color:#DC2626; }
-
-/* Map markers */
-.price-marker-wrapper { background:none !important; border:none !important; }
-.price-pill {
-  position:absolute; transform:translate(-50%, -100%);
-  color:white;
-  padding:5px 10px; border-radius:20px;
-  font-family:'Bricolage Grotesque',sans-serif;
-  font-size:0.72rem; font-weight:700; white-space:nowrap;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  cursor:pointer; transition:all 0.15s ease;
-  z-index:1;
-}
-.price-pill::after {
-  content:''; position:absolute; bottom:-5px; left:50%; transform:translateX(-50%);
-  border-left:5px solid transparent; border-right:5px solid transparent;
-  border-top:5px solid currentColor; transition:border-top-color 0.15s ease;
-}
-.price-pill:hover, .price-pill.active {
-  z-index:100 !important; transform:translate(-50%, -100%) scale(1.1);
-  filter:brightness(1.15);
-}
-
-/* Modal map */
-.modal-map-full {
-  width:100%; height:200px;
-}
-.modal-map-full .leaflet-container { width:100%; height:100%; }
-
-/* Info callout */
-.modal-info-callout {
-  display:flex; align-items:flex-start; gap:10px;
-  background:var(--accent-bg); border:1px solid rgba(13,148,136,0.2);
-  border-radius:var(--radius-sm); padding:12px 16px;
-  font-size:0.82rem; color:var(--text-secondary); line-height:1.5;
-  margin-bottom:20px;
-}
-.modal-info-callout svg { color:var(--accent); margin-top:1px; }
-
-/* Card status header */
-.card-status-header {
-  display:flex; align-items:center; gap:6px;
-  padding:8px 16px;
-  color:white; font-size:0.78rem; font-weight:600;
-  border-radius:var(--radius-md) var(--radius-md) 0 0;
-}
-.modal-header-status {
-  display:flex; align-items:center; gap:6px;
-  padding:10px 20px;
-  color:white; font-size:0.85rem; font-weight:600;
-  border-radius:var(--radius-md) var(--radius-md) 0 0;
-}
-.status-dot {
-  width:8px; height:8px; border-radius:50%;
-  background:rgba(255,255,255,0.6);
-  flex-shrink:0;
-}
-
-/* Card project name */
-.card-project {
-  font-size:0.82rem; color:var(--accent); font-weight:600;
-  margin-bottom:2px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-
-/* Bedroom summary on card */
-.card-bedrooms {
-  font-size:0.78rem; color:var(--text-secondary);
-  margin:6px 0 0; padding-top:6px;
-  border-top:1px solid var(--border);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-
-/* Apply link in card footer */
-.card-apply-link {
-  display:flex; align-items:center; gap:6px;
-  color:var(--accent); font-size:0.82rem; font-weight:600;
-  text-decoration:none; transition:color 0.15s;
-}
-.card-apply-link:hover { color:var(--accent-dark); }
-`;
-document.head.appendChild(injectedStyle);
-
-// Add data banner
-const filterBar = document.querySelector('.filter-bar');
-if (filterBar) {
-  const banner = document.createElement('div');
-  banner.id = 'data-banner';
-  banner.className = 'data-banner';
-  banner.textContent = 'Loading Housing Connect lotteries...';
-  filterBar.parentNode.insertBefore(banner, filterBar);
-}
-
-// ---- Boot ----
-initMap();
-loadData();
