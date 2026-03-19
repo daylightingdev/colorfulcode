@@ -483,10 +483,129 @@ function matchListingsToRS(listings) {
 }
 
 // ============================================================
-// PLACEHOLDER: Parts 6-10 will be added next
-// - State management + data loading
-// - Map initialization
-// - Filter/sort logic
+// PART 6: STATE MANAGEMENT + DATA LOADING
+// ============================================================
+
+let allListings = [];
+let filteredListings = [];
+let map;
+let markersLayer;
+let modalMap;
+let currentView = 'split';
+let currentPage = 1;
+const LISTINGS_PER_PAGE = 6;
+
+// Load listings: try worker first, fall back to sample data
+async function loadListings() {
+  // If a worker URL is configured, try fetching live listings
+  if (WORKER_URL) {
+    try {
+      const resp = await fetch(`${WORKER_URL}/api/listings`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.listings && data.listings.length > 0) {
+          return data.listings;
+        }
+      }
+    } catch (err) {
+      console.warn('[StableNYC] Worker unavailable, using sample data:', err.message);
+    }
+  }
+  // Fall back to sample data
+  return SAMPLE_LISTINGS;
+}
+
+async function loadData() {
+  showLoading(true);
+
+  try {
+    const rawListings = await loadListings();
+
+    // Match every listing against the RS building registry
+    const matched = matchListingsToRS(rawListings);
+
+    // Only keep listings that matched an RS building
+    allListings = matched.filter(l => l.rsMatch);
+
+    console.log(`[StableNYC] ${rawListings.length} raw listings → ${allListings.length} matched to RS buildings`);
+  } catch (err) {
+    console.error('[StableNYC] Failed to load listings:', err);
+    allListings = [];
+  }
+
+  showLoading(false);
+  updateStats();
+  applyFilters();
+}
+
+// ============================================================
+// PART 7: FILTER + SORT LOGIC
+// ============================================================
+
+function applyFilters() {
+  const borough = document.getElementById('filter-borough').value;
+  const price = document.getElementById('filter-price').value;
+  const bedrooms = document.getElementById('filter-bedrooms').value;
+  const search = document.getElementById('filter-search').value.toLowerCase().trim();
+  const sortBy = document.getElementById('sort-by').value;
+
+  filteredListings = allListings.filter(l => {
+    // Borough
+    if (borough !== 'all' && l.borough !== borough) return false;
+
+    // Price range
+    if (price !== 'all') {
+      const p = l.price || 0;
+      if (price === 'under1500' && p >= 1500) return false;
+      if (price === '1500-2000' && (p < 1500 || p >= 2000)) return false;
+      if (price === '2000-2500' && (p < 2000 || p >= 2500)) return false;
+      if (price === '2500-3000' && (p < 2500 || p >= 3000)) return false;
+      if (price === '3000plus' && p < 3000) return false;
+    }
+
+    // Bedrooms
+    if (bedrooms !== 'all') {
+      if (bedrooms === 'studio' && l.bedrooms !== 0) return false;
+      if (bedrooms === '1' && l.bedrooms !== 1) return false;
+      if (bedrooms === '2' && l.bedrooms !== 2) return false;
+      if (bedrooms === '3plus' && l.bedrooms < 3) return false;
+    }
+
+    // Text search
+    if (search) {
+      const haystack = `${l.address} ${l.borough} ${l.neighborhood || ''} ${l.zip || ''} ${l.description || ''}`.toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+
+    return true;
+  });
+
+  // Sort
+  switch (sortBy) {
+    case 'price-asc': filteredListings.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
+    case 'price-desc': filteredListings.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
+    case 'date-asc': filteredListings.sort((a, b) => new Date(a.availableDate || '2099') - new Date(b.availableDate || '2099')); break;
+    case 'newest': filteredListings.sort((a, b) => new Date(b.availableDate || '1900') - new Date(a.availableDate || '1900')); break;
+    case 'borough': filteredListings.sort((a, b) => a.borough.localeCompare(b.borough)); break;
+  }
+
+  currentPage = 1;
+  renderListings();
+  updateMapMarkers();
+}
+
+function resetFilters() {
+  document.getElementById('filter-borough').value = 'all';
+  document.getElementById('filter-price').value = 'all';
+  document.getElementById('filter-bedrooms').value = 'all';
+  document.getElementById('filter-search').value = '';
+  document.getElementById('sort-by').value = 'price-asc';
+  applyFilters();
+}
+
+// ============================================================
+// PLACEHOLDER: Parts 8-10 will be added next
+// - Map initialization + markers
 // - Card rendering + pagination
 // - Modal + events + boot
 // ============================================================
