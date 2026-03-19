@@ -256,7 +256,7 @@ const SAMPLE_LISTINGS = [
   // --- Manhattan ---
   {
     id: 'se-001', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=101+Avenue+A+Manhattan',
+    url: 'https://streeteasy.com/building/101-avenue-a-new_york',
     address: '101 Avenue A, Apt 3B',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
     price: 2450, bedrooms: 1, bathrooms: 1,
@@ -266,7 +266,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-002', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=235+E+5th+St+Manhattan',
+    url: 'https://streeteasy.com/building/235-east-5th-street-new_york',
     address: '235 E 5th St, #4A',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10003',
     price: 2100, bedrooms: 0, bathrooms: 1,
@@ -286,7 +286,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-004', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=201+West+70th+St+Manhattan',
+    url: 'https://streeteasy.com/building/201-west-70th-street-new_york',
     address: '201 West 70th St, 5C',
     borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10023',
     price: 3200, bedrooms: 2, bathrooms: 1,
@@ -296,7 +296,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-005', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=315+W+78th+Street+Manhattan',
+    url: 'https://streeteasy.com/building/315-west-78th-street-new_york',
     address: '315 W. 78th Street, 6A',
     borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10024',
     price: 2650, bedrooms: 1, bathrooms: 1,
@@ -306,7 +306,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-006', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=345+E+86th+St+Manhattan',
+    url: 'https://streeteasy.com/building/345-east-86th-street-new_york',
     address: '345 E 86th St #12F',
     borough: 'Manhattan', neighborhood: 'Upper East Side', zip: '10028',
     price: 3450, bedrooms: 2, bathrooms: 2,
@@ -316,7 +316,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-007', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=512+E+12th+St+Manhattan',
+    url: 'https://streeteasy.com/building/512-east-12th-street-new_york',
     address: '512 E 12th St, #4F',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
     price: 2900, bedrooms: 2, bathrooms: 1,
@@ -338,7 +338,7 @@ const SAMPLE_LISTINGS = [
   // --- Brooklyn ---
   {
     id: 'se-009', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=279+Sterling+Pl+Brooklyn',
+    url: 'https://streeteasy.com/building/279-sterling-place-brooklyn',
     address: '279 Sterling Pl, Apt 2',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 1800, bedrooms: 1, bathrooms: 1,
@@ -348,7 +348,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-010', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=485+Saint+Johns+Place+Brooklyn',
+    url: 'https://streeteasy.com/building/485-saint-johns-place-brooklyn',
     address: '485 Saint Johns Place #3R',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 2100, bedrooms: 1, bathrooms: 1,
@@ -358,7 +358,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-011', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=540+4th+Avenue+Brooklyn',
+    url: 'https://streeteasy.com/building/540-4th-avenue-brooklyn',
     address: '540 4th Avenue, 7B',
     borough: 'Brooklyn', neighborhood: 'Park Slope', zip: '11215',
     price: 2400, bedrooms: 2, bathrooms: 1,
@@ -378,7 +378,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-013', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=738+Franklin+Ave+Brooklyn',
+    url: 'https://streeteasy.com/building/738-franklin-avenue-brooklyn',
     address: '738 Franklin Ave, 2B',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 2350, bedrooms: 2, bathrooms: 1,
@@ -390,7 +390,7 @@ const SAMPLE_LISTINGS = [
   // --- Queens ---
   {
     id: 'se-014', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=31-12+30th+Ave+Queens',
+    url: 'https://streeteasy.com/building/31--12-30th-avenue-queens',
     address: '31-12 30th Ave, Apt 5C',
     borough: 'Queens', neighborhood: 'Astoria', zip: '11102',
     price: 1950, bedrooms: 1, bathrooms: 1,
@@ -410,7 +410,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-016', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=107-40+Queens+Blvd+Queens',
+    url: 'https://streeteasy.com/building/107--40-queens-boulevard-queens',
     address: '107-40 Queens Blvd, 8A',
     borough: 'Queens', neighborhood: 'Forest Hills', zip: '11375',
     price: 2500, bedrooms: 2, bathrooms: 1,
@@ -422,7 +422,7 @@ const SAMPLE_LISTINGS = [
   // --- Bronx ---
   {
     id: 'se-017', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=1520+Grand+Concourse+Bronx',
+    url: 'https://streeteasy.com/building/1520-grand-concourse-bronx',
     address: '1520 Grand Concourse, 8E',
     borough: 'Bronx', neighborhood: 'Concourse', zip: '10457',
     price: 1500, bedrooms: 0, bathrooms: 1,
@@ -442,7 +442,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-019', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=2155+University+Ave+Bronx',
+    url: 'https://streeteasy.com/building/2155-university-avenue-bronx',
     address: '2155 University Ave, 6C',
     borough: 'Bronx', neighborhood: 'University Heights', zip: '10453',
     price: 1400, bedrooms: 0, bathrooms: 1,
@@ -454,7 +454,7 @@ const SAMPLE_LISTINGS = [
   // --- Staten Island ---
   {
     id: 'se-020', source: 'streeteasy',
-    url: 'https://streeteasy.com/for-rent/nyc?search=1000+Richmond+Terrace+Staten+Island',
+    url: 'https://streeteasy.com/building/1000-richmond-terrace-staten_island',
     address: '1000 Richmond Terrace, 2B',
     borough: 'Staten Island', neighborhood: 'St. George', zip: '10301',
     price: 1750, bedrooms: 1, bathrooms: 1,
