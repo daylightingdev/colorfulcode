@@ -26,12 +26,12 @@
         <span class="logo-text">Stable<span class="logo-accent">NYC</span></span>
       </a>
       <div class="nav-links">
-        <a href="#listings">Lotteries</a>
+        <a href="#listings">Listings</a>
         <a href="#about">About</a>
         <a href="#resources">Resources</a>
       </div>
       <button class="nav-cta" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
-        Browse Lotteries
+        Browse Listings
       </button>
     </div>
   </nav>
@@ -44,13 +44,13 @@
       <div class="shape shape-3"></div>
     </div>
     <div class="hero-content">
-      <div class="hero-badge">Housing Connect Lotteries</div>
-      <h1>Find <span class="gradient-text">Affordable Housing Lotteries</span> in New York City</h1>
-      <p class="hero-subtitle">Real lottery listings from NYC Housing Connect. Browse by borough and status, then apply directly on the official Housing Connect site.</p>
+      <div class="hero-badge">Rent Stabilized Buildings</div>
+      <h1>Find <span class="gradient-text">Rent Stabilized Homes</span> in New York City</h1>
+      <p class="hero-subtitle">Rental listings cross-referenced with the DHCR rent stabilization registry. Know if a building is rent stabilized before you sign a lease.</p>
       <div class="hero-stats">
         <div class="stat">
           <span class="stat-number" id="listing-count">--</span>
-          <span class="stat-label">Lottery Listings</span>
+          <span class="stat-label">Active Listings</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
@@ -66,7 +66,7 @@
       <div class="hero-actions">
         <button class="btn btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          Browse Lotteries
+          Browse Listings
         </button>
         <a href="#about" class="btn btn-ghost">Learn About Rent Stabilization</a>
       </div>
@@ -77,8 +77,8 @@
   <section class="listings-section" id="listings">
     <div class="container">
       <div class="section-header">
-        <h2>Housing Connect Lotteries</h2>
-        <p>Real lottery listings from <a href="https://housingconnect.nyc.gov/PublicWeb/search-lotteries" target="_blank" rel="noopener" style="color:var(--accent);">Housing Connect</a> via NYC Open Data &mdash; click any listing to see full details and apply</p>
+        <h2>Listings in Rent Stabilized Buildings</h2>
+        <p>Rentals cross-referenced with the <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/" target="_blank" rel="noopener" style="color:var(--accent);">DHCR rent stabilization registry</a> &mdash; click any listing to see building details</p>
       </div>
 
       <!-- Filter Bar -->
@@ -96,40 +96,42 @@
             </select>
           </div>
           <div class="filter-group">
-            <label>Lottery Status</label>
-            <select id="filter-status">
-              <option value="all">All Statuses</option>
-              <option value="open">Open / Accepting</option>
-              <option value="upcoming">Upcoming</option>
-              <option value="closed">Closed / Filled</option>
+            <label>Max Price</label>
+            <select id="filter-price">
+              <option value="all">Any Price</option>
+              <option value="2000">Under $2,000</option>
+              <option value="2500">Under $2,500</option>
+              <option value="3000">Under $3,000</option>
+              <option value="3500">Under $3,500</option>
+              <option value="4000">Under $4,000</option>
             </select>
           </div>
           <div class="filter-group">
             <label>Bedrooms</label>
             <select id="filter-bedrooms">
               <option value="all">Any Size</option>
-              <option value="studio">Studio</option>
-              <option value="1br">1 Bedroom</option>
-              <option value="2br">2 Bedrooms</option>
-              <option value="3br">3 Bedrooms</option>
-              <option value="4br">4+ Bedrooms</option>
+              <option value="0">Studio</option>
+              <option value="1">1 Bedroom</option>
+              <option value="2">2 Bedrooms</option>
+              <option value="3">3 Bedrooms</option>
+              <option value="4">4+ Bedrooms</option>
             </select>
           </div>
           <div class="filter-group filter-search">
             <label>Search</label>
-            <input type="text" id="filter-search" placeholder="Address, neighborhood, project name...">
+            <input type="text" id="filter-search" placeholder="Address, neighborhood, ZIP...">
           </div>
         </div>
         <div class="filter-meta">
-          <span id="results-count">-- lotteries found</span>
+          <span id="results-count">-- listings found</span>
           <div class="filter-meta-right">
             <div class="sort-group">
               <label>Sort by</label>
               <select id="sort-by">
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
                 <option value="date-desc">Newest First</option>
-                <option value="date-asc">Deadline Soonest</option>
-                <option value="units-desc">Most Units</option>
-                <option value="borough">Borough</option>
+                <option value="bedrooms">Bedrooms</option>
               </select>
             </div>
             <div class="view-toggle">
@@ -159,8 +161,8 @@
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
             <path d="M8 11h6" stroke-linecap="round"/>
           </svg>
-          <h3>No lotteries match your filters</h3>
-          <p>Try adjusting your borough or status filters to see more results.</p>
+          <h3>No listings match your filters</h3>
+          <p>Try adjusting your price, borough, or bedroom filters to see more results.</p>
           <button class="btn btn-secondary" onclick="resetFilters()">Reset All Filters</button>
         </div>
       </div>
@@ -203,8 +205,8 @@
           <div class="info-icon">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
-          <h3>Housing Connect Lotteries</h3>
-          <p>NYC's affordable housing lottery system allocates rent-stabilized units through a fair, randomized process. Apply at <a href="https://housingconnect.nyc.gov/" target="_blank" rel="noopener">Housing Connect</a>.</p>
+          <h3>How to Verify</h3>
+          <p>Ask your landlord, check for an RS rider on your lease, or search the DHCR database at <a href="https://apps.hcr.ny.gov/BuildingSearch/" target="_blank" rel="noopener">HCR Building Search</a>.</p>
         </div>
       </div>
     </div>
@@ -218,16 +220,16 @@
         <p>Verified tools and agencies for rent-stabilized housing</p>
       </div>
       <div class="resources-grid">
-        <a href="https://housingconnect.nyc.gov/PublicWeb/search-lotteries" target="_blank" rel="noopener" class="resource-card">
-          <div class="resource-badge">Apply</div>
-          <h3>Housing Connect</h3>
-          <p>NYC's official portal for applying to affordable housing lotteries. Create an account and browse open lotteries.</p>
-          <span class="resource-link">Visit Site &rarr;</span>
-        </a>
         <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/" target="_blank" rel="noopener" class="resource-card">
           <div class="resource-badge">Official</div>
           <h3>NYC Rent Guidelines Board</h3>
           <p>Download official lists of buildings containing rent-stabilized apartments filed with NYS HCR.</p>
+          <span class="resource-link">Visit Site &rarr;</span>
+        </a>
+        <a href="https://apps.hcr.ny.gov/BuildingSearch/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Official</div>
+          <h3>DHCR Building Search</h3>
+          <p>Search the official NYS HCR database to verify if a specific building is registered as rent stabilized.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
         <a href="https://rsbl.nyc/" target="_blank" rel="noopener" class="resource-card">
@@ -242,16 +244,16 @@
           <p>Check if your building likely has rent-stabilized units using public data from DHCR and DOF.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
-        <a href="https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y" target="_blank" rel="noopener" class="resource-card">
-          <div class="resource-badge">Data</div>
-          <h3>NYC Open Data</h3>
-          <p>The source of all lottery data shown on this site. Explore Housing Connect datasets directly.</p>
+        <a href="https://streeteasy.com/" target="_blank" rel="noopener" class="resource-card">
+          <div class="resource-badge">Listings</div>
+          <h3>StreetEasy</h3>
+          <p>NYC's most popular rental listings platform. Cross-reference addresses with the RS building list.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
         <a href="https://hcr.ny.gov/" target="_blank" rel="noopener" class="resource-card">
           <div class="resource-badge">Official</div>
           <h3>NYS HCR</h3>
-          <p>New York State Homes and Community Renewal — verify rent stabilization status for any building.</p>
+          <p>New York State Homes and Community Renewal — the agency that administers rent stabilization.</p>
           <span class="resource-link">Visit Site &rarr;</span>
         </a>
       </div>
@@ -267,11 +269,11 @@
           <p>Helping New Yorkers find affordable, rent-stabilized homes across all five boroughs.</p>
         </div>
         <div class="footer-disclaimer">
-          <p><strong>Disclaimer:</strong> Lottery listings sourced from NYC Open Data (<a href="https://data.cityofnewyork.us/Housing-Development/Advertised-Lotteries-on-Housing-Connect-By-Buildin/nibs-na6y" target="_blank" rel="noopener">Housing Connect Lotteries</a>). This site does not display rent amounts, photos, or unit details — click through to <a href="https://housingconnect.nyc.gov/" target="_blank" rel="noopener">Housing Connect</a> for complete listing information and to apply. Not affiliated with any government agency.</p>
+          <p><strong>Disclaimer:</strong> Building data sourced from the <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/" target="_blank" rel="noopener">NYC Rent Guidelines Board</a>. Rental listings are simulated for demonstration. Building-level RS status does not guarantee unit-level stabilization &mdash; always verify with your landlord and check your lease for an RS rider. Not affiliated with any government agency.</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 StableNYC. Data sourced from NYC Open Data &mdash; Housing Connect Lotteries.</p>
+        <p>&copy; 2026 StableNYC. Building data from DHCR via NYC Rent Guidelines Board.</p>
       </div>
     </div>
   </footer>

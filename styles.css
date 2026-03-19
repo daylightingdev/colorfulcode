@@ -531,7 +531,8 @@ h1, h2, h3, h4, h5, h6,
   height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .map-panel {
@@ -719,6 +720,28 @@ h1, h2, h3, h4, h5, h6,
 .external-icon {
   display: inline-flex;
   opacity: 0.7;
+}
+
+/* ===== RS BADGE & SOURCE BADGE ===== */
+.rs-badge {
+  display: inline-block;
+  background: rgba(22, 163, 74, 0.12);
+  color: #16A34A;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+
+.source-badge {
+  display: inline-block;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
 }
 
 /* ===== EMPTY STATE ===== */
