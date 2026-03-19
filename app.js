@@ -256,7 +256,7 @@ const SAMPLE_LISTINGS = [
   // --- Manhattan ---
   {
     id: 'se-001', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-1',
+    url: 'https://streeteasy.com/for-rent/east-village',
     address: '101 Avenue A, Apt 3B',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
     price: 2450, bedrooms: 1, bathrooms: 1,
@@ -266,7 +266,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-002', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-2',
+    url: 'https://streeteasy.com/for-rent/east-village',
     address: '235 E 5th St, #4A',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10003',
     price: 2100, bedrooms: 0, bathrooms: 1,
@@ -276,7 +276,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'cl-003', source: 'craigslist',
-    url: 'https://newyork.craigslist.org/mnh/abo/example-3',
+    url: 'https://newyork.craigslist.org/search/mnh/apa',
     address: '340 East 11th Street, #2R',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10003',
     price: 2800, bedrooms: 2, bathrooms: 1,
@@ -286,7 +286,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-004', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-4',
+    url: 'https://streeteasy.com/for-rent/upper-west-side',
     address: '201 West 70th St, 5C',
     borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10023',
     price: 3200, bedrooms: 2, bathrooms: 1,
@@ -296,7 +296,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-005', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-5',
+    url: 'https://streeteasy.com/for-rent/upper-west-side',
     address: '315 W. 78th Street, 6A',
     borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10024',
     price: 2650, bedrooms: 1, bathrooms: 1,
@@ -306,7 +306,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-006', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-6',
+    url: 'https://streeteasy.com/for-rent/upper-east-side',
     address: '345 E 86th St #12F',
     borough: 'Manhattan', neighborhood: 'Upper East Side', zip: '10028',
     price: 3450, bedrooms: 2, bathrooms: 2,
@@ -316,7 +316,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-007', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-7',
+    url: 'https://streeteasy.com/for-rent/east-village',
     address: '512 E 12th St, #4F',
     borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
     price: 2900, bedrooms: 2, bathrooms: 1,
@@ -326,7 +326,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'cl-008', source: 'craigslist',
-    url: 'https://newyork.craigslist.org/mnh/abo/example-8',
+    url: 'https://newyork.craigslist.org/search/mnh/apa',
     address: '424 W 84th St, 2A',
     borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10024',
     price: 1950, bedrooms: 0, bathrooms: 1,
@@ -338,7 +338,7 @@ const SAMPLE_LISTINGS = [
   // --- Brooklyn ---
   {
     id: 'se-009', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-9',
+    url: 'https://streeteasy.com/for-rent/crown-heights',
     address: '279 Sterling Pl, Apt 2',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 1800, bedrooms: 1, bathrooms: 1,
@@ -348,7 +348,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-010', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-10',
+    url: 'https://streeteasy.com/for-rent/crown-heights',
     address: '485 Saint Johns Place #3R',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 2100, bedrooms: 1, bathrooms: 1,
@@ -358,7 +358,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-011', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-11',
+    url: 'https://streeteasy.com/for-rent/park-slope',
     address: '540 4th Avenue, 7B',
     borough: 'Brooklyn', neighborhood: 'Park Slope', zip: '11215',
     price: 2400, bedrooms: 2, bathrooms: 1,
@@ -368,7 +368,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'cl-012', source: 'craigslist',
-    url: 'https://newyork.craigslist.org/brk/abo/example-12',
+    url: 'https://newyork.craigslist.org/search/brk/apa',
     address: '95 Bedford Ave, 4L',
     borough: 'Brooklyn', neighborhood: 'Williamsburg', zip: '11211',
     price: 2750, bedrooms: 1, bathrooms: 1,
@@ -378,7 +378,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-013', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-13',
+    url: 'https://streeteasy.com/for-rent/crown-heights',
     address: '738 Franklin Ave, 2B',
     borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
     price: 2350, bedrooms: 2, bathrooms: 1,
@@ -390,7 +390,7 @@ const SAMPLE_LISTINGS = [
   // --- Queens ---
   {
     id: 'se-014', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-14',
+    url: 'https://streeteasy.com/for-rent/astoria',
     address: '31-12 30th Ave, Apt 5C',
     borough: 'Queens', neighborhood: 'Astoria', zip: '11102',
     price: 1950, bedrooms: 1, bathrooms: 1,
@@ -400,7 +400,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'cl-015', source: 'craigslist',
-    url: 'https://newyork.craigslist.org/que/abo/example-15',
+    url: 'https://newyork.craigslist.org/search/que/apa',
     address: '82-15 37th Avenue #4D',
     borough: 'Queens', neighborhood: 'Jackson Heights', zip: '11372',
     price: 1650, bedrooms: 0, bathrooms: 1,
@@ -410,7 +410,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-016', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-16',
+    url: 'https://streeteasy.com/for-rent/forest-hills',
     address: '107-40 Queens Blvd, 8A',
     borough: 'Queens', neighborhood: 'Forest Hills', zip: '11375',
     price: 2500, bedrooms: 2, bathrooms: 1,
@@ -422,7 +422,7 @@ const SAMPLE_LISTINGS = [
   // --- Bronx ---
   {
     id: 'se-017', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-17',
+    url: 'https://streeteasy.com/for-rent/concourse',
     address: '1520 Grand Concourse, 8E',
     borough: 'Bronx', neighborhood: 'Concourse', zip: '10457',
     price: 1500, bedrooms: 0, bathrooms: 1,
@@ -432,7 +432,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'cl-018', source: 'craigslist',
-    url: 'https://newyork.craigslist.org/brx/abo/example-18',
+    url: 'https://newyork.craigslist.org/search/brx/apa',
     address: '2575 Palisade Ave, 3A',
     borough: 'Bronx', neighborhood: 'Riverdale', zip: '10463',
     price: 2200, bedrooms: 2, bathrooms: 1,
@@ -442,7 +442,7 @@ const SAMPLE_LISTINGS = [
   },
   {
     id: 'se-019', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-19',
+    url: 'https://streeteasy.com/for-rent/university-heights',
     address: '2155 University Ave, 6C',
     borough: 'Bronx', neighborhood: 'University Heights', zip: '10453',
     price: 1400, bedrooms: 0, bathrooms: 1,
@@ -454,7 +454,7 @@ const SAMPLE_LISTINGS = [
   // --- Staten Island ---
   {
     id: 'se-020', source: 'streeteasy',
-    url: 'https://streeteasy.com/rental/example-20',
+    url: 'https://streeteasy.com/for-rent/saint-george',
     address: '1000 Richmond Terrace, 2B',
     borough: 'Staten Island', neighborhood: 'St. George', zip: '10301',
     price: 1750, bedrooms: 1, bathrooms: 1,
