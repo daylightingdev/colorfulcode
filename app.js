@@ -102,9 +102,12 @@ function normalizeAddress(addr) {
   if (!addr) return '';
   let s = addr.toUpperCase().trim();
 
-  // Remove apartment/unit suffixes: ", Apt 3B", "#4A", "Unit 2", etc.
+  // Remove apartment/unit suffixes: ", Apt 3B", "#4A", "Unit 2", ", 5C", etc.
   s = s.replace(/[,\s]+(APT|APARTMENT|UNIT|SUITE|STE|FL|FLOOR|RM|ROOM|#)\s*\.?\s*\S*$/i, '');
   s = s.replace(/\s*#\s*\S+$/, '');
+  // Catch trailing ", 5C" or ", 2A" patterns (unit without label)
+  s = s.replace(/,\s*\d*[A-Z]+\s*$/, '');
+  s = s.replace(/,\s*\d+\s*$/, '');
 
   // Remove periods, commas, hashes
   s = s.replace(/[.,#]/g, '');
@@ -121,6 +124,16 @@ function normalizeAddress(addr) {
 
   // Normalize ordinal suffixes: 1ST→1, 2ND→2, 3RD→3, 4TH→4, etc.
   s = s.replace(/\b(\d+)(?:ST|ND|RD|TH)\b/g, '$1');
+
+  // Normalize spelled-out ordinals: FIRST→1, SECOND→2, etc.
+  const WORD_ORDINALS = {
+    FIRST: '1', SECOND: '2', THIRD: '3', FOURTH: '4', FIFTH: '5',
+    SIXTH: '6', SEVENTH: '7', EIGHTH: '8', NINTH: '9', TENTH: '10',
+    ELEVENTH: '11', TWELFTH: '12',
+  };
+  for (const [word, num] of Object.entries(WORD_ORDINALS)) {
+    s = s.replace(new RegExp(`\\b${word}\\b`, 'g'), num);
+  }
 
   // Normalize "SAINT" to "ST" (for St Johns, St Marks, etc.)
   s = s.replace(/\bSAINT\b/g, 'ST');
@@ -233,13 +246,247 @@ console.log('  "485 Saint Johns Place" →', findRSBuilding('485 Saint Johns Pla
 console.log('  "999 Fake Street" →', findRSBuilding('999 Fake Street', 'Manhattan')?.address || 'NO MATCH');
 
 // ============================================================
-// PLACEHOLDER: Parts 4-8 will be added next
-// - Sample rental listings
-// - State management
+// PART 4: SAMPLE RENTAL LISTINGS
+// In production these come from the Cloudflare Worker
+// (StreetEasy, Craigslist RSS, etc). For development we use
+// sample listings at addresses that match RS buildings above.
+// ============================================================
+
+const SAMPLE_LISTINGS = [
+  // --- Manhattan ---
+  {
+    id: 'se-001', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-1',
+    address: '101 Avenue A, Apt 3B',
+    borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
+    price: 2450, bedrooms: 1, bathrooms: 1,
+    description: 'Bright 1BR in classic pre-war building. High ceilings, hardwood floors, updated kitchen. Heat and hot water included.',
+    availableDate: '2026-04-01',
+    lat: 40.7264, lng: -73.9842,
+  },
+  {
+    id: 'se-002', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-2',
+    address: '235 E 5th St, #4A',
+    borough: 'Manhattan', neighborhood: 'East Village', zip: '10003',
+    price: 2100, bedrooms: 0, bathrooms: 1,
+    description: 'Cozy studio in well-maintained elevator building. Laundry in basement, close to Tompkins Square Park.',
+    availableDate: '2026-04-15',
+    lat: 40.7286, lng: -73.9895,
+  },
+  {
+    id: 'cl-003', source: 'craigslist',
+    url: 'https://newyork.craigslist.org/mnh/abo/example-3',
+    address: '340 East 11th Street, #2R',
+    borough: 'Manhattan', neighborhood: 'East Village', zip: '10003',
+    price: 2800, bedrooms: 2, bathrooms: 1,
+    description: 'Spacious 2BR railroad-style apartment. Exposed brick, tons of natural light. Steps from St. Marks.',
+    availableDate: '2026-05-01',
+    lat: 40.7303, lng: -73.9824,
+  },
+  {
+    id: 'se-004', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-4',
+    address: '201 West 70th St, 5C',
+    borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10023',
+    price: 3200, bedrooms: 2, bathrooms: 1,
+    description: 'Classic UWS 2BR near Central Park and Lincoln Center. Doorman building with roof deck.',
+    availableDate: '2026-04-01',
+    lat: 40.7772, lng: -73.9799,
+  },
+  {
+    id: 'se-005', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-5',
+    address: '315 W. 78th Street, 6A',
+    borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10024',
+    price: 2650, bedrooms: 1, bathrooms: 1,
+    description: 'Sunny 1BR with river views. Pre-war details, renovated bathroom. Walk to Riverside Park.',
+    availableDate: '2026-05-15',
+    lat: 40.7832, lng: -73.9775,
+  },
+  {
+    id: 'se-006', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-6',
+    address: '345 E 86th St #12F',
+    borough: 'Manhattan', neighborhood: 'Upper East Side', zip: '10028',
+    price: 3450, bedrooms: 2, bathrooms: 2,
+    description: 'Large 2BR/2BA in full-service building. Gym, laundry, 24hr doorman. Near Q train.',
+    availableDate: '2026-04-15',
+    lat: 40.7776, lng: -73.9515,
+  },
+  {
+    id: 'se-007', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-7',
+    address: '512 E 12th St, #4F',
+    borough: 'Manhattan', neighborhood: 'East Village', zip: '10009',
+    price: 2900, bedrooms: 2, bathrooms: 1,
+    description: 'Renovated 2BR with in-unit washer/dryer. Dishwasher, great closets. Pet friendly.',
+    availableDate: '2026-06-01',
+    lat: 40.7295, lng: -73.9815,
+  },
+  {
+    id: 'cl-008', source: 'craigslist',
+    url: 'https://newyork.craigslist.org/mnh/abo/example-8',
+    address: '424 W 84th St, 2A',
+    borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10024',
+    price: 1950, bedrooms: 0, bathrooms: 1,
+    description: 'Charming studio on tree-lined block. Original moldings, quiet rear-facing. Cats OK.',
+    availableDate: '2026-04-01',
+    lat: 40.7862, lng: -73.9751,
+  },
+
+  // --- Brooklyn ---
+  {
+    id: 'se-009', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-9',
+    address: '279 Sterling Pl, Apt 2',
+    borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
+    price: 1800, bedrooms: 1, bathrooms: 1,
+    description: '1BR in brownstone building on quiet block. Near Prospect Park and Brooklyn Museum.',
+    availableDate: '2026-04-15',
+    lat: 40.6784, lng: -73.9629,
+  },
+  {
+    id: 'se-010', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-10',
+    address: '485 Saint Johns Place #3R',
+    borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
+    price: 2100, bedrooms: 1, bathrooms: 1,
+    description: 'Bright 1BR with original details. Close to Franklin Ave C/S trains. Laundry on-site.',
+    availableDate: '2026-05-01',
+    lat: 40.6740, lng: -73.9571,
+  },
+  {
+    id: 'se-011', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-11',
+    address: '540 4th Avenue, 7B',
+    borough: 'Brooklyn', neighborhood: 'Park Slope', zip: '11215',
+    price: 2400, bedrooms: 2, bathrooms: 1,
+    description: 'Corner 2BR with open layout. Updated kitchen, near R train and Prospect Park.',
+    availableDate: '2026-04-01',
+    lat: 40.6728, lng: -73.9821,
+  },
+  {
+    id: 'cl-012', source: 'craigslist',
+    url: 'https://newyork.craigslist.org/brk/abo/example-12',
+    address: '95 Bedford Ave, 4L',
+    borough: 'Brooklyn', neighborhood: 'Williamsburg', zip: '11211',
+    price: 2750, bedrooms: 1, bathrooms: 1,
+    description: 'Williamsburg 1BR near L train. Roof access, bike storage. No fee.',
+    availableDate: '2026-05-15',
+    lat: 40.7135, lng: -73.9619,
+  },
+  {
+    id: 'se-013', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-13',
+    address: '738 Franklin Ave, 2B',
+    borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11238',
+    price: 2350, bedrooms: 2, bathrooms: 1,
+    description: 'Spacious 2BR near Botanic Garden. Hardwood floors, large living room. Heat included.',
+    availableDate: '2026-06-01',
+    lat: 40.6738, lng: -73.9580,
+  },
+
+  // --- Queens ---
+  {
+    id: 'se-014', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-14',
+    address: '31-12 30th Ave, Apt 5C',
+    borough: 'Queens', neighborhood: 'Astoria', zip: '11102',
+    price: 1950, bedrooms: 1, bathrooms: 1,
+    description: 'Astoria 1BR near N/W trains. Tons of restaurants, close to Astoria Park.',
+    availableDate: '2026-04-15',
+    lat: 40.7693, lng: -73.9200,
+  },
+  {
+    id: 'cl-015', source: 'craigslist',
+    url: 'https://newyork.craigslist.org/que/abo/example-15',
+    address: '82-15 37th Avenue #4D',
+    borough: 'Queens', neighborhood: 'Jackson Heights', zip: '11372',
+    price: 1650, bedrooms: 0, bathrooms: 1,
+    description: 'Affordable studio in Jackson Heights. Diverse neighborhood, near 7 train. All utilities included.',
+    availableDate: '2026-04-01',
+    lat: 40.7489, lng: -73.8835,
+  },
+  {
+    id: 'se-016', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-16',
+    address: '107-40 Queens Blvd, 8A',
+    borough: 'Queens', neighborhood: 'Forest Hills', zip: '11375',
+    price: 2500, bedrooms: 2, bathrooms: 1,
+    description: 'Forest Hills 2BR in doorman building. Near Austin Street shops and E/F/M/R trains.',
+    availableDate: '2026-05-01',
+    lat: 40.7209, lng: -73.8456,
+  },
+
+  // --- Bronx ---
+  {
+    id: 'se-017', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-17',
+    address: '1520 Grand Concourse, 8E',
+    borough: 'Bronx', neighborhood: 'Concourse', zip: '10457',
+    price: 1500, bedrooms: 0, bathrooms: 1,
+    description: 'Art Deco studio on the Grand Concourse. High ceilings, original details. Near B/D trains.',
+    availableDate: '2026-04-01',
+    lat: 40.8372, lng: -73.9090,
+  },
+  {
+    id: 'cl-018', source: 'craigslist',
+    url: 'https://newyork.craigslist.org/brx/abo/example-18',
+    address: '2575 Palisade Ave, 3A',
+    borough: 'Bronx', neighborhood: 'Riverdale', zip: '10463',
+    price: 2200, bedrooms: 2, bathrooms: 1,
+    description: 'Riverdale 2BR with Hudson River views. Quiet, tree-lined neighborhood. Near express bus.',
+    availableDate: '2026-05-15',
+    lat: 40.8866, lng: -73.9108,
+  },
+  {
+    id: 'se-019', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-19',
+    address: '2155 University Ave, 6C',
+    borough: 'Bronx', neighborhood: 'University Heights', zip: '10453',
+    price: 1400, bedrooms: 0, bathrooms: 1,
+    description: 'Affordable studio near Bronx Community College. Elevator building, laundry on-site.',
+    availableDate: '2026-04-15',
+    lat: 40.8530, lng: -73.9156,
+  },
+
+  // --- Staten Island ---
+  {
+    id: 'se-020', source: 'streeteasy',
+    url: 'https://streeteasy.com/rental/example-20',
+    address: '1000 Richmond Terrace, 2B',
+    borough: 'Staten Island', neighborhood: 'St. George', zip: '10301',
+    price: 1750, bedrooms: 1, bathrooms: 1,
+    description: '1BR near Staten Island Ferry terminal. Waterfront views, easy Manhattan commute.',
+    availableDate: '2026-04-01',
+    lat: 40.6435, lng: -74.0765,
+  },
+];
+
+// ============================================================
+// PART 5: MATCH LISTINGS TO RS BUILDINGS
+// Run each listing through findRSBuilding() and annotate it
+// ============================================================
+
+function matchListingsToRS(listings) {
+  return listings.map(listing => {
+    const rsBuilding = findRSBuilding(listing.address, listing.borough);
+    return {
+      ...listing,
+      rsMatch: rsBuilding ? true : false,
+      rsBuilding: rsBuilding || null,
+      // Individual unit RS status is almost never verifiable from DHCR data
+      rsUnitVerified: false,
+    };
+  });
+}
+
+// ============================================================
+// PLACEHOLDER: Parts 6-10 will be added next
+// - State management + data loading
 // - Map initialization
 // - Filter/sort logic
-// - Card rendering
-// - Modal
-// - Event listeners
-// - Boot sequence
+// - Card rendering + pagination
+// - Modal + events + boot
 // ============================================================
