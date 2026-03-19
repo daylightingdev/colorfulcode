@@ -887,6 +887,250 @@ function renderListings() {
 }
 
 // ============================================================
-// PLACEHOLDER: Part 10 will be added next
-// - Modal + events + boot
+// PART 10: DETAIL MODAL
 // ============================================================
+
+function openModal(id) {
+  const listing = allListings.find(l => l.id === id);
+  if (!listing) return;
+
+  const modal = document.getElementById('modal-overlay');
+  const content = document.getElementById('modal-content');
+  const hasCoords = listing.lat && listing.lng;
+  const rsBuilding = listing.rsBuilding;
+  const bedroomLabel = formatBedrooms(listing.bedrooms);
+
+  content.innerHTML = `
+    ${hasCoords ? `<div class="modal-map-full" id="modal-map-container"></div>` : ''}
+    <div class="modal-body">
+      <div class="modal-badges">
+        <span class="rs-badge">Rent Stabilized Building</span>
+        <span class="source-badge">${escapeHtml(sourceLabel(listing.source))}</span>
+      </div>
+
+      <div class="modal-price-row">
+        <span class="modal-price">${formatPrice(listing.price)}<span class="modal-price-period">/mo</span></span>
+        <span class="modal-bedrooms">${bedroomLabel}${listing.bathrooms ? ` / ${listing.bathrooms} Bath` : ''}</span>
+      </div>
+
+      <h2>${escapeHtml(listing.address)}</h2>
+      <p class="modal-neighborhood">${escapeHtml(listing.neighborhood || listing.borough)}${listing.zip ? ', ' + listing.zip : ''}</p>
+
+      ${listing.availableDate ? `<p class="modal-available">Available ${formatDate(listing.availableDate)}</p>` : ''}
+
+      ${listing.description ? `<div class="modal-description"><p>${escapeHtml(listing.description)}</p></div>` : ''}
+
+      ${rsBuilding ? `
+      <div class="modal-rs-section">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          DHCR Rent Stabilization Record
+        </h3>
+        <div class="modal-details-grid">
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">Building Address</span>
+            <span class="modal-detail-value">${escapeHtml(rsBuilding.address)}</span>
+          </div>
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">Borough</span>
+            <span class="modal-detail-value">${escapeHtml(rsBuilding.borough)}</span>
+          </div>
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">ZIP Code</span>
+            <span class="modal-detail-value">${escapeHtml(rsBuilding.zip)}</span>
+          </div>
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">RS Units in Building</span>
+            <span class="modal-detail-value">${rsBuilding.units}</span>
+          </div>
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">Year Built</span>
+            <span class="modal-detail-value">${rsBuilding.yearBuilt}</span>
+          </div>
+          <div class="modal-detail-item">
+            <span class="modal-detail-label">Block / Lot</span>
+            <span class="modal-detail-value">${escapeHtml(rsBuilding.block)} / ${escapeHtml(rsBuilding.lot)}</span>
+          </div>
+        </div>
+        <div class="modal-rs-disclaimer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>This building is on the DHCR rent stabilization registry. However, the stabilization status of this specific unit is <strong>unverified</strong>. Ask the landlord to confirm and check your lease for an RS rider.</span>
+        </div>
+      </div>
+      ` : ''}
+
+      <div class="modal-actions">
+        <a href="${listing.url}" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1;justify-content:center;text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View on ${escapeHtml(sourceLabel(listing.source))}
+        </a>
+        ${rsBuilding ? `<a href="https://apps.hcr.ny.gov/BuildingSearch/" target="_blank" rel="noopener" class="btn btn-secondary" style="flex:1;justify-content:center;text-decoration:none;">
+          DHCR Building Search
+        </a>` : ''}
+      </div>
+
+      <p style="font-size:0.75rem; color:var(--text-muted); margin-top:16px; text-align:center;">
+        Listing from ${escapeHtml(sourceLabel(listing.source))}. RS building data from
+        <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/" target="_blank" rel="noopener" style="color:var(--accent);">NYC Rent Guidelines Board</a>.
+      </p>
+    </div>
+  `;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  if (hasCoords) {
+    setTimeout(() => {
+      const container = document.getElementById('modal-map-container');
+      if (!container) return;
+      if (modalMap) { modalMap.remove(); modalMap = null; }
+      modalMap = L.map(container, {
+        center: [listing.lat, listing.lng],
+        zoom: 15,
+        zoomControl: false,
+        dragging: true,
+        scrollWheelZoom: false,
+      });
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '', subdomains: 'abcd', maxZoom: 20,
+      }).addTo(modalMap);
+      L.circleMarker([listing.lat, listing.lng], {
+        radius: 10, fillColor: 'var(--accent, #0D9488)', color: '#fff', weight: 3, fillOpacity: 0.9,
+      }).addTo(modalMap);
+    }, 150);
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+  if (modalMap) { modalMap.remove(); modalMap = null; }
+}
+
+// ============================================================
+// PART 11: EVENT LISTENERS
+// ============================================================
+
+// Modal close
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target.id === 'modal-overlay') closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// View toggle
+function setView(view) {
+  currentView = view;
+  const layout = document.getElementById('listings-layout');
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+  if (view === 'split') {
+    layout.className = 'listings-layout split-view';
+    document.getElementById('map-panel').style.display = '';
+    setTimeout(() => { if (map) map.invalidateSize(); }, 100);
+  } else {
+    layout.className = 'listings-layout grid-view';
+    document.getElementById('map-panel').style.display = 'none';
+  }
+}
+document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Filter change events
+['filter-borough', 'filter-price', 'filter-bedrooms', 'sort-by'].forEach(id => {
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
+document.getElementById('filter-search').addEventListener('input', debounce(applyFilters, 300));
+
+// ============================================================
+// PART 12: INJECTED STYLES (for dynamic elements)
+// ============================================================
+
+const injectedStyle = document.createElement('style');
+injectedStyle.textContent = `
+.loading-spinner {
+  width: 40px; height: 40px; margin: 0 auto;
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Map markers */
+.price-marker-wrapper { background:none !important; border:none !important; }
+.price-pill {
+  position:absolute; transform:translate(-50%, -100%);
+  background:var(--accent, #0D9488); color:white;
+  padding:5px 10px; border-radius:20px;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:0.72rem; font-weight:700; white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  cursor:pointer; transition:all 0.15s ease;
+  z-index:1;
+}
+.price-pill::after {
+  content:''; position:absolute; bottom:-5px; left:50%; transform:translateX(-50%);
+  border-left:5px solid transparent; border-right:5px solid transparent;
+  border-top:5px solid var(--accent, #0D9488);
+}
+.price-pill:hover, .price-pill.active {
+  z-index:100 !important; transform:translate(-50%, -100%) scale(1.1);
+  filter:brightness(1.15);
+}
+
+/* RS badge in popups */
+.rs-badge-small {
+  display:inline-block; background:rgba(22,163,74,0.12); color:#16A34A;
+  font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px;
+  letter-spacing:0.3px;
+}
+
+/* Modal map */
+.modal-map-full { width:100%; height:200px; }
+.modal-map-full .leaflet-container { width:100%; height:100%; }
+
+/* Modal RS section */
+.modal-rs-section {
+  background:var(--surface, #f8f9fa); border:1px solid var(--border);
+  border-radius:var(--radius-md, 12px); padding:20px; margin:20px 0;
+}
+.modal-rs-section h3 {
+  display:flex; align-items:center; gap:8px;
+  font-size:0.95rem; color:var(--accent); margin-bottom:16px;
+}
+.modal-rs-disclaimer {
+  display:flex; align-items:flex-start; gap:10px;
+  background:rgba(217,119,6,0.08); border:1px solid rgba(217,119,6,0.2);
+  border-radius:var(--radius-sm, 8px); padding:12px 16px;
+  font-size:0.8rem; color:#92400E; line-height:1.5; margin-top:16px;
+}
+.modal-rs-disclaimer svg { color:#D97706; margin-top:1px; flex-shrink:0; }
+
+/* Modal price */
+.modal-price-row {
+  display:flex; align-items:baseline; gap:12px; margin-bottom:8px;
+}
+.modal-price {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.8rem; font-weight:800; color:var(--text-primary);
+}
+.modal-price-period { font-size:1rem; font-weight:400; color:var(--text-secondary); }
+.modal-bedrooms { font-size:0.95rem; color:var(--text-secondary); }
+.modal-available { font-size:0.85rem; color:var(--text-secondary); margin:4px 0 12px; }
+.modal-description {
+  background:var(--surface, #f8f9fa); border-radius:var(--radius-sm, 8px);
+  padding:14px 16px; margin:12px 0; font-size:0.88rem; line-height:1.6;
+  color:var(--text-secondary);
+}
+.modal-badges { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+.modal-actions { display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
+`;
+document.head.appendChild(injectedStyle);
+
+// ============================================================
+// PART 13: BOOT
+// ============================================================
+
+initMap();
+loadData();
