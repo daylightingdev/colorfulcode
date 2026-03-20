@@ -2,6 +2,7 @@
 // Fetches rent-stabilized apartment listings from:
 //   1. StreetEasy API via RapidAPI (primary)
 //   2. Craigslist RSS feeds (fallback)
+//   3. NYC Open Data — Affordable Housing Production (always available)
 // Deploy: cd worker && npx wrangler deploy
 // Set API key: npx wrangler secret put RAPIDAPI_KEY
 
@@ -11,8 +12,8 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// RapidAPI StreetEasy host
-const RAPIDAPI_HOST = 'nyc-real-estate-api.p.rapidapi.com';
+// RapidAPI StreetEasy host (realestator provider)
+const RAPIDAPI_HOST = 'streeteasy-api.p.rapidapi.com';
 
 // StreetEasy area codes for borough filtering
 const SE_AREAS = {
@@ -121,6 +122,20 @@ async function fetchAllListings(borough, env) {
     errors.push({ source: 'craigslist', error: e.message });
   }
 
+  // Also fetch from NYC Open Data (affordable housing buildings — always available)
+  try {
+    const nycListings = await fetchNYCOpenData(borough);
+    for (const l of nycListings) {
+      const key = `${l.address}|${l.price}`;
+      if (!seenKeys.has(key)) {
+        seenKeys.add(key);
+        allListings.push(l);
+      }
+    }
+  } catch (e) {
+    errors.push({ source: 'nycopendata', error: e.message });
+  }
+
   return { listings: allListings, errors };
 }
 
@@ -131,12 +146,13 @@ async function fetchAllListings(borough, env) {
 async function fetchStreetEasyAPI(borough, apiKey) {
   const area = SE_AREAS[borough.toLowerCase()] || '';
 
-  // Try multiple endpoint paths (API structure may vary)
+  // Try multiple endpoint paths (StreetEasy API on RapidAPI by realestator)
   const endpoints = [
     `/rentals/active`,
     `/for-rent`,
-    `/search/rentals`,
-    `/properties/list`,
+    `/rentals/search`,
+    `/rentals`,
+    `/search`,
   ];
 
   let data = null;
@@ -251,10 +267,13 @@ async function fetchCraigslistArea(area) {
   try {
     const resp = await fetch(rssUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; StableNYC/1.0)',
-        'Accept': 'application/rss+xml, application/xml, text/xml',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
       },
-      cf: { cacheTtl: 600 },
     });
 
     if (!resp.ok) return [];
@@ -314,6 +333,69 @@ function parseCraigslistRSS(xml, area) {
       images,
       source: 'craigslist',
       postedDate: dateStr || null,
+    });
+  }
+
+  return listings;
+}
+
+// ============================================================
+// SOURCE 3: NYC Open Data — Affordable Housing Production
+// Free SODA API, no key required, always available
+// ============================================================
+
+const NYC_BOROUGH_MAP = {
+  all: '',
+  manhattan: 'Manhattan',
+  brooklyn: 'Brooklyn',
+  queens: 'Queens',
+  bronx: 'Bronx',
+  'staten island': 'Staten Island',
+};
+
+async function fetchNYCOpenData(borough) {
+  const boroughFilter = NYC_BOROUGH_MAP[borough.toLowerCase()] || '';
+  const params = new URLSearchParams({
+    $limit: '100',
+    $order: 'project_completion_date DESC',
+    $where: 'counted_rental_units > 0 AND latitude IS NOT NULL',
+  });
+  if (boroughFilter) {
+    params.set('$where', `counted_rental_units > 0 AND latitude IS NOT NULL AND borough='${boroughFilter}'`);
+  }
+
+  const url = `https://data.cityofnewyork.us/resource/hg8x-zxpr.json?${params}`;
+  const resp = await fetch(url, {
+    headers: { 'Accept': 'application/json' },
+  });
+
+  if (!resp.ok) throw new Error(`NYC Open Data: HTTP ${resp.status}`);
+  const data = await resp.json();
+
+  const listings = [];
+  for (const item of data) {
+    const addr = [item.number, item.street].filter(Boolean).join(' ');
+    if (!addr) continue;
+
+    const totalUnits = parseInt(item.all_counted_units) || 0;
+    const bedrooms = parseInt(item._1_br_units) || parseInt(item.studio_units) || 0;
+
+    listings.push({
+      url: `https://www.nyc.gov/site/hpd/about/open-data.page`,
+      address: addr,
+      borough: item.borough || '',
+      neighborhood: item.nta_neighborhood_tabulation_area || item.borough || '',
+      zip: item.postcode || '',
+      price: null,
+      bedrooms,
+      bathrooms: null,
+      description: `Affordable housing building with ${totalUnits} counted units. ${item.reporting_construction_type || ''}. Project: ${item.project_name || 'N/A'}.`,
+      title: `${addr} — ${totalUnits} Affordable Units`,
+      lat: parseFloat(item.latitude) || null,
+      lng: parseFloat(item.longitude) || null,
+      images: [],
+      source: 'nycopendata',
+      postedDate: item.project_completion_date || null,
     });
   }
 
@@ -400,7 +482,7 @@ async function debugFetch(env) {
 
   // Test StreetEasy API — try multiple endpoints
   if (env.RAPIDAPI_KEY) {
-    const endpoints = ['/rentals/active', '/for-rent', '/search/rentals', '/properties/list'];
+    const endpoints = ['/rentals/active', '/for-rent', '/rentals/search', '/rentals', '/search'];
     results.sources.streeteasy = {};
     for (const endpoint of endpoints) {
       try {
@@ -428,10 +510,13 @@ async function debugFetch(env) {
     const rssUrl = 'https://newyork.craigslist.org/search/mnh/apa?format=rss&query=%22rent+stabilized%22&availabilityMode=0';
     const resp = await fetch(rssUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; StableNYC/1.0)',
-        'Accept': 'application/rss+xml, application/xml, text/xml',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
       },
-      cf: { cacheTtl: 0 },
     });
     const xml = await resp.text();
     const listings = parseCraigslistRSS(xml, 'mnh');
@@ -444,6 +529,18 @@ async function debugFetch(env) {
     };
   } catch (e) {
     results.sources.craigslist = { error: e.message };
+  }
+
+  // Test NYC Open Data
+  try {
+    const nycListings = await fetchNYCOpenData('all');
+    results.sources.nycopendata = {
+      status: 200,
+      count: nycListings.length,
+      firstListing: nycListings[0] || null,
+    };
+  } catch (e) {
+    results.sources.nycopendata = { error: e.message };
   }
 
   return results;

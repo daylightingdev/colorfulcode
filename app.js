@@ -553,7 +553,7 @@ function formatDate(d) {
 }
 
 function sourceLabel(source) {
-  const labels = { streeteasy: 'StreetEasy', craigslist: 'Craigslist', facebook: 'Facebook' };
+  const labels = { streeteasy: 'StreetEasy', craigslist: 'Craigslist', facebook: 'Facebook', nycopendata: 'NYC Open Data' };
   return labels[source] || source || 'Listing';
 }
 
