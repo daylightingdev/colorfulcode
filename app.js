@@ -208,37 +208,82 @@ buildRSLookup(RS_BUILDINGS);
 
 // Attempt to load a larger RS building registry from NYC Open Data
 async function loadRSBuildingsFromOpenData() {
-  try {
-    // HPD Multiple Dwelling Registrations — contains registered building addresses
-    const url = `${SODA_BASE}/${HPD_REGISTRATIONS_ID}.json?$limit=50000&$select=boroid,block,lot,buildingid,housenumber,lowhousenumber,highhousenumber,streetname,zip,city,registrationid,buildingstatusid&$where=buildingstatusid=1`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    if (!Array.isArray(data) || data.length === 0) throw new Error('Empty dataset');
+  // Try multiple NYC Open Data datasets to find RS building data
+  const datasets = [
+    {
+      // HPD Multiple Dwelling Registrations
+      id: 'tesw-yqqr',
+      // First, discover the schema by fetching 1 row without $select
+      url: `${SODA_BASE}/tesw-yqqr.json?$limit=50000`,
+      parse: (data) => {
+        // Dynamically detect column names from first row
+        if (data.length === 0) return [];
+        const sample = data[0];
+        const keys = Object.keys(sample);
+        console.log('[StableNYC] HPD dataset columns:', keys.join(', '));
 
-    const boroNames = { '1': 'Manhattan', '2': 'Bronx', '3': 'Brooklyn', '4': 'Queens', '5': 'Staten Island' };
+        // Map common column name patterns
+        const findCol = (...patterns) => keys.find(k =>
+          patterns.some(p => k.toLowerCase().includes(p))
+        );
 
-    const buildings = data.map(row => {
-      const houseNum = row.housenumber || row.lowhousenumber || '';
-      const street = (row.streetname || '').toUpperCase();
-      const address = houseNum ? `${houseNum} ${street}` : street;
-      return {
-        address,
-        borough: boroNames[row.boroid] || row.city || '',
-        zip: row.zip || '',
-        block: row.block || '',
-        lot: row.lot || '',
-      };
-    }).filter(b => b.address && b.borough);
+        const boroCol = findCol('boroid', 'boroughid', 'boro');
+        const houseCol = findCol('housenumber', 'house_number', 'housenum', 'lowhousenumber', 'low_house');
+        const streetCol = findCol('streetname', 'street_name', 'street');
+        const zipCol = findCol('zip', 'postcode', 'postal');
+        const blockCol = findCol('block');
+        const lotCol = findCol('lot');
 
-    if (buildings.length > 0) {
-      RS_BUILDINGS = [...RS_BUILDINGS_SEED, ...buildings];
-      buildRSLookup(RS_BUILDINGS);
-      console.log(`[StableNYC] Loaded ${buildings.length} RS buildings from NYC Open Data`);
+        if (!streetCol) {
+          console.warn('[StableNYC] Could not find street column in HPD data');
+          return [];
+        }
+
+        const boroNames = {
+          '1': 'Manhattan', '2': 'Bronx', '3': 'Brooklyn',
+          '4': 'Queens', '5': 'Staten Island',
+          'MANHATTAN': 'Manhattan', 'BRONX': 'Bronx', 'BROOKLYN': 'Brooklyn',
+          'QUEENS': 'Queens', 'STATEN ISLAND': 'Staten Island',
+        };
+
+        return data.map(row => {
+          const houseNum = houseCol ? (row[houseCol] || '') : '';
+          const street = (row[streetCol] || '').toUpperCase();
+          const address = houseNum ? `${houseNum} ${street}` : street;
+          const rawBoro = boroCol ? (row[boroCol] || '') : '';
+          return {
+            address,
+            borough: boroNames[String(rawBoro).toUpperCase()] || rawBoro,
+            zip: zipCol ? (row[zipCol] || '') : '',
+            block: blockCol ? (row[blockCol] || '') : '',
+            lot: lotCol ? (row[lotCol] || '') : '',
+          };
+        }).filter(b => b.address && b.borough);
+      },
+    },
+  ];
+
+  for (const ds of datasets) {
+    try {
+      console.log(`[StableNYC] Loading RS data from NYC Open Data (${ds.id})...`);
+      const resp = await fetch(ds.url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      if (!Array.isArray(data) || data.length === 0) throw new Error('Empty dataset');
+
+      const buildings = ds.parse(data);
+      if (buildings.length > 0) {
+        RS_BUILDINGS = [...RS_BUILDINGS_SEED, ...buildings];
+        buildRSLookup(RS_BUILDINGS);
+        console.log(`[StableNYC] Loaded ${buildings.length} RS buildings from NYC Open Data`);
+        return;
+      }
+    } catch (err) {
+      console.warn(`[StableNYC] Dataset ${ds.id} failed:`, err.message);
     }
-  } catch (err) {
-    console.warn('[StableNYC] Could not load RS data from NYC Open Data, using seed data:', err.message);
   }
+
+  console.warn('[StableNYC] Could not load RS data from NYC Open Data, using seed data only');
 }
 
 
@@ -546,12 +591,17 @@ async function loadListings() {
   // If a worker URL is configured, try fetching live listings
   if (WORKER_URL) {
     try {
+      console.log('[StableNYC] Fetching listings from worker...');
       const resp = await fetch(`${WORKER_URL}?action=listings&borough=all`);
+      console.log(`[StableNYC] Worker response: ${resp.status} ${resp.statusText}`);
       if (resp.ok) {
         const data = await resp.json();
+        console.log(`[StableNYC] Worker data:`, { listings: data.listings?.length || 0, source: data.source, borough: data.borough });
         if (data.listings && data.listings.length > 0) {
           console.log(`[StableNYC] Worker returned ${data.listings.length} listings`);
           return { listings: data.listings, source: 'worker' };
+        } else {
+          console.warn('[StableNYC] Worker returned 0 listings, falling back to sample data');
         }
       }
     } catch (err) {
@@ -559,6 +609,7 @@ async function loadListings() {
     }
   }
   // Fall back to sample data
+  console.log(`[StableNYC] Using ${SAMPLE_LISTINGS.length} sample listings`);
   return { listings: SAMPLE_LISTINGS, source: 'sample' };
 }
 
