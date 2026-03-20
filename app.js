@@ -7,9 +7,8 @@
 const WORKER_URL = 'https://stablenyc-photo-proxy.rsnyc.workers.dev';
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
-// NYC Open Data dataset IDs for rent stabilization data
-// HPD Registration Contacts dataset — includes building addresses and boroughs
-const HPD_REGISTRATIONS_ID = 'tesw-yqqr';
+// DHCR Rent Stabilized building data (geocoded CSV from public FOIL data)
+const DHCR_DATA_URL = 'https://raw.githubusercontent.com/clhenrick/dhcr-rent-stabilized-data/master/csv/dhcr_all_geocoded.csv';
 
 // ============================================================
 // PART 1: DHCR RENT STABILIZED BUILDING REGISTRY
@@ -207,83 +206,63 @@ let RS_BUILDINGS = [...RS_BUILDINGS_SEED];
 buildRSLookup(RS_BUILDINGS);
 
 // Attempt to load a larger RS building registry from NYC Open Data
-async function loadRSBuildingsFromOpenData() {
-  // Try multiple NYC Open Data datasets to find RS building data
-  const datasets = [
-    {
-      // HPD Multiple Dwelling Registrations
-      id: 'tesw-yqqr',
-      // First, discover the schema by fetching 1 row without $select
-      url: `${SODA_BASE}/tesw-yqqr.json?$limit=50000`,
-      parse: (data) => {
-        // Dynamically detect column names from first row
-        if (data.length === 0) return [];
-        const sample = data[0];
-        const keys = Object.keys(sample);
-        console.log('[StableNYC] HPD dataset columns:', keys.join(', '));
+async function loadRSBuildingsFromDHCR() {
+  try {
+    console.log('[StableNYC] Loading DHCR rent-stabilized building registry...');
+    const resp = await fetch(DHCR_DATA_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const csv = await resp.text();
 
-        // Map common column name patterns
-        const findCol = (...patterns) => keys.find(k =>
-          patterns.some(p => k.toLowerCase().includes(p))
-        );
+    const boroNames = {
+      '1': 'Manhattan', '2': 'Bronx', '3': 'Brooklyn',
+      '4': 'Queens', '5': 'Staten Island',
+    };
 
-        const boroCol = findCol('boroid', 'boroughid', 'boro');
-        const houseCol = findCol('housenumber', 'house_number', 'housenum', 'lowhousenumber', 'low_house');
-        const streetCol = findCol('streetname', 'street_name', 'street');
-        const zipCol = findCol('zip', 'postcode', 'postal');
-        const blockCol = findCol('block');
-        const lotCol = findCol('lot');
+    // Parse CSV: columns are
+    // bldgno1,bldgno1_low,bldgno1_high,street_name1,street_suffix1,
+    // bldgno2,...,bldgno3,...,boro_code,zip,bbl,bin,lat,lon
+    const lines = csv.split('\n');
+    const buildings = [];
 
-        if (!streetCol) {
-          console.warn('[StableNYC] Could not find street column in HPD data');
-          return [];
-        }
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
 
-        const boroNames = {
-          '1': 'Manhattan', '2': 'Bronx', '3': 'Brooklyn',
-          '4': 'Queens', '5': 'Staten Island',
-          'MANHATTAN': 'Manhattan', 'BRONX': 'Bronx', 'BROOKLYN': 'Brooklyn',
-          'QUEENS': 'Queens', 'STATEN ISLAND': 'Staten Island',
-        };
+      const cols = line.split(',');
+      // bldgno1=0, bldgno1_low=1, bldgno1_high=2, street_name1=3, street_suffix1=4
+      // boro_code=15, zip=16, bbl=17, bin=18, lat=19, lon=20
+      const houseNum = cols[0] || '';
+      const streetName = (cols[3] || '').toUpperCase();
+      const streetSuffix = (cols[4] || '').toUpperCase();
+      const boroCode = cols[15] || '';
+      const zip = cols[16] || '';
+      const bbl = cols[17] || '';
+      const lat = parseFloat(cols[19]) || null;
+      const lng = parseFloat(cols[20]) || null;
 
-        return data.map(row => {
-          const houseNum = houseCol ? (row[houseCol] || '') : '';
-          const street = (row[streetCol] || '').toUpperCase();
-          const address = houseNum ? `${houseNum} ${street}` : street;
-          const rawBoro = boroCol ? (row[boroCol] || '') : '';
-          return {
-            address,
-            borough: boroNames[String(rawBoro).toUpperCase()] || rawBoro,
-            zip: zipCol ? (row[zipCol] || '') : '',
-            block: blockCol ? (row[blockCol] || '') : '',
-            lot: lotCol ? (row[lotCol] || '') : '',
-          };
-        }).filter(b => b.address && b.borough);
-      },
-    },
-  ];
+      if (!houseNum || !streetName) continue;
 
-  for (const ds of datasets) {
-    try {
-      console.log(`[StableNYC] Loading RS data from NYC Open Data (${ds.id})...`);
-      const resp = await fetch(ds.url);
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      const data = await resp.json();
-      if (!Array.isArray(data) || data.length === 0) throw new Error('Empty dataset');
+      const street = streetSuffix ? `${streetName} ${streetSuffix}` : streetName;
+      const address = `${houseNum} ${street}`;
 
-      const buildings = ds.parse(data);
-      if (buildings.length > 0) {
-        RS_BUILDINGS = [...RS_BUILDINGS_SEED, ...buildings];
-        buildRSLookup(RS_BUILDINGS);
-        console.log(`[StableNYC] Loaded ${buildings.length} RS buildings from NYC Open Data`);
-        return;
-      }
-    } catch (err) {
-      console.warn(`[StableNYC] Dataset ${ds.id} failed:`, err.message);
+      buildings.push({
+        address,
+        borough: boroNames[boroCode] || '',
+        zip,
+        bbl,
+        lat,
+        lng,
+      });
     }
-  }
 
-  console.warn('[StableNYC] Could not load RS data from NYC Open Data, using seed data only');
+    if (buildings.length > 0) {
+      RS_BUILDINGS = [...RS_BUILDINGS_SEED, ...buildings];
+      buildRSLookup(RS_BUILDINGS);
+      console.log(`[StableNYC] Loaded ${buildings.length} RS buildings from DHCR registry`);
+    }
+  } catch (err) {
+    console.warn('[StableNYC] Could not load DHCR data, using seed data:', err.message);
+  }
 }
 
 
@@ -619,7 +598,7 @@ async function loadData() {
   try {
     // Load RS building data and listings in parallel
     const [rsResult, listingsResult] = await Promise.all([
-      loadRSBuildingsFromOpenData(),
+      loadRSBuildingsFromDHCR(),
       loadListings(),
     ]);
 
