@@ -33,6 +33,12 @@ export default {
     const action = url.searchParams.get('action') || 'listings';
 
     try {
+      if (action === 'debug') {
+        // Debug endpoint: show what StreetEasy returns
+        const debugInfo = await debugStreetEasyFetch();
+        return jsonResponse(debugInfo);
+      }
+
       if (action === 'listings') {
         const borough = url.searchParams.get('borough') || 'all';
         const page = parseInt(url.searchParams.get('page')) || 1;
@@ -90,32 +96,94 @@ async function fetchRentStabilizedListings(borough, page) {
   return allListings;
 }
 
-async function fetchSinglePage(slug, page) {
+// Multiple search URL formats to try (StreetEasy changes their URL patterns)
+function getSearchUrls(slug, page) {
   const pageParam = page > 1 ? `?page=${page}` : '';
+  return [
+    // Format 1: filter syntax with description search
+    `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent+stabilized%22${pageParam}`,
+    // Format 2: text search parameter
+    `https://streeteasy.com/for-rent/${slug}?utf8=%E2%9C%93&search=rent+stabilized${page > 1 ? '&page=' + page : ''}`,
+    // Format 3: amenity/keyword filter
+    `https://streeteasy.com/for-rent/${slug}/rent+stabilized${pageParam}`,
+  ];
+}
 
-  // Search for currently active listings that mention "rent stabilized"
-  const searchUrl = `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent+stabilized%22${pageParam}`;
+async function fetchSinglePage(slug, page) {
+  const urls = getSearchUrls(slug, page);
 
-  const resp = await fetch(searchUrl, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Accept-Encoding': 'gzip',
-      'Cache-Control': 'no-cache',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-    },
-    cf: { cacheTtl: 300 }, // Cache for 5 minutes
-  });
+  for (const searchUrl of urls) {
+    try {
+      const resp = await fetch(searchUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip',
+          'Cache-Control': 'no-cache',
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'none',
+        },
+        cf: { cacheTtl: 300 },
+      });
 
-  if (!resp.ok) return [];
-  const html = await resp.text();
-  const raw = parseStreetEasyListings(html);
+      if (!resp.ok) continue;
+      const html = await resp.text();
+      const raw = parseStreetEasyListings(html);
+      const verified = raw.filter(l => isVerifiedRentStabilized(l));
 
-  // Double-check: only include listings that explicitly reference rent stabilization
-  return raw.filter(l => isVerifiedRentStabilized(l));
+      if (verified.length > 0) return verified;
+    } catch (e) {
+      // Try next URL format
+    }
+  }
+
+  return [];
+}
+
+// Debug endpoint to diagnose what StreetEasy returns
+async function debugStreetEasyFetch() {
+  const slug = 'nyc';
+  const urls = getSearchUrls(slug, 1);
+  const results = [];
+
+  for (const searchUrl of urls) {
+    try {
+      const resp = await fetch(searchUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+        cf: { cacheTtl: 0 },
+      });
+
+      const html = await resp.text();
+      const hasJsonLd = html.includes('application/ld+json');
+      const hasNextData = html.includes('__NEXT_DATA__');
+      const hasRentalLinks = html.includes('/rental/');
+      const hasCaptcha = html.includes('captcha') || html.includes('challenge') || html.includes('cf-browser-verification');
+      const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+
+      results.push({
+        url: searchUrl,
+        status: resp.status,
+        htmlLength: html.length,
+        title: titleMatch ? titleMatch[1].trim() : null,
+        hasJsonLd,
+        hasNextData,
+        hasRentalLinks,
+        hasCaptcha,
+        htmlPreview: html.substring(0, 500),
+        listingsParsed: parseStreetEasyListings(html).length,
+      });
+    } catch (e) {
+      results.push({ url: searchUrl, error: e.message });
+    }
+  }
+
+  return { debug: true, results };
 }
 
 function isVerifiedRentStabilized(listing) {
