@@ -64,7 +64,7 @@ async function fetchRentStabilizedListings(borough, page) {
   const pageParam = page > 1 ? `&page=${page}` : '';
 
   // Search for "rent stabilized" in listing descriptions
-  const searchUrl = `https://streeteasy.com/for-rent/${slug}?utf8=%E2%9C%93&search=rent+stabilized${pageParam}`;
+  const searchUrl = `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent%20stabilized%22${pageParam}`;
 
   const resp = await fetch(searchUrl, {
     headers: {
