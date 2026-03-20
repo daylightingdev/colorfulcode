@@ -267,261 +267,8 @@ async function loadRSBuildingsFromDHCR() {
 
 
 // ============================================================
-// PART 4: SAMPLE RENTAL LISTINGS
-// In production these come from the Cloudflare Worker
-// (StreetEasy, Craigslist RSS, etc). For development we use
-// sample listings at addresses that match RS buildings above.
+// PART 4: (No sample data — all listings come from the worker)
 // ============================================================
-
-const SAMPLE_LISTINGS = [
-  // --- Manhattan ---
-  {
-    id: 'se-001', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/2183-3-avenue-new_york/705',
-    address: '2183 3rd Avenue, #705',
-    borough: 'Manhattan', neighborhood: 'East Harlem', zip: '10115',
-    price: 2800, bedrooms: 0, bathrooms: 1,
-    description: 'Contemporary rent-stabilized studio on the 7th floor with south-facing exposure, floor-to-ceiling windows, and open skyline views including the Empire State Building. Central air, dishwasher, hardwood floors, doorman, elevator, laundry, gym, and roof deck.',
-    availableDate: '2026-04-01',
-    lat: 40.8020, lng: -73.9400,
-  },
-  {
-    id: 'se-002', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/75-east-111-street-new_york/1b',
-    address: '75 East 111th Street, #1B',
-    borough: 'Manhattan', neighborhood: 'South Harlem', zip: '10029',
-    price: 2200, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized 1BR in Sendero Verde Phase I, a newly constructed 324-unit building. Free amenities include outdoor terrace, fitness center, community room, computer room, bicycle storage, package lockers, and broadband internet.',
-    availableDate: '2026-04-15',
-    lat: 40.7955, lng: -73.9440,
-  },
-  {
-    id: 'se-003', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/209-east-110-street-new_york/2',
-    address: '209 East 110th Street, #2',
-    borough: 'Manhattan', neighborhood: 'East Harlem', zip: '10029',
-    price: 2100, bedrooms: 2, bathrooms: 1,
-    description: 'Rent-stabilized 2BR with brand new renovations. No fee — just first month and security to move in. Only 1 block to the subway, get to Grand Central in 15 minutes.',
-    availableDate: '2026-05-01',
-    lat: 40.7950, lng: -73.9435,
-  },
-  {
-    id: 'se-004', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/266-west-96th/2s',
-    address: '266 West 96th Street, #2S',
-    borough: 'Manhattan', neighborhood: 'Upper West Side', zip: '10025',
-    price: 2400, bedrooms: 1, bathrooms: 1,
-    description: 'Brand-new rent-stabilized apartment on the Upper West Side. Qualified applicants meeting criteria for household size and income can apply.',
-    availableDate: '2026-04-01',
-    lat: 40.7945, lng: -73.9720,
-  },
-  {
-    id: 'se-005', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/150-west-225-street-bronx/29g',
-    address: '150 West 225th Street, #29G',
-    borough: 'Manhattan', neighborhood: 'Marble Hill', zip: '10463',
-    price: 3200, bedrooms: 3, bathrooms: 2,
-    description: 'Rent-stabilized 3BR/2BA in The Promenade, 29th floor. All brand-renovated, approximately 1200 sq ft with open east and south views to Midtown.',
-    availableDate: '2026-05-15',
-    lat: 40.8742, lng: -73.9115,
-  },
-  {
-    id: 'se-006', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/107-east-102-street-new_york/5b',
-    address: '107 East 102nd Street, #5B',
-    borough: 'Manhattan', neighborhood: 'East Harlem', zip: '10029',
-    price: 1750, bedrooms: 0, bathrooms: 1,
-    description: 'Rent-stabilized studio in well-kept building. A few short blocks from Central Park and the Conservatory Gardens. Bright light, dishwasher, close to the 6 train.',
-    availableDate: '2026-04-01',
-    lat: 40.7920, lng: -73.9470,
-  },
-
-  // --- Brooklyn ---
-  {
-    id: 'se-007', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/770-st-marks-avenue-brooklyn/5h',
-    address: '770 Saint Marks Avenue, #5H',
-    borough: 'Brooklyn', neighborhood: 'Crown Heights', zip: '11216',
-    price: 2500, bedrooms: 2, bathrooms: 1,
-    description: 'Rent-stabilized massive 2BR in Crown Heights. King-sized bedrooms, large living room, ample closet space, hardwood floors, elevator, laundry in building, and live-in super.',
-    availableDate: '2026-04-15',
-    lat: 40.6740, lng: -73.9520,
-  },
-  {
-    id: 'se-008', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/the-lincoln-apartments-33-lincoln-road-brooklyn/3g',
-    address: '33 Lincoln Road, #3G',
-    borough: 'Brooklyn', neighborhood: 'Prospect Lefferts Gardens', zip: '11225',
-    price: 2808, bedrooms: 0, bathrooms: 1,
-    description: 'Quiet rent-stabilized spacious studio with full stainless-steel kitchen and large bathroom. 1-year lease term.',
-    availableDate: '2026-05-01',
-    lat: 40.6615, lng: -73.9625,
-  },
-  {
-    id: 'se-009', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/937-rogers-avenue-brooklyn/3f',
-    address: '937 Rogers Avenue, #3F',
-    borough: 'Brooklyn', neighborhood: 'Flatbush', zip: '11226',
-    price: 2709, bedrooms: 2, bathrooms: 1,
-    description: 'Rent-stabilized large layout 2BR with balcony near Prospect Park. Brand new luxury elevator building with gym, laundry, bike storage, and rooftop access.',
-    availableDate: '2026-04-01',
-    lat: 40.6485, lng: -73.9530,
-  },
-  {
-    id: 'se-010', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/571-ovington-avenue-brooklyn/2c',
-    address: '571 Ovington Avenue, #2C',
-    borough: 'Brooklyn', neighborhood: 'Bay Ridge', zip: '11209',
-    price: 1458, bedrooms: 0, bathrooms: 1,
-    description: 'Rent-stabilized studio with kitchen and tub bath. Hardwood flooring, half block from R train. Laundry in building, heat and water included.',
-    availableDate: '2026-04-15',
-    lat: 40.6305, lng: -74.0245,
-  },
-  {
-    id: 'se-011', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/the-lincoln-apartments-510-flatbush-avenue-brooklyn/3b',
-    address: '510 Flatbush Avenue, #3B',
-    borough: 'Brooklyn', neighborhood: 'Prospect Lefferts Gardens', zip: '11225',
-    price: 2500, bedrooms: 0, bathrooms: 1,
-    description: 'No-fee spacious west-facing rent-stabilized studio with central heat/AC, large bathroom, full-size kitchen, and 3 closets. Stunning city views, 150 feet from Prospect Park entrance.',
-    availableDate: '2026-05-15',
-    lat: 40.6610, lng: -73.9620,
-  },
-  {
-    id: 'se-012', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/191-south-9-street-brooklyn/9',
-    address: '189 South 9th Street, #9',
-    borough: 'Brooklyn', neighborhood: 'Williamsburg', zip: '11211',
-    price: 2200, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized 1BR, brand new renovated in South Williamsburg. Polished hardwood floors, windows in every room, brand new stainless steel appliances, and large bedrooms.',
-    availableDate: '2026-06-01',
-    lat: 40.7115, lng: -73.9590,
-  },
-  {
-    id: 'se-013', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/82-marcy-avenue-brooklyn/2b',
-    address: '82 Marcy Avenue, #2B',
-    borough: 'Brooklyn', neighborhood: 'Williamsburg', zip: '11211',
-    price: 2400, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized 1BR centrally located minutes from Marcy J/M/Z and Lorimer L/G train. High 10ft ceilings and oversized bright windows, right between the best parts of North and Southside Williamsburg.',
-    availableDate: '2026-04-01',
-    lat: 40.7080, lng: -73.9570,
-  },
-
-  // --- Queens ---
-  {
-    id: 'se-014', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/astoria-at-hallets-cove/2ee',
-    address: '11-15 Broadway, #2EE',
-    borough: 'Queens', neighborhood: 'Astoria', zip: '11106',
-    price: 2800, bedrooms: 1, bathrooms: 1,
-    description: 'Chic luxury doorman rent-stabilized 1BR in Astoria at Hallets Cove. Double-height windows, dark oak flooring, high ceilings, recessed lighting, private Bosch washer/dryer. Sweeping Manhattan views from rooftop terraces, fitness center, bike storage.',
-    availableDate: '2026-04-15',
-    lat: 40.7680, lng: -73.9260,
-  },
-  {
-    id: 'se-015', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/1819-summerfield-street-ridgewood/b5',
-    address: '1819 Summerfield Street, #B5',
-    borough: 'Queens', neighborhood: 'Ridgewood', zip: '11385',
-    price: 1600, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized first-floor apartment with hardwood floors, heat and hot water included, and beautiful kitchen cabinetry. Close to the L train (Halsey Street stop), shops, diners, and supermarkets.',
-    availableDate: '2026-05-01',
-    lat: 40.6950, lng: -73.9060,
-  },
-  {
-    id: 'se-016', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/93_23-218-street-queens_village/b12',
-    address: '93-23 218th Street, #B12',
-    borough: 'Queens', neighborhood: 'Queens Village', zip: '11428',
-    price: 1375, bedrooms: 0, bathrooms: 1,
-    description: 'Rent-stabilized studio with minimum one-year lease. Heat and hot water included. Live-in super, pet-friendly.',
-    availableDate: '2026-04-01',
-    lat: 40.7220, lng: -73.7405,
-  },
-  {
-    id: 'se-017', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/93_23-218-street-queens_village/c6',
-    address: '93-23 218th Street, #C6',
-    borough: 'Queens', neighborhood: 'Queens Village', zip: '11428',
-    price: 1450, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized 1BR, approximately 550 sq ft. Heat and hot water included. Live-in super, pet-friendly. No broker fee, one month rent and one month security due upon lease signing.',
-    availableDate: '2026-05-15',
-    lat: 40.7220, lng: -73.7405,
-  },
-  {
-    id: 'se-018', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/784-seneca-avenue-ridgewood/2r',
-    address: '784 Seneca Avenue, #2R',
-    borough: 'Queens', neighborhood: 'Ridgewood', zip: '11385',
-    price: 2100, bedrooms: 2, bathrooms: 1,
-    description: 'No-fee 2BR rent-stabilized apartment in the heart of Ridgewood. Pet-friendly for cats and small dogs under 15 lbs.',
-    availableDate: '2026-04-01',
-    lat: 40.7048, lng: -73.9020,
-  },
-
-  // --- Bronx ---
-  {
-    id: 'se-019', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/1459-taylor-avenue-bronx/12',
-    address: '1459 Taylor Avenue, #12',
-    borough: 'Bronx', neighborhood: 'Parkchester', zip: '10462',
-    price: 1650, bedrooms: 1, bathrooms: 1,
-    description: 'Beautifully renovated rent-stabilized 1BR on the third floor of a well-maintained walk-up building.',
-    availableDate: '2026-04-15',
-    lat: 40.8350, lng: -73.8620,
-  },
-  {
-    id: 'se-020', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/944-bronx-park-south-bronx/4e',
-    address: '950 Bronx Park South, #4E',
-    borough: 'Bronx', neighborhood: 'West Farms', zip: '10460',
-    price: 1950, bedrooms: 2, bathrooms: 1,
-    description: 'Rent-stabilized 2BR with stainless steel appliances, hardwood floors, separate kitchen and living room. 4th floor unit in elevator building with heat and water included.',
-    availableDate: '2026-05-01',
-    lat: 40.8480, lng: -73.8810,
-  },
-  {
-    id: 'se-021', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/735-walton-avenue-bronx/d8',
-    address: '735 Walton Avenue, #D8',
-    borough: 'Bronx', neighborhood: 'Concourse', zip: '10451',
-    price: 1800, bedrooms: 1, bathrooms: 1,
-    description: 'Beautifully renovated 1BR in well-maintained rent-stabilized elevator building. Renovated kitchen with brand new appliances, queen-sized bedroom, and ample closet space.',
-    availableDate: '2026-04-01',
-    lat: 40.8285, lng: -73.9215,
-  },
-  {
-    id: 'se-022', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/2718-morris-avenue-bronx/4a',
-    address: '2718 Morris Avenue, #4A',
-    borough: 'Bronx', neighborhood: 'Fordham', zip: '10468',
-    price: 1900, bedrooms: 2, bathrooms: 1,
-    description: 'Beautiful large 2BR on the fifth floor in well-maintained rent-stabilized walk-up building.',
-    availableDate: '2026-05-15',
-    lat: 40.8660, lng: -73.8990,
-  },
-  {
-    id: 'se-023', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/1149-morris-avenue-bronx/4e',
-    address: '1149 Morris Avenue, #4E',
-    borough: 'Bronx', neighborhood: 'Concourse', zip: '10456',
-    price: 1500, bedrooms: 1, bathrooms: 1,
-    description: 'Rent-stabilized apartment, lease directly from owner with no broker fee. Renovated with pass-through kitchen, hardwood floors. Heat, hot water, and cooking gas included.',
-    availableDate: '2026-06-01',
-    lat: 40.8345, lng: -73.9160,
-  },
-  {
-    id: 'se-024', source: 'streeteasy',
-    url: 'https://streeteasy.com/building/1777-grand-concourse-bronx/4d',
-    address: '1777 Grand Concourse, #4D',
-    borough: 'Bronx', neighborhood: 'Mt. Hope', zip: '10453',
-    price: 1194, bedrooms: 0, bathrooms: 1,
-    description: 'Rent-stabilized studio on the Grand Concourse in Mt. Hope.',
-    availableDate: '2026-04-01',
-    lat: 40.8460, lng: -73.9100,
-  },
-];
 
 // ============================================================
 // PART 5: MATCH LISTINGS TO RS BUILDINGS
@@ -565,31 +312,22 @@ let currentView = 'split';
 let currentPage = 1;
 const LISTINGS_PER_PAGE = 6;
 
-// Load listings: try worker first, fall back to sample data
+// Load listings from the worker (Craigslist RSS + StreetEasy API)
 async function loadListings() {
-  // If a worker URL is configured, try fetching live listings
-  if (WORKER_URL) {
-    try {
-      console.log('[StableNYC] Fetching listings from worker...');
-      const resp = await fetch(`${WORKER_URL}?action=listings&borough=all`);
-      console.log(`[StableNYC] Worker response: ${resp.status} ${resp.statusText}`);
-      if (resp.ok) {
-        const data = await resp.json();
-        console.log(`[StableNYC] Worker data:`, { listings: data.listings?.length || 0, source: data.source, borough: data.borough });
-        if (data.listings && data.listings.length > 0) {
-          console.log(`[StableNYC] Worker returned ${data.listings.length} listings`);
-          return { listings: data.listings, source: 'worker' };
-        } else {
-          console.warn('[StableNYC] Worker returned 0 listings, falling back to sample data');
-        }
-      }
-    } catch (err) {
-      console.warn('[StableNYC] Worker unavailable, using sample data:', err.message);
+  try {
+    console.log('[StableNYC] Fetching listings from worker...');
+    const resp = await fetch(`${WORKER_URL}?action=listings&borough=all`);
+    console.log(`[StableNYC] Worker response: ${resp.status}`);
+    if (resp.ok) {
+      const data = await resp.json();
+      const listings = data.listings || [];
+      console.log(`[StableNYC] Worker returned ${listings.length} listings`);
+      return { listings, source: 'worker' };
     }
+  } catch (err) {
+    console.warn('[StableNYC] Worker unavailable:', err.message);
   }
-  // Fall back to sample data
-  console.log(`[StableNYC] Using ${SAMPLE_LISTINGS.length} sample listings`);
-  return { listings: SAMPLE_LISTINGS, source: 'sample' };
+  return { listings: [], source: 'none' };
 }
 
 async function loadData() {
@@ -607,14 +345,9 @@ async function loadData() {
     // Match every listing against the RS building registry
     const matched = matchListingsToRS(rawListings);
 
-    if (source === 'worker') {
-      // Worker already verified these are rent-stabilized listings
-      // Keep all of them; rsMatch enriches with building data when available
-      allListings = matched;
-    } else {
-      // Sample data: only keep listings that matched an RS building
-      allListings = matched.filter(l => l.rsMatch);
-    }
+    // Worker already verified these are rent-stabilized listings
+    // Keep all of them; rsMatch enriches with building data when available
+    allListings = matched;
 
     const rsMatched = allListings.filter(l => l.rsMatch).length;
     console.log(`[StableNYC] ${rawListings.length} raw listings → ${allListings.length} kept (${rsMatched} matched to RS buildings)`);
@@ -820,10 +553,14 @@ function formatDate(d) {
 }
 
 function sourceLabel(source) {
-  if (source === 'streeteasy') return 'StreetEasy';
-  if (source === 'craigslist') return 'Craigslist';
-  if (source === 'facebook') return 'Facebook';
-  return source || 'Listing';
+  const labels = { streeteasy: 'StreetEasy', craigslist: 'Craigslist', facebook: 'Facebook' };
+  return labels[source] || source || 'Listing';
+}
+
+function sourceUrl(listing) {
+  if (listing.url) return listing.url;
+  if (listing.source === 'craigslist') return listing.url || '#';
+  return '#';
 }
 
 function showLoading(show) {
@@ -832,7 +569,7 @@ function showLoading(show) {
     grid.innerHTML = `
       <div class="loading-state" style="grid-column:1/-1; text-align:center; padding:60px 20px;">
         <div class="loading-spinner"></div>
-        <p style="color:var(--text-muted); margin-top:16px;">Matching listings to DHCR rent stabilization registry...</p>
+        <p style="color:var(--text-muted); margin-top:16px;">Searching for rent-stabilized listings across NYC...</p>
       </div>`;
   }
 }
@@ -928,14 +665,17 @@ function renderListings() {
   grid.innerHTML = pageListings.map((l, i) => {
     const bedroomLabel = formatBedrooms(l.bedrooms);
     const rsBuilding = l.rsBuilding;
-    const mapThumb = l.lat && l.lng
+    // Use listing image if available, otherwise use map tile
+    const listingImage = (l.images && l.images.length > 0) ? l.images[0] : null;
+    const mapThumb = !listingImage && l.lat && l.lng
       ? `https://a.basemaps.cartocdn.com/light_all/15/${Math.floor((l.lng + 180) / 360 * Math.pow(2, 15))}/${Math.floor((1 - Math.log(Math.tan(l.lat * Math.PI / 180) + 1 / Math.cos(l.lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 15))}.png`
       : '';
+    const cardImage = listingImage || mapThumb;
 
     return `
     <article class="listing-card" data-id="${l.id}" onclick="openModal('${l.id}')" style="animation-delay:${Math.min(i * 0.03, 0.15)}s" tabindex="0" role="button" aria-label="View ${escapeHtml(l.address)}"
       onmouseenter="highlightMarker('${l.id}')" onmouseleave="unhighlightMarker('${l.id}')">
-      <div class="card-image" ${mapThumb ? `style="background-image:url('${mapThumb}')"` : ''}>
+      <div class="card-image" ${cardImage ? `style="background-image:url('${cardImage}');background-size:cover;background-position:center;"` : ''}>
         <div class="card-badges">
           <span class="rs-badge">Rent Stabilized</span>
           <span class="source-badge">${escapeHtml(sourceLabel(l.source))}</span>

@@ -1,7 +1,9 @@
 // StableNYC Listing Proxy — Cloudflare Worker (free tier)
-// Searches StreetEasy for rent-stabilized apartments currently on the market.
-// Only returns listings that explicitly mention "rent stabilized" or "rent regulated".
+// Fetches rent-stabilized apartment listings from:
+//   1. StreetEasy API via RapidAPI (primary)
+//   2. Craigslist RSS feeds (fallback)
 // Deploy: cd worker && npx wrangler deploy
+// Set API key: npx wrangler secret put RAPIDAPI_KEY
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -9,18 +11,40 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const BOROUGH_SLUGS = {
-  manhattan: 'manhattan',
-  brooklyn: 'brooklyn',
-  queens: 'queens',
-  bronx: 'bronx',
-  'staten island': 'staten-island',
-  all: 'nyc',
+// RapidAPI StreetEasy host
+const RAPIDAPI_HOST = 'streeteasy-api.p.rapidapi.com';
+
+// StreetEasy area codes for borough filtering
+const SE_AREAS = {
+  all: '',
+  manhattan: 'Manhattan',
+  brooklyn: 'Brooklyn',
+  queens: 'Queens',
+  bronx: 'Bronx',
+  'staten island': 'Staten Island',
+};
+
+// Craigslist NYC area codes (fallback)
+const CL_AREAS = {
+  all: ['mnh', 'brk', 'que', 'brx', 'stn'],
+  manhattan: ['mnh'],
+  brooklyn: ['brk'],
+  queens: ['que'],
+  bronx: ['brx'],
+  'staten island': ['stn'],
+};
+
+const CL_BOROUGH_NAMES = {
+  mnh: 'Manhattan',
+  brk: 'Brooklyn',
+  que: 'Queens',
+  brx: 'Bronx',
+  stn: 'Staten Island',
 };
 
 const RS_KEYWORDS = [
   'rent stabilized', 'rent-stabilized', 'rent regulated', 'rent-regulated',
-  'stabilized apartment', 'regulated apartment', 'rs apartment',
+  'stabilized apartment', 'regulated apartment',
 ];
 
 export default {
@@ -33,443 +57,369 @@ export default {
     const action = url.searchParams.get('action') || 'listings';
 
     try {
-      if (action === 'debug') {
-        // Debug endpoint: show what StreetEasy returns
-        const debugInfo = await debugStreetEasyFetch();
-        return jsonResponse(debugInfo);
-      }
-
       if (action === 'listings') {
         const borough = url.searchParams.get('borough') || 'all';
-        const page = parseInt(url.searchParams.get('page')) || 1;
-        const listings = await fetchRentStabilizedListings(borough, page);
-        return jsonResponse({ listings, borough, page, source: 'streeteasy' });
+        const listings = await fetchAllListings(borough, env);
+        return jsonResponse({ listings, borough });
       }
 
-      if (action === 'photos') {
-        const address = url.searchParams.get('address');
-        const borough = url.searchParams.get('borough');
-        if (!address) return jsonResponse({ error: 'Missing address parameter' }, 400);
-        const photos = await fetchPhotosForAddress(address, borough);
-        return jsonResponse({ photos, address, borough });
+      if (action === 'debug') {
+        const debugInfo = await debugFetch(env);
+        return jsonResponse(debugInfo);
       }
 
       return jsonResponse({ error: 'Unknown action' }, 400);
     } catch (err) {
-      return jsonResponse({ error: err.message, listings: [], photos: [] }, 500);
+      return jsonResponse({ error: err.message, listings: [] }, 500);
     }
   },
 };
 
 // ============================================================
-// RENT-STABILIZED LISTING SEARCH
+// MAIN: Fetch from all sources and combine
 // ============================================================
 
-async function fetchRentStabilizedListings(borough, page) {
-  const slug = BOROUGH_SLUGS[borough.toLowerCase()] || 'nyc';
+async function fetchAllListings(borough, env) {
+  const allListings = [];
+  const seenKeys = new Set();
 
-  // If a specific page was requested, fetch just that page
-  if (page > 1) {
-    return fetchSinglePage(slug, page);
+  // Try StreetEasy API first (if API key is configured)
+  if (env.RAPIDAPI_KEY) {
+    try {
+      const seListings = await fetchStreetEasyAPI(borough, env.RAPIDAPI_KEY);
+      for (const l of seListings) {
+        const key = `${l.address}|${l.price}`;
+        if (!seenKeys.has(key)) {
+          seenKeys.add(key);
+          allListings.push(l);
+        }
+      }
+    } catch (e) {
+      // Fall through to Craigslist
+    }
   }
 
-  // Otherwise fetch multiple pages to get as many listings as possible
-  const MAX_PAGES = 5;
-  const allListings = [];
-  const seenUrls = new Set();
-
-  for (let p = 1; p <= MAX_PAGES; p++) {
-    const pageListings = await fetchSinglePage(slug, p);
-    if (pageListings.length === 0) break; // No more results
-
-    for (const listing of pageListings) {
-      if (!seenUrls.has(listing.url)) {
-        seenUrls.add(listing.url);
-        allListings.push(listing);
+  // Also fetch from Craigslist RSS
+  try {
+    const clListings = await fetchCraigslistListings(borough);
+    for (const l of clListings) {
+      const key = `${l.address}|${l.price}`;
+      if (!seenKeys.has(key)) {
+        seenKeys.add(key);
+        allListings.push(l);
       }
     }
-
-    // If we got fewer results than expected, we've hit the last page
-    if (pageListings.length < 10) break;
+  } catch (e) {
+    // Continue with what we have
   }
 
   return allListings;
 }
 
-// Multiple search URL formats to try (StreetEasy changes their URL patterns)
-function getSearchUrls(slug, page) {
-  const pageParam = page > 1 ? `?page=${page}` : '';
-  return [
-    // Format 1: filter syntax with description search
-    `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent+stabilized%22${pageParam}`,
-    // Format 2: text search parameter
-    `https://streeteasy.com/for-rent/${slug}?utf8=%E2%9C%93&search=rent+stabilized${page > 1 ? '&page=' + page : ''}`,
-    // Format 3: amenity/keyword filter
-    `https://streeteasy.com/for-rent/${slug}/rent+stabilized${pageParam}`,
-  ];
-}
-
-async function fetchSinglePage(slug, page) {
-  const urls = getSearchUrls(slug, page);
-
-  for (const searchUrl of urls) {
-    try {
-      const resp = await fetch(searchUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Accept-Encoding': 'gzip',
-          'Cache-Control': 'no-cache',
-          'Sec-Fetch-Dest': 'document',
-          'Sec-Fetch-Mode': 'navigate',
-          'Sec-Fetch-Site': 'none',
-        },
-        cf: { cacheTtl: 300 },
-      });
-
-      if (!resp.ok) continue;
-      const html = await resp.text();
-      const raw = parseStreetEasyListings(html);
-      const verified = raw.filter(l => isVerifiedRentStabilized(l));
-
-      if (verified.length > 0) return verified;
-    } catch (e) {
-      // Try next URL format
-    }
-  }
-
-  return [];
-}
-
-// Debug endpoint to diagnose what StreetEasy returns
-async function debugStreetEasyFetch() {
-  const slug = 'nyc';
-  const urls = getSearchUrls(slug, 1);
-  const results = [];
-
-  for (const searchUrl of urls) {
-    try {
-      const resp = await fetch(searchUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-        },
-        cf: { cacheTtl: 0 },
-      });
-
-      const html = await resp.text();
-      const hasJsonLd = html.includes('application/ld+json');
-      const hasNextData = html.includes('__NEXT_DATA__');
-      const hasRentalLinks = html.includes('/rental/');
-      const hasCaptcha = html.includes('captcha') || html.includes('challenge') || html.includes('cf-browser-verification');
-      const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
-
-      results.push({
-        url: searchUrl,
-        status: resp.status,
-        htmlLength: html.length,
-        title: titleMatch ? titleMatch[1].trim() : null,
-        hasJsonLd,
-        hasNextData,
-        hasRentalLinks,
-        hasCaptcha,
-        htmlPreview: html.substring(0, 500),
-        listingsParsed: parseStreetEasyListings(html).length,
-      });
-    } catch (e) {
-      results.push({ url: searchUrl, error: e.message });
-    }
-  }
-
-  return { debug: true, results };
-}
-
-function isVerifiedRentStabilized(listing) {
-  const text = [listing.address, listing.description, listing.title].join(' ').toLowerCase();
-  return RS_KEYWORDS.some(kw => text.includes(kw));
-}
-
 // ============================================================
-// HTML PARSING — multiple strategies for robustness
+// SOURCE 1: StreetEasy API via RapidAPI
 // ============================================================
 
-function parseStreetEasyListings(html) {
-  let listings = [];
+async function fetchStreetEasyAPI(borough, apiKey) {
+  const area = SE_AREAS[borough.toLowerCase()] || '';
 
-  // Strategy 1: JSON-LD structured data (most reliable)
-  listings = parseJsonLd(html);
-  if (listings.length > 0) return listings;
+  // Build query params for active rentals
+  const params = new URLSearchParams();
+  if (area) params.set('areas', area);
+  params.set('limit', '100');
+  params.set('offset', '0');
 
-  // Strategy 2: Embedded application JSON (__NEXT_DATA__ or similar)
-  listings = parseEmbeddedJson(html);
-  if (listings.length > 0) return listings;
-
-  // Strategy 3: Regex-based HTML card parsing (fallback)
-  listings = parseHtmlCards(html);
-  return listings;
-}
-
-function parseJsonLd(html) {
-  const listings = [];
-  const blocks = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) || [];
-
-  for (const block of blocks) {
-    try {
-      const jsonStr = block.replace(/<\/?script[^>]*>/g, '');
-      const data = JSON.parse(jsonStr);
-
-      // Handle ItemList (search results page)
-      if (data['@type'] === 'ItemList' && data.itemListElement) {
-        for (const item of data.itemListElement) {
-          const listing = item.item || item;
-          const url = listing.url || listing['@id'] || '';
-          if (!url) continue;
-
-          const addr = listing.address || {};
-          listings.push({
-            url: url.startsWith('http') ? url : `https://streeteasy.com${url}`,
-            address: addr.streetAddress || listing.name || '',
-            borough: addr.addressLocality || '',
-            price: extractPrice(listing.offers),
-            image: extractImage(listing.image),
-            bedrooms: listing.numberOfBedrooms || listing.numberOfRooms || null,
-            bathrooms: listing.numberOfBathroomsTotal || null,
-            description: listing.description || '',
-            title: listing.name || '',
-            source: 'streeteasy',
-          });
-        }
-      }
-
-      // Handle single Apartment/Residence listing
-      if ((data['@type'] === 'Apartment' || data['@type'] === 'Residence') && data.url) {
-        const addr = data.address || {};
-        listings.push({
-          url: data.url.startsWith('http') ? data.url : `https://streeteasy.com${data.url}`,
-          address: addr.streetAddress || data.name || '',
-          borough: addr.addressLocality || '',
-          price: extractPrice(data.offers),
-          image: extractImage(data.image),
-          bedrooms: data.numberOfBedrooms || data.numberOfRooms || null,
-          bathrooms: data.numberOfBathroomsTotal || null,
-          description: data.description || '',
-          title: data.name || '',
-          source: 'streeteasy',
-        });
-      }
-    } catch (e) { /* skip invalid JSON-LD */ }
-  }
-
-  return listings;
-}
-
-function parseEmbeddedJson(html) {
-  const listings = [];
-
-  // Try __NEXT_DATA__
-  const nextMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
-  if (nextMatch) {
-    try {
-      const data = JSON.parse(nextMatch[1]);
-      const props = data.props?.pageProps || {};
-      const results = props.listings || props.searchResults?.listings || props.results || [];
-      const items = Array.isArray(results) ? results : [];
-
-      for (const item of items) {
-        listings.push({
-          url: item.url ? `https://streeteasy.com${item.url}` : (item.detailUrl || ''),
-          address: item.title || item.address || item.streetAddress || '',
-          borough: item.borough || item.area || '',
-          price: item.price || item.rent || item.monthlyRent || null,
-          image: item.photo || item.image || item.mainPhoto || (item.photos && item.photos[0]) || null,
-          bedrooms: item.bedrooms || item.beds || null,
-          bathrooms: item.bathrooms || item.baths || null,
-          neighborhood: item.neighborhood || item.area || '',
-          description: item.description || item.listingDescription || '',
-          title: item.title || item.name || '',
-          source: 'streeteasy',
-        });
-      }
-    } catch (e) { /* skip */ }
-  }
-
-  // Try window.__data__ or similar patterns
-  const dataPatterns = [
-    /window\.__data__\s*=\s*(\{[\s\S]*?\});/,
-    /window\.__INITIAL_STATE__\s*=\s*(\{[\s\S]*?\});/,
-    /data-search-results='(\{[^']+)'/,
-  ];
-
-  for (const pattern of dataPatterns) {
-    const match = html.match(pattern);
-    if (match) {
-      try {
-        const data = JSON.parse(match[1]);
-        const items = data.listings || data.results || data.searchResults || [];
-        for (const item of (Array.isArray(items) ? items : [])) {
-          if (item.url || item.address || item.title) {
-            listings.push({
-              url: item.url ? (item.url.startsWith('http') ? item.url : `https://streeteasy.com${item.url}`) : '',
-              address: item.address || item.title || '',
-              borough: item.borough || '',
-              price: item.price || item.rent || null,
-              image: item.photo || item.image || null,
-              bedrooms: item.bedrooms || item.beds || null,
-              bathrooms: item.bathrooms || item.baths || null,
-              description: item.description || '',
-              title: item.title || item.name || '',
-              source: 'streeteasy',
-            });
-          }
-        }
-      } catch (e) { /* skip */ }
-    }
-  }
-
-  return listings;
-}
-
-function parseHtmlCards(html) {
-  const listings = [];
-
-  // Find all rental listing URLs
-  const urlPattern = /href="(\/rental\/\d+[^"]*)"/g;
-  const seenUrls = new Set();
-  let match;
-
-  while ((match = urlPattern.exec(html)) !== null) {
-    const listingPath = match[1];
-    if (seenUrls.has(listingPath)) continue;
-    seenUrls.add(listingPath);
-
-    // Extract a chunk of HTML around this listing link for context parsing
-    const idx = match.index;
-    const start = Math.max(0, idx - 3000);
-    const end = Math.min(html.length, idx + 3000);
-    const ctx = html.substring(start, end);
-
-    const listing = {
-      url: `https://streeteasy.com${listingPath}`,
-      address: '',
-      price: null,
-      image: null,
-      bedrooms: null,
-      bathrooms: null,
-      neighborhood: '',
-      description: '',
-      title: '',
-      source: 'streeteasy',
-    };
-
-    // Price: find dollar amounts
-    const priceMatch = ctx.match(/\$\s*([\d,]+)/);
-    if (priceMatch) listing.price = priceMatch[0];
-
-    // Address: look for data attributes, structured elements, or title attributes
-    const addrPatterns = [
-      /data-address="([^"]+)"/,
-      /class="[^"]*(?:listingCard-title|listing-title|address)[^"]*"[^>]*>([^<]+)/i,
-      /aria-label="([^"]*\d+[^"]*(?:st|nd|rd|th|ave|street|place|drive|road|blvd|way)[^"]*)"/i,
-      /title="([^"]*\d+[^"]*(?:st|nd|rd|th|ave|street|place|drive|road|blvd|way)[^"]*)"/i,
-    ];
-    for (const p of addrPatterns) {
-      const m = ctx.match(p);
-      if (m) { listing.address = m[1].trim(); break; }
-    }
-
-    // Image: look for listing photos (not logos/icons)
-    const imgPatterns = [
-      /(?:data-src|src)="(https:\/\/[^"]*(?:images|photos|cdn|media)[^"]*\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
-      /(?:data-src|src)="(https:\/\/[^"]*streeteasy[^"]*\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
-      /background-image:\s*url\(['"]?(https:\/\/[^'")\s]+\.(?:jpg|jpeg|png|webp)[^'")\s]*)['"]?\)/i,
-    ];
-    for (const p of imgPatterns) {
-      const m = ctx.match(p);
-      if (m && !m[1].includes('logo') && !m[1].includes('icon') && !m[1].includes('avatar') && !m[1].includes('sprite')) {
-        listing.image = m[1];
-        break;
-      }
-    }
-
-    // Bedrooms
-    const brMatch = ctx.match(/(\d+)\s*(?:bed(?:room)?s?|br)\b/i);
-    if (brMatch) listing.bedrooms = parseInt(brMatch[1]);
-
-    // Bathrooms
-    const baMatch = ctx.match(/([\d.]+)\s*(?:bath(?:room)?s?|ba)\b/i);
-    if (baMatch) listing.bathrooms = parseFloat(baMatch[1]);
-
-    // Neighborhood
-    const areaMatch = ctx.match(/class="[^"]*(?:area|neighborhood|subtitle|location)[^"]*"[^>]*>\s*([^<]+)/i);
-    if (areaMatch) listing.neighborhood = areaMatch[1].trim();
-
-    // Description snippet
-    const descMatch = ctx.match(/class="[^"]*(?:description|details-info)[^"]*"[^>]*>\s*([^<]{20,})/i);
-    if (descMatch) listing.description = descMatch[1].trim().slice(0, 500);
-
-    if (listing.address || listing.price) {
-      listings.push(listing);
-    }
-  }
-
-  return listings;
-}
-
-// ============================================================
-// HELPERS
-// ============================================================
-
-function extractPrice(offers) {
-  if (!offers) return null;
-  const price = offers.price || offers.lowPrice || offers.highPrice;
-  if (price) return typeof price === 'number' ? `$${price.toLocaleString()}` : `$${price}`;
-  return null;
-}
-
-function extractImage(image) {
-  if (!image) return null;
-  if (typeof image === 'string') return image;
-  if (Array.isArray(image)) return image[0]?.url || image[0] || null;
-  return image.url || image.contentUrl || null;
-}
-
-// Backward-compatible photo proxy for specific addresses
-async function fetchPhotosForAddress(address, borough) {
-  const query = `${address}${borough ? ', ' + borough : ''}, NY`;
-  const searchUrl = `https://streeteasy.com/for-rent/nyc?utf8=%E2%9C%93&search=${encodeURIComponent(query)}`;
-
-  const resp = await fetch(searchUrl, {
+  const resp = await fetch(`https://${RAPIDAPI_HOST}/rentals/active?${params}`, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'en-US,en;q=0.9',
+      'X-RapidAPI-Key': apiKey,
+      'X-RapidAPI-Host': RAPIDAPI_HOST,
     },
   });
 
-  if (!resp.ok) return [];
-  const html = await resp.text();
-  const photos = [];
+  if (!resp.ok) {
+    const errText = await resp.text();
+    throw new Error(`StreetEasy API ${resp.status}: ${errText.slice(0, 200)}`);
+  }
 
-  const imgPatterns = [
-    /property="og:image"\s+content="([^"]+)"/g,
-    /data-src="(https:\/\/[^"]*streeteasy[^"]*\/[^"]*\.(jpg|jpeg|png|webp)[^"]*)"/gi,
-    /src="(https:\/\/[^"]*streeteasy[^"]*\/[^"]*\.(jpg|jpeg|png|webp)[^"]*)"/gi,
-  ];
+  const data = await resp.json();
+  const listings = [];
 
-  for (const pattern of imgPatterns) {
-    let m;
-    while ((m = pattern.exec(html)) !== null) {
-      const url = m[1];
-      if (url && !url.includes('logo') && !url.includes('icon') && !url.includes('avatar') && !photos.includes(url)) {
-        photos.push(url);
+  // Parse the API response — adapt to actual response structure
+  const items = Array.isArray(data) ? data : (data.listings || data.results || data.data || []);
+
+  for (const item of items) {
+    // Check if listing mentions rent stabilization
+    const combined = [
+      item.description, item.title, item.name,
+      item.amenities, item.details,
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    const isRS = RS_KEYWORDS.some(kw => combined.includes(kw));
+    if (!isRS) continue;
+
+    listings.push({
+      url: item.url || item.link || item.detailUrl || '',
+      address: item.address || item.streetAddress || item.title || '',
+      borough: item.borough || item.area || item.neighborhood || '',
+      neighborhood: item.neighborhood || item.area || '',
+      zip: item.zip || item.zipCode || item.postalCode || '',
+      price: parsePrice(item.price || item.rent || item.monthlyRent),
+      bedrooms: item.bedrooms || item.beds || 0,
+      bathrooms: item.bathrooms || item.baths || null,
+      description: item.description || '',
+      title: item.title || item.name || '',
+      lat: item.latitude || item.lat || null,
+      lng: item.longitude || item.lng || item.lon || null,
+      images: extractAPIImages(item),
+      source: 'streeteasy',
+      postedDate: item.listedDate || item.datePosted || null,
+    });
+  }
+
+  return listings;
+}
+
+function parsePrice(val) {
+  if (!val) return null;
+  if (typeof val === 'number') return val;
+  return parseInt(String(val).replace(/[$,\s]/g, ''), 10) || null;
+}
+
+function extractAPIImages(item) {
+  if (item.photos && Array.isArray(item.photos)) return item.photos.slice(0, 5);
+  if (item.images && Array.isArray(item.images)) return item.images.slice(0, 5);
+  if (item.image) return [item.image];
+  if (item.photo) return [item.photo];
+  return [];
+}
+
+// ============================================================
+// SOURCE 2: Craigslist RSS Feeds
+// ============================================================
+
+async function fetchCraigslistListings(borough) {
+  const areas = CL_AREAS[borough.toLowerCase()] || CL_AREAS.all;
+  const allListings = [];
+  const seenUrls = new Set();
+
+  const fetches = areas.map(area => fetchCraigslistArea(area));
+  const results = await Promise.all(fetches);
+
+  for (const areaListings of results) {
+    for (const listing of areaListings) {
+      if (!seenUrls.has(listing.url)) {
+        seenUrls.add(listing.url);
+        allListings.push(listing);
       }
     }
   }
 
-  return photos.slice(0, 5);
+  return allListings;
 }
+
+async function fetchCraigslistArea(area) {
+  const rssUrl = `https://newyork.craigslist.org/search/${area}/apa?format=rss&query=%22rent+stabilized%22&availabilityMode=0`;
+
+  try {
+    const resp = await fetch(rssUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; StableNYC/1.0)',
+        'Accept': 'application/rss+xml, application/xml, text/xml',
+      },
+      cf: { cacheTtl: 600 },
+    });
+
+    if (!resp.ok) return [];
+    const xml = await resp.text();
+    return parseCraigslistRSS(xml, area);
+  } catch (e) {
+    return [];
+  }
+}
+
+function parseCraigslistRSS(xml, area) {
+  const listings = [];
+  const borough = CL_BOROUGH_NAMES[area] || '';
+
+  const items = xml.match(/<item\b[\s\S]*?<\/item>/g) || [];
+
+  for (const item of items) {
+    const title = extractTag(item, 'title');
+    const link = extractTag(item, 'link');
+    const description = extractTag(item, 'description');
+    const dateStr = extractTag(item, 'dc:date') || extractTag(item, 'pubDate');
+
+    if (!link) continue;
+
+    const combined = `${title} ${description}`.toLowerCase();
+    if (!RS_KEYWORDS.some(kw => combined.includes(kw))) continue;
+
+    const priceMatch = title.match(/\$\s*([\d,]+)/);
+    const price = priceMatch ? parseInt(priceMatch[1].replace(/,/g, ''), 10) : null;
+
+    const brMatch = title.match(/(\d+)\s*br\b/i);
+    const bedrooms = brMatch ? parseInt(brMatch[1]) : 0;
+
+    const address = extractAddressFromCL(description, title);
+    const neighborhood = extractNeighborhood(title);
+
+    const latMatch = item.match(/<geo:lat>([^<]+)/);
+    const lngMatch = item.match(/<geo:long>([^<]+)/);
+    const lat = latMatch ? parseFloat(latMatch[1]) : null;
+    const lng = lngMatch ? parseFloat(lngMatch[1]) : null;
+
+    const images = extractImages(item, description);
+    const cleanDesc = stripHtml(description);
+
+    listings.push({
+      url: link,
+      address: address || '',
+      borough,
+      neighborhood: neighborhood || borough,
+      price,
+      bedrooms,
+      bathrooms: null,
+      description: cleanDesc.slice(0, 500),
+      title: stripHtml(title),
+      lat,
+      lng,
+      images,
+      source: 'craigslist',
+      postedDate: dateStr || null,
+    });
+  }
+
+  return listings;
+}
+
+// ============================================================
+// XML/HTML PARSING HELPERS
+// ============================================================
+
+function extractTag(xml, tagName) {
+  const pattern = new RegExp(`<${tagName}[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tagName}>`, 'i');
+  const match = xml.match(pattern);
+  return match ? match[1].trim() : '';
+}
+
+function extractAddressFromCL(description, title) {
+  const descText = stripHtml(description);
+  const addrMatch = descText.match(/(\d+[\s-]*(?:\d+\s+)?(?:E(?:ast)?|W(?:est)?|N(?:orth)?|S(?:outh)?)?\s*\.?\s*\d*(?:st|nd|rd|th)?\s+(?:Street|St|Avenue|Ave|Boulevard|Blvd|Place|Pl|Drive|Dr|Road|Rd|Lane|Ln|Court|Ct|Way|Parkway|Pkwy|Terrace|Ter|Broadway|Concourse)[^,\n]{0,30})/i);
+  if (addrMatch) return addrMatch[1].trim();
+
+  const titleParts = title.split(/\s*-\s*/);
+  for (const part of titleParts) {
+    if (part.match(/\d+\s+\w+\s+(?:st|ave|blvd|pl|dr|rd|ln|ct|way|broadway|concourse)/i)) {
+      return part.trim();
+    }
+  }
+
+  return '';
+}
+
+function extractNeighborhood(title) {
+  const parts = title.split(/\s*-\s*/);
+  if (parts.length >= 2) {
+    const last = parts[parts.length - 1].trim();
+    if (!last.match(/^\$/) && !last.match(/^\d+\s*br/i) && last.length > 2 && last.length < 40) {
+      return last;
+    }
+  }
+  return '';
+}
+
+function extractImages(itemXml, description) {
+  const images = [];
+
+  const enclosures = itemXml.match(/<enc:enclosure[^>]*resource="([^"]+)"/g) || [];
+  for (const enc of enclosures) {
+    const urlMatch = enc.match(/resource="([^"]+)"/);
+    if (urlMatch && urlMatch[1].match(/\.(jpg|jpeg|png|webp)/i)) {
+      images.push(urlMatch[1]);
+    }
+  }
+
+  const imgTags = description.match(/<img[^>]*src="([^"]+)"/g) || [];
+  for (const img of imgTags) {
+    const srcMatch = img.match(/src="([^"]+)"/);
+    if (srcMatch && !images.includes(srcMatch[1])) {
+      images.push(srcMatch[1]);
+    }
+  }
+
+  return images.slice(0, 5);
+}
+
+function stripHtml(html) {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ============================================================
+// DEBUG ENDPOINT
+// ============================================================
+
+async function debugFetch(env) {
+  const results = { hasApiKey: !!env.RAPIDAPI_KEY, sources: {} };
+
+  // Test StreetEasy API
+  if (env.RAPIDAPI_KEY) {
+    try {
+      const params = new URLSearchParams({ limit: '5', offset: '0' });
+      const resp = await fetch(`https://${RAPIDAPI_HOST}/rentals/active?${params}`, {
+        headers: {
+          'X-RapidAPI-Key': env.RAPIDAPI_KEY,
+          'X-RapidAPI-Host': RAPIDAPI_HOST,
+        },
+      });
+      const body = await resp.text();
+      results.sources.streeteasy = {
+        status: resp.status,
+        responseLength: body.length,
+        preview: body.slice(0, 1000),
+      };
+    } catch (e) {
+      results.sources.streeteasy = { error: e.message };
+    }
+  }
+
+  // Test Craigslist RSS
+  try {
+    const rssUrl = 'https://newyork.craigslist.org/search/mnh/apa?format=rss&query=%22rent+stabilized%22&availabilityMode=0';
+    const resp = await fetch(rssUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; StableNYC/1.0)',
+        'Accept': 'application/rss+xml, application/xml, text/xml',
+      },
+      cf: { cacheTtl: 0 },
+    });
+    const xml = await resp.text();
+    const listings = parseCraigslistRSS(xml, 'mnh');
+    results.sources.craigslist = {
+      status: resp.status,
+      xmlLength: xml.length,
+      totalItems: (xml.match(/<item\b/g) || []).length,
+      rsListings: listings.length,
+      firstListing: listings[0] || null,
+    };
+  } catch (e) {
+    results.sources.craigslist = { error: e.message };
+  }
+
+  return results;
+}
+
+// ============================================================
+// RESPONSE HELPER
+// ============================================================
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
