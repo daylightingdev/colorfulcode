@@ -61,10 +61,10 @@ export default {
 
 async function fetchRentStabilizedListings(borough, page) {
   const slug = BOROUGH_SLUGS[borough.toLowerCase()] || 'nyc';
-  const pageParam = page > 1 ? `&page=${page}` : '';
+  const pageParam = page > 1 ? `?page=${page}` : '';
 
-  // Search for "rent stabilized" in listing descriptions
-  const searchUrl = `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent%20stabilized%22${pageParam}`;
+  // Search for currently active listings that mention "rent stabilized"
+  const searchUrl = `https://streeteasy.com/for-rent/${slug}/status:open%7Cdescription:%22rent+stabilized%22${pageParam}`;
 
   const resp = await fetch(searchUrl, {
     headers: {
