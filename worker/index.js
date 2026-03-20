@@ -12,7 +12,7 @@ const CORS_HEADERS = {
 };
 
 // RapidAPI StreetEasy host
-const RAPIDAPI_HOST = 'streeteasy-api.p.rapidapi.com';
+const RAPIDAPI_HOST = 'nyc-real-estate-api.p.rapidapi.com';
 
 // StreetEasy area codes for borough filtering
 const SE_AREAS = {
@@ -59,8 +59,13 @@ export default {
     try {
       if (action === 'listings') {
         const borough = url.searchParams.get('borough') || 'all';
-        const listings = await fetchAllListings(borough, env);
-        return jsonResponse({ listings, borough });
+        const result = await fetchAllListings(borough, env);
+        return jsonResponse({
+          listings: result.listings,
+          borough,
+          errors: result.errors,
+          count: result.listings.length,
+        });
       }
 
       if (action === 'debug') {
@@ -82,6 +87,7 @@ export default {
 async function fetchAllListings(borough, env) {
   const allListings = [];
   const seenKeys = new Set();
+  const errors = [];
 
   // Try StreetEasy API first (if API key is configured)
   if (env.RAPIDAPI_KEY) {
@@ -95,8 +101,10 @@ async function fetchAllListings(borough, env) {
         }
       }
     } catch (e) {
-      // Fall through to Craigslist
+      errors.push({ source: 'streeteasy', error: e.message });
     }
+  } else {
+    errors.push({ source: 'streeteasy', error: 'No RAPIDAPI_KEY configured' });
   }
 
   // Also fetch from Craigslist RSS
@@ -110,10 +118,10 @@ async function fetchAllListings(borough, env) {
       }
     }
   } catch (e) {
-    // Continue with what we have
+    errors.push({ source: 'craigslist', error: e.message });
   }
 
-  return allListings;
+  return { listings: allListings, errors };
 }
 
 // ============================================================
@@ -123,25 +131,45 @@ async function fetchAllListings(borough, env) {
 async function fetchStreetEasyAPI(borough, apiKey) {
   const area = SE_AREAS[borough.toLowerCase()] || '';
 
-  // Build query params for active rentals
-  const params = new URLSearchParams();
-  if (area) params.set('areas', area);
-  params.set('limit', '100');
-  params.set('offset', '0');
+  // Try multiple endpoint paths (API structure may vary)
+  const endpoints = [
+    `/rentals/active`,
+    `/for-rent`,
+    `/search/rentals`,
+    `/properties/list`,
+  ];
 
-  const resp = await fetch(`https://${RAPIDAPI_HOST}/rentals/active?${params}`, {
-    headers: {
-      'X-RapidAPI-Key': apiKey,
-      'X-RapidAPI-Host': RAPIDAPI_HOST,
-    },
-  });
+  let data = null;
+  let lastError = '';
 
-  if (!resp.ok) {
-    const errText = await resp.text();
-    throw new Error(`StreetEasy API ${resp.status}: ${errText.slice(0, 200)}`);
+  for (const endpoint of endpoints) {
+    const params = new URLSearchParams();
+    if (area) params.set('areas', area);
+    params.set('limit', '100');
+    params.set('offset', '0');
+
+    try {
+      const resp = await fetch(`https://${RAPIDAPI_HOST}${endpoint}?${params}`, {
+        headers: {
+          'X-RapidAPI-Key': apiKey,
+          'X-RapidAPI-Host': RAPIDAPI_HOST,
+        },
+      });
+
+      if (resp.ok) {
+        data = await resp.json();
+        break;
+      } else {
+        lastError = `${endpoint}: HTTP ${resp.status}`;
+      }
+    } catch (e) {
+      lastError = `${endpoint}: ${e.message}`;
+    }
   }
 
-  const data = await resp.json();
+  if (!data) {
+    throw new Error(`All StreetEasy API endpoints failed. Last: ${lastError}`);
+  }
   const listings = [];
 
   // Parse the API response — adapt to actual response structure
@@ -368,26 +396,30 @@ function stripHtml(html) {
 // ============================================================
 
 async function debugFetch(env) {
-  const results = { hasApiKey: !!env.RAPIDAPI_KEY, sources: {} };
+  const results = { hasApiKey: !!env.RAPIDAPI_KEY, host: RAPIDAPI_HOST, sources: {} };
 
-  // Test StreetEasy API
+  // Test StreetEasy API — try multiple endpoints
   if (env.RAPIDAPI_KEY) {
-    try {
-      const params = new URLSearchParams({ limit: '5', offset: '0' });
-      const resp = await fetch(`https://${RAPIDAPI_HOST}/rentals/active?${params}`, {
-        headers: {
-          'X-RapidAPI-Key': env.RAPIDAPI_KEY,
-          'X-RapidAPI-Host': RAPIDAPI_HOST,
-        },
-      });
-      const body = await resp.text();
-      results.sources.streeteasy = {
-        status: resp.status,
-        responseLength: body.length,
-        preview: body.slice(0, 1000),
-      };
-    } catch (e) {
-      results.sources.streeteasy = { error: e.message };
+    const endpoints = ['/rentals/active', '/for-rent', '/search/rentals', '/properties/list'];
+    results.sources.streeteasy = {};
+    for (const endpoint of endpoints) {
+      try {
+        const params = new URLSearchParams({ limit: '5', offset: '0' });
+        const resp = await fetch(`https://${RAPIDAPI_HOST}${endpoint}?${params}`, {
+          headers: {
+            'X-RapidAPI-Key': env.RAPIDAPI_KEY,
+            'X-RapidAPI-Host': RAPIDAPI_HOST,
+          },
+        });
+        const body = await resp.text();
+        results.sources.streeteasy[endpoint] = {
+          status: resp.status,
+          responseLength: body.length,
+          preview: body.slice(0, 500),
+        };
+      } catch (e) {
+        results.sources.streeteasy[endpoint] = { error: e.message };
+      }
     }
   }
 
