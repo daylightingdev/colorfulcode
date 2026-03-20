@@ -4,7 +4,7 @@
 // ============================================================
 
 // ---- Configuration ----
-const WORKER_URL = ''; // Set to deployed Cloudflare Worker URL
+const WORKER_URL = 'https://stablenyc-photo-proxy.rsnyc.workers.dev';
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
 // ============================================================
@@ -506,7 +506,7 @@ async function loadListings() {
   // If a worker URL is configured, try fetching live listings
   if (WORKER_URL) {
     try {
-      const resp = await fetch(`${WORKER_URL}/api/listings`);
+      const resp = await fetch(`${WORKER_URL}?action=listings&borough=all`);
       if (resp.ok) {
         const data = await resp.json();
         if (data.listings && data.listings.length > 0) {
