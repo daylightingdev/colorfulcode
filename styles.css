@@ -744,6 +744,35 @@ h1, h2, h3, h4, h5, h6,
   border-radius: 100px;
 }
 
+/* ===== RS INFO ON CARDS ===== */
+.card-rs-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #16A34A;
+  padding: 6px 20px;
+}
+
+.card-rs-info svg {
+  flex-shrink: 0;
+}
+
+.card-rs-self-reported {
+  color: var(--text-muted);
+}
+
+.card-rs-note {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.modal-rs-self-reported h3 {
+  color: var(--text-secondary);
+}
+
 /* ===== EMPTY STATE ===== */
 .empty-state {
   text-align: center;

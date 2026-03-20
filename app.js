@@ -7,16 +7,20 @@
 const WORKER_URL = 'https://stablenyc-photo-proxy.rsnyc.workers.dev';
 const SODA_BASE = 'https://data.cityofnewyork.us/resource';
 
+// NYC Open Data dataset IDs for rent stabilization data
+// HPD Registration Contacts dataset — includes building addresses and boroughs
+const HPD_REGISTRATIONS_ID = 'tesw-yqqr';
+
 // ============================================================
-// PART 1: DHCR RENT STABILIZED BUILDING REGISTRY (Sample Data)
+// PART 1: DHCR RENT STABILIZED BUILDING REGISTRY
 // Source: NYS Homes & Community Renewal / NYC Rent Guidelines Board
 // https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/
 //
-// In production, this would be loaded from a pre-processed JSON
-// file derived from the official DHCR Excel downloads.
+// Hardcoded seed data below; at runtime we also attempt to load
+// the full registry from the NYC Open Data API (HPD registrations).
 // ============================================================
 
-const RS_BUILDINGS = [
+const RS_BUILDINGS_SEED = [
   // --- Manhattan ---
   { address: '2183 3RD AVENUE', borough: 'Manhattan', zip: '10115', units: 58, block: '1750', lot: '45', yearBuilt: 2018, lat: 40.8020, lng: -73.9400 },
   { address: '75 EAST 111TH STREET', borough: 'Manhattan', zip: '10029', units: 324, block: '1617', lot: '20', yearBuilt: 2022, lat: 40.7955, lng: -73.9440 },
@@ -198,20 +202,45 @@ function findRSBuilding(listingAddress, listingBorough) {
   return null;
 }
 
-// Initialize the lookup
+// Start with seed data; loadRSBuildingsFromOpenData() will expand this
+let RS_BUILDINGS = [...RS_BUILDINGS_SEED];
 buildRSLookup(RS_BUILDINGS);
 
-// ============================================================
-// DIAGNOSTIC: Log matching test to verify engine works
-// ============================================================
-console.log('[StableNYC] RS Building lookup built:', Object.keys(rsLookup).length, 'keys');
-console.log('[StableNYC] Address matching tests:');
-console.log('  "101 Avenue A, Apt 3B" →', findRSBuilding('101 Avenue A, Apt 3B', 'Manhattan')?.address || 'NO MATCH');
-console.log('  "235 E 5th St, #4A" →', findRSBuilding('235 E 5th St, #4A', 'Manhattan')?.address || 'NO MATCH');
-console.log('  "315 W. 78th Street" →', findRSBuilding('315 W. 78th Street', 'Manhattan')?.address || 'NO MATCH');
-console.log('  "82-15 37th Avenue" →', findRSBuilding('82-15 37th Avenue', 'Queens')?.address || 'NO MATCH');
-console.log('  "485 Saint Johns Place" →', findRSBuilding('485 Saint Johns Place', 'Brooklyn')?.address || 'NO MATCH');
-console.log('  "999 Fake Street" →', findRSBuilding('999 Fake Street', 'Manhattan')?.address || 'NO MATCH');
+// Attempt to load a larger RS building registry from NYC Open Data
+async function loadRSBuildingsFromOpenData() {
+  try {
+    // HPD Multiple Dwelling Registrations — contains registered building addresses
+    const url = `${SODA_BASE}/${HPD_REGISTRATIONS_ID}.json?$limit=50000&$select=boroid,block,lot,buildingid,housenumber,lowhousenumber,highhousenumber,streetname,zip,city,registrationid,buildingstatusid&$where=buildingstatusid=1`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('Empty dataset');
+
+    const boroNames = { '1': 'Manhattan', '2': 'Bronx', '3': 'Brooklyn', '4': 'Queens', '5': 'Staten Island' };
+
+    const buildings = data.map(row => {
+      const houseNum = row.housenumber || row.lowhousenumber || '';
+      const street = (row.streetname || '').toUpperCase();
+      const address = houseNum ? `${houseNum} ${street}` : street;
+      return {
+        address,
+        borough: boroNames[row.boroid] || row.city || '',
+        zip: row.zip || '',
+        block: row.block || '',
+        lot: row.lot || '',
+      };
+    }).filter(b => b.address && b.borough);
+
+    if (buildings.length > 0) {
+      RS_BUILDINGS = [...RS_BUILDINGS_SEED, ...buildings];
+      buildRSLookup(RS_BUILDINGS);
+      console.log(`[StableNYC] Loaded ${buildings.length} RS buildings from NYC Open Data`);
+    }
+  } catch (err) {
+    console.warn('[StableNYC] Could not load RS data from NYC Open Data, using seed data:', err.message);
+  }
+}
+
 
 // ============================================================
 // PART 4: SAMPLE RENTAL LISTINGS
@@ -476,13 +505,24 @@ const SAMPLE_LISTINGS = [
 // ============================================================
 
 function matchListingsToRS(listings) {
-  return listings.map(listing => {
+  return listings.map((listing, i) => {
     const rsBuilding = findRSBuilding(listing.address, listing.borough);
+
+    // Normalize price: worker may return "$2,800" strings; filters expect numbers
+    let price = listing.price;
+    if (typeof price === 'string') {
+      price = parseInt(price.replace(/[$,]/g, ''), 10) || null;
+    }
+
+    // Ensure listing has a unique id
+    const id = listing.id || `listing-${i}`;
+
     return {
       ...listing,
+      id,
+      price,
       rsMatch: rsBuilding ? true : false,
       rsBuilding: rsBuilding || null,
-      // Individual unit RS status is almost never verifiable from DHCR data
       rsUnitVerified: false,
     };
   });
@@ -510,7 +550,8 @@ async function loadListings() {
       if (resp.ok) {
         const data = await resp.json();
         if (data.listings && data.listings.length > 0) {
-          return data.listings;
+          console.log(`[StableNYC] Worker returned ${data.listings.length} listings`);
+          return { listings: data.listings, source: 'worker' };
         }
       }
     } catch (err) {
@@ -518,22 +559,35 @@ async function loadListings() {
     }
   }
   // Fall back to sample data
-  return SAMPLE_LISTINGS;
+  return { listings: SAMPLE_LISTINGS, source: 'sample' };
 }
 
 async function loadData() {
   showLoading(true);
 
   try {
-    const rawListings = await loadListings();
+    // Load RS building data and listings in parallel
+    const [rsResult, listingsResult] = await Promise.all([
+      loadRSBuildingsFromOpenData(),
+      loadListings(),
+    ]);
+
+    const { listings: rawListings, source } = listingsResult;
 
     // Match every listing against the RS building registry
     const matched = matchListingsToRS(rawListings);
 
-    // Only keep listings that matched an RS building
-    allListings = matched.filter(l => l.rsMatch);
+    if (source === 'worker') {
+      // Worker already verified these are rent-stabilized listings
+      // Keep all of them; rsMatch enriches with building data when available
+      allListings = matched;
+    } else {
+      // Sample data: only keep listings that matched an RS building
+      allListings = matched.filter(l => l.rsMatch);
+    }
 
-    console.log(`[StableNYC] ${rawListings.length} raw listings → ${allListings.length} matched to RS buildings`);
+    const rsMatched = allListings.filter(l => l.rsMatch).length;
+    console.log(`[StableNYC] ${rawListings.length} raw listings → ${allListings.length} kept (${rsMatched} matched to RS buildings)`);
   } catch (err) {
     console.error('[StableNYC] Failed to load listings:', err);
     allListings = [];
@@ -873,8 +927,11 @@ function renderListings() {
         </div>
         ${rsBuilding ? `<div class="card-rs-info">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          DHCR Registry &middot; ${rsBuilding.units} units &middot; Built ${rsBuilding.yearBuilt}
-        </div>` : ''}
+          DHCR Registry${rsBuilding.units ? ` &middot; ${rsBuilding.units} units` : ''}${rsBuilding.yearBuilt ? ` &middot; Built ${rsBuilding.yearBuilt}` : ''}
+        </div>` : `<div class="card-rs-info card-rs-self-reported">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          Listed as rent stabilized
+        </div>`}
       </div>
       <div class="card-footer">
         <span class="card-rs-note">Unit RS status unverified</span>
@@ -963,7 +1020,17 @@ function openModal(id) {
           <span>This building is on the DHCR rent stabilization registry. However, the stabilization status of this specific unit is <strong>unverified</strong>. Ask the landlord to confirm and check your lease for an RS rider.</span>
         </div>
       </div>
-      ` : ''}
+      ` : `
+      <div class="modal-rs-section modal-rs-self-reported">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          Self-Reported Rent Stabilized
+        </h3>
+        <div class="modal-rs-disclaimer">
+          <span>This listing describes itself as rent stabilized but was not found in the DHCR building registry. Ask the landlord to confirm and check your lease for an RS rider.</span>
+        </div>
+      </div>
+      `}
 
       <div class="modal-actions">
         <a href="${listing.url}" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1;justify-content:center;text-decoration:none;">

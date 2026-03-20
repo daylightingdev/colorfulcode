@@ -61,6 +61,36 @@ export default {
 
 async function fetchRentStabilizedListings(borough, page) {
   const slug = BOROUGH_SLUGS[borough.toLowerCase()] || 'nyc';
+
+  // If a specific page was requested, fetch just that page
+  if (page > 1) {
+    return fetchSinglePage(slug, page);
+  }
+
+  // Otherwise fetch multiple pages to get as many listings as possible
+  const MAX_PAGES = 5;
+  const allListings = [];
+  const seenUrls = new Set();
+
+  for (let p = 1; p <= MAX_PAGES; p++) {
+    const pageListings = await fetchSinglePage(slug, p);
+    if (pageListings.length === 0) break; // No more results
+
+    for (const listing of pageListings) {
+      if (!seenUrls.has(listing.url)) {
+        seenUrls.add(listing.url);
+        allListings.push(listing);
+      }
+    }
+
+    // If we got fewer results than expected, we've hit the last page
+    if (pageListings.length < 10) break;
+  }
+
+  return allListings;
+}
+
+async function fetchSinglePage(slug, page) {
   const pageParam = page > 1 ? `?page=${page}` : '';
 
   // Search for currently active listings that mention "rent stabilized"
