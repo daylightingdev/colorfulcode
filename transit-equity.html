@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transit Walkshed Equity Gap Finder — NYC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="transit-equity.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <header class="sidebar-header">
+      <h1>Transit Equity<br>Gap Finder</h1>
+      <p class="subtitle">NYC Walkshed Analysis</p>
+    </header>
+
+    <div class="sidebar-content">
+      <!-- Mapbox Token Input (shown if not configured) -->
+      <div id="token-prompt" class="control-group">
+        <label for="mapbox-token">Mapbox Access Token</label>
+        <input type="text" id="mapbox-token" placeholder="pk.eyJ1Ijo..." spellcheck="false">
+        <button id="token-submit" class="btn btn-primary">Load Map</button>
+        <p class="help-text">Get a free token at <a href="https://mapbox.com" target="_blank">mapbox.com</a></p>
+      </div>
+
+      <!-- Controls (hidden until map loads) -->
+      <div id="controls" class="hidden">
+        <div class="control-group">
+          <label for="district-select">Council District</label>
+          <select id="district-select">
+            <option value="">All NYC — select a district</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="walk-time">Walk Time: <span id="walk-time-val">10</span> min</label>
+          <input type="range" id="walk-time" min="5" max="20" value="10" step="1">
+          <div class="range-labels">
+            <span>5 min</span><span>20 min</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Transit Layers</label>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="show-subway" checked><span>Subway Stops</span></label>
+            <label class="toggle"><input type="checkbox" id="show-bus" checked><span>Bus Stops</span></label>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="show-walkshed"><span>Walkshed Overlay</span></label>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="control-group">
+          <label>Equity Gap Score</label>
+          <div class="legend">
+            <div class="legend-bar"></div>
+            <div class="legend-labels">
+              <span>Low gap<br>(well served)</span>
+              <span>Moderate</span>
+              <span>High gap<br>(underserved)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div id="summary-stats" class="stats-grid">
+          <div class="stat">
+            <span class="stat-value" id="stat-zones">—</span>
+            <span class="stat-label">Analysis Zones</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-gaps">—</span>
+            <span class="stat-label">Gap Zones</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-pop">—</span>
+            <span class="stat-label">Est. Affected Pop.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-score">—</span>
+            <span class="stat-label">Avg. Gap Score</span>
+          </div>
+        </div>
+
+        <!-- Details Panel -->
+        <div id="details-panel" class="hidden">
+          <label>Zone Details</label>
+          <div id="details-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="sidebar-footer">
+      <p>Data: MTA GTFS &middot; ACS 5-Year &middot; NYC Open Data</p>
+      <a href="index.html" class="back-link">&larr; Back to StableNYC</a>
+    </footer>
+  </aside>
+
+  <!-- Map -->
+  <div id="map"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loading" class="hidden">
+    <div class="spinner"></div>
+    <p id="loading-text">Loading transit data...</p>
+  </div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+  <script src="transit-equity.js"></script>
+</body>
+</html>
