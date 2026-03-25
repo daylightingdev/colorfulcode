@@ -3,8 +3,16 @@
 // ============================================================
 
 // ---- Configuration ----
-const MTA_SUBWAY_STOPS_URL = 'https://data.cityofnewyork.us/resource/kk4q-3rt2.json?$limit=1000';
-const MTA_BUS_STOPS_URL = 'https://data.cityofnewyork.us/resource/qu8g-sxqf.json?$limit=5000';
+// NYC Open Data: Subway Stations (kk4q-3rt2) + NY State: MTA Subway Stations (39hk-dx4f)
+const MTA_SUBWAY_STOPS_URLS = [
+  'https://data.cityofnewyork.us/resource/kk4q-3rt2.json?$limit=1000',
+  'https://data.ny.gov/resource/39hk-dx4f.json?$limit=1000',
+];
+// NYC Open Data: Bus Stop Shelters as partial source + Transportation Sites
+const MTA_BUS_STOPS_URLS = [
+  'https://data.cityofnewyork.us/resource/qu8g-sxqf.json?$limit=10000',
+  'https://data.cityofnewyork.us/resource/hg3c-2jsy.json?$limit=10000',
+];
 const COUNCIL_DISTRICTS_URL = 'https://data.cityofnewyork.us/resource/yusd-j4xi.geojson?$limit=100';
 const CENSUS_TRACTS_URL = 'https://data.cityofnewyork.us/resource/i69b-3rdj.json?$limit=5000';
 
@@ -128,42 +136,92 @@ async function loadAllData() {
 
 async function fetchSubwayStops() {
   showLoading('Loading subway stops...');
-  try {
-    const res = await fetch(MTA_SUBWAY_STOPS_URL);
-    const data = await res.json();
-    return data
-      .filter(s => s.the_geom && s.the_geom.coordinates)
-      .map(s => ({
-        type: 'subway',
-        name: s.stop_name || s.name || 'Unknown',
-        lines: s.line || s.daytime_routes || '',
-        lng: parseFloat(s.the_geom.coordinates[0]),
-        lat: parseFloat(s.the_geom.coordinates[1]),
-      }));
-  } catch (e) {
-    console.warn('Subway stops fetch failed, using fallback', e);
-    return generateFallbackSubwayStops();
+
+  // Try multiple data sources, merge results, deduplicate
+  const allStops = [];
+  for (const url of MTA_SUBWAY_STOPS_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const s of data) {
+        // Handle varying field structures across datasets
+        let lat, lng;
+        if (s.the_geom && s.the_geom.coordinates) {
+          lng = parseFloat(s.the_geom.coordinates[0]);
+          lat = parseFloat(s.the_geom.coordinates[1]);
+        } else if (s.georeference && s.georeference.coordinates) {
+          lng = parseFloat(s.georeference.coordinates[0]);
+          lat = parseFloat(s.georeference.coordinates[1]);
+        } else if (s.latitude && s.longitude) {
+          lat = parseFloat(s.latitude);
+          lng = parseFloat(s.longitude);
+        } else {
+          continue;
+        }
+        if (isNaN(lat) || isNaN(lng)) continue;
+        allStops.push({
+          type: 'subway',
+          name: s.stop_name || s.name || s.station_name || s.complex_name || 'Unknown',
+          lines: s.line || s.daytime_routes || s.routes || '',
+          lat,
+          lng,
+        });
+      }
+    } catch (e) {
+      console.warn(`Subway fetch failed for ${url}:`, e);
+    }
   }
+
+  if (allStops.length > 0) {
+    // Deduplicate by proximity (within ~50m)
+    return deduplicateStops(allStops);
+  }
+
+  console.warn('All subway APIs failed, using fallback');
+  return generateFallbackSubwayStops();
 }
 
 async function fetchBusStops() {
   showLoading('Loading bus stops...');
-  try {
-    const res = await fetch(MTA_BUS_STOPS_URL);
-    const data = await res.json();
-    return data
-      .filter(s => s.the_geom && s.the_geom.coordinates)
-      .map(s => ({
-        type: 'bus',
-        name: s.stop_name || s.name || 'Bus Stop',
-        routes: s.routes || '',
-        lng: parseFloat(s.the_geom.coordinates[0]),
-        lat: parseFloat(s.the_geom.coordinates[1]),
-      }));
-  } catch (e) {
-    console.warn('Bus stops fetch failed, using fallback', e);
-    return generateFallbackBusStops();
+
+  const allStops = [];
+  for (const url of MTA_BUS_STOPS_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const s of data) {
+        let lat, lng;
+        if (s.the_geom && s.the_geom.coordinates) {
+          lng = parseFloat(s.the_geom.coordinates[0]);
+          lat = parseFloat(s.the_geom.coordinates[1]);
+        } else if (s.latitude && s.longitude) {
+          lat = parseFloat(s.latitude);
+          lng = parseFloat(s.longitude);
+        } else {
+          continue;
+        }
+        if (isNaN(lat) || isNaN(lng)) continue;
+        allStops.push({
+          type: 'bus',
+          name: s.stop_name || s.name || s.facname || 'Bus Stop',
+          routes: s.routes || s.route || '',
+          lat,
+          lng,
+        });
+      }
+    } catch (e) {
+      console.warn(`Bus fetch failed for ${url}:`, e);
+    }
   }
+
+  if (allStops.length > 0) {
+    return deduplicateStops(allStops);
+  }
+
+  console.warn('All bus APIs failed, using fallback');
+  return generateFallbackBusStops();
 }
 
 async function fetchCouncilDistricts() {
@@ -196,6 +254,19 @@ async function fetchCensusData() {
     console.warn('Census data fetch failed', e);
     return [];
   }
+}
+
+// ---- Deduplication ----
+
+function deduplicateStops(stops) {
+  const unique = [];
+  for (const s of stops) {
+    const isDupe = unique.some(u =>
+      Math.abs(u.lat - s.lat) < 0.0004 && Math.abs(u.lng - s.lng) < 0.0004
+    );
+    if (!isDupe) unique.push(s);
+  }
+  return unique;
 }
 
 // ---- Fallback Data Generators ----
