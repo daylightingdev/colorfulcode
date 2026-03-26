@@ -309,33 +309,213 @@ function generateFallbackSubwayStops() {
 }
 
 function generateFallbackBusStops() {
-  // Generate grid of bus stops across NYC for demo
-  const stops = [];
-  const boroughs = [
-    { name: 'Manhattan', latMin: 40.700, latMax: 40.880, lngMin: -74.020, lngMax: -73.930, density: 0.006 },
-    { name: 'Brooklyn', latMin: 40.570, latMax: 40.700, lngMin: -74.040, lngMax: -73.890, density: 0.010 },
-    { name: 'Queens', latMin: 40.680, latMax: 40.800, lngMin: -73.930, lngMax: -73.730, density: 0.012 },
-    { name: 'Bronx', latMin: 40.800, latMax: 40.900, lngMin: -73.930, lngMax: -73.820, density: 0.010 },
-    { name: 'Staten Island', latMin: 40.500, latMax: 40.650, lngMin: -74.250, lngMax: -74.060, density: 0.020 },
+  // Generate bus stops along major NYC bus corridors for realistic placement.
+  // Each corridor is a line segment with start/end coordinates; stops are
+  // placed at ~250m intervals (~0.0023 degrees) along each segment.
+  const STOP_INTERVAL = 0.0023; // ~250m in degrees latitude
+
+  // Cross-street names repeat along corridors for realistic stop naming
+  const manhattanNSStreets = [
+    'Houston St', '14th St', '23rd St', '34th St', '42nd St', '50th St',
+    '57th St', '66th St', '72nd St', '79th St', '86th St', '96th St',
+    '106th St', '110th St', '116th St', '125th St', '135th St', '145th St',
+    '155th St', '165th St', '175th St', '181st St', '191st St', 'Dyckman St',
+    '207th St', '215th St',
   ];
-  let id = 0;
-  for (const b of boroughs) {
-    for (let lat = b.latMin; lat <= b.latMax; lat += b.density) {
-      for (let lng = b.lngMin; lng <= b.lngMax; lng += b.density) {
-        // Add jitter
-        const jLat = lat + (Math.random() - 0.5) * b.density * 0.5;
-        const jLng = lng + (Math.random() - 0.5) * b.density * 0.5;
-        stops.push({
-          type: 'bus',
-          name: `${b.name} Bus Stop ${++id}`,
-          routes: `B${Math.floor(Math.random() * 80) + 1}`,
-          lat: jLat,
-          lng: jLng,
-        });
+  const manhattanEWStreets = [
+    '1st Ave', '2nd Ave', '3rd Ave', 'Lexington Ave', 'Park Ave',
+    'Madison Ave', '5th Ave', '6th Ave', '7th Ave', '8th Ave',
+    'Broadway', 'Amsterdam Ave', 'Columbus Ave', 'Riverside Dr',
+  ];
+  const brooklynStreets = [
+    'Atlantic Ave', 'Fulton St', 'DeKalb Ave', 'Myrtle Ave', 'Flushing Ave',
+    'Broadway', 'Gates Ave', 'Halsey St', 'Nostrand Ave', 'Utica Ave',
+    'Ralph Ave', 'Pennsylvania Ave', 'Flatbush Ave', 'Church Ave',
+    'Kings Hwy', 'Avenue U', 'Bay Pkwy', 'Ocean Pkwy', '86th St',
+    'Bay Ridge Ave', '4th Ave', '5th Ave', 'Smith St', 'Court St',
+  ];
+  const queensStreets = [
+    'Queens Blvd', 'Roosevelt Ave', 'Northern Blvd', 'Astoria Blvd',
+    'Jamaica Ave', 'Hillside Ave', 'Union Tpke', 'Kissena Blvd',
+    'Main St', 'Parsons Blvd', 'Francis Lewis Blvd', 'Springfield Blvd',
+    'Cross Bay Blvd', 'Rockaway Blvd', 'Linden Blvd', 'Liberty Ave',
+    'Sutphin Blvd', 'Merrick Blvd', 'Guy Brewer Blvd',
+  ];
+  const bronxStreets = [
+    'Grand Concourse', 'Fordham Rd', 'Tremont Ave', 'Burnside Ave',
+    'Kingsbridge Rd', 'Gun Hill Rd', 'Pelham Pkwy', 'E 233rd St',
+    'White Plains Rd', 'Westchester Ave', 'Southern Blvd', 'Third Ave',
+    'Jerome Ave', 'Broadway', 'Riverdale Ave', 'University Ave',
+    'Webster Ave', 'E 149th St', 'E 161st St', 'E 174th St',
+  ];
+  const siStreets = [
+    'Victory Blvd', 'Richmond Ave', 'Hylan Blvd', 'Forest Ave',
+    'Castleton Ave', 'Bay St', 'Targee St', 'Richmond Rd',
+    'Arthur Kill Rd', 'Amboy Rd', 'Arden Ave', 'Drumgoole Rd',
+  ];
+
+  function getCrossStreet(streets, index) {
+    return streets[index % streets.length];
+  }
+
+  function generateStopsAlongCorridor(startLat, startLng, endLat, endLng, route, crossStreets) {
+    const stops = [];
+    const dLat = endLat - startLat;
+    const dLng = endLng - startLng;
+    const dist = Math.sqrt(dLat * dLat + dLng * dLng);
+    const numStops = Math.max(2, Math.floor(dist / STOP_INTERVAL));
+    for (let i = 0; i <= numStops; i++) {
+      const t = i / numStops;
+      const lat = startLat + dLat * t;
+      const lng = startLng + dLng * t;
+      const crossSt = getCrossStreet(crossStreets, i);
+      stops.push({
+        type: 'bus',
+        name: `${route} at ${crossSt}`,
+        routes: route,
+        lat: parseFloat(lat.toFixed(6)),
+        lng: parseFloat(lng.toFixed(6)),
+      });
+    }
+    return stops;
+  }
+
+  // Define major corridors: [startLat, startLng, endLat, endLng, routeName]
+  // ---- MANHATTAN (north-south avenues and crosstown routes) ----
+  const manhattanCorridors = [
+    // North-south routes
+    [40.7010, -74.0132, 40.8735, -73.9107, 'M1'],    // 5th/Madison Ave
+    [40.7020, -74.0110, 40.8460, -73.9360, 'M3'],    // Amsterdam/St Nicholas Ave
+    [40.7030, -74.0050, 40.8770, -73.9060, 'M4'],    // Madison/5th Ave (upper)
+    [40.7013, -74.0125, 40.8420, -73.9425, 'M5'],    // Broadway/Riverside Dr
+    [40.7044, -74.0090, 40.8100, -73.9600, 'M7'],    // Columbus/Amsterdam Ave
+    [40.7080, -73.9975, 40.7960, -73.9490, 'M10'],   // 7th/8th Ave
+    [40.7026, -74.0133, 40.8500, -73.9360, 'M11'],   // 9th/10th Ave
+    [40.7090, -73.9900, 40.8770, -73.9065, 'M15'],   // 1st/2nd Ave
+    [40.7188, -73.9860, 40.7610, -73.9714, 'M101'],  // 3rd/Lexington (midtown)
+    [40.8100, -73.9600, 40.8700, -73.9200, 'M100'],  // Broadway (Harlem)
+    // Crosstown routes
+    [40.7200, -74.0000, 40.7200, -73.9720, 'M14A'],  // 14th St crosstown
+    [40.7340, -73.9980, 40.7340, -73.9740, 'M23'],   // 23rd St crosstown
+    [40.7488, -74.0020, 40.7488, -73.9680, 'M34'],   // 34th St crosstown
+    [40.7544, -73.9990, 40.7544, -73.9640, 'M42'],   // 42nd St crosstown
+    [40.7720, -73.9810, 40.7720, -73.9580, 'M57'],   // 57th St crosstown
+    [40.7760, -73.9810, 40.7760, -73.9530, 'M66'],   // 66th St crosstown
+    [40.7810, -73.9770, 40.7810, -73.9510, 'M72'],   // 72nd St crosstown
+    [40.7860, -73.9750, 40.7860, -73.9490, 'M79'],   // 79th St crosstown
+    [40.7900, -73.9720, 40.7900, -73.9490, 'M86'],   // 86th St crosstown
+    [40.7950, -73.9700, 40.7950, -73.9420, 'M96'],   // 96th St crosstown
+  ];
+
+  // ---- BROOKLYN (major routes) ----
+  const brooklynCorridors = [
+    [40.6870, -73.9800, 40.5740, -73.9610, 'B1'],    // Flatbush Ave south
+    [40.6920, -73.9900, 40.6410, -74.0280, 'B2'],    // Church Ave/Bay Ridge
+    [40.6890, -73.9810, 40.6350, -73.9480, 'B3'],    // Nostrand Ave south
+    [40.6865, -73.9770, 40.6170, -73.9560, 'B8'],    // Ocean Pkwy
+    [40.6580, -73.9800, 40.6580, -73.9070, 'B9'],    // Kings Hwy crosstown
+    [40.6890, -73.9840, 40.5810, -73.9740, 'B11'],   // Flatbush Ave (full)
+    [40.6960, -73.9940, 40.6960, -73.9290, 'B15'],   // Atlantic Ave crosstown
+    [40.6950, -73.9940, 40.6950, -73.9120, 'B25'],   // Fulton St full
+    [40.6905, -73.9870, 40.6560, -73.8920, 'B35'],   // Church Ave east
+    [40.6400, -74.0290, 40.6170, -74.0320, 'B37'],   // 3rd/4th Ave Bay Ridge
+    [40.6890, -73.9830, 40.6400, -73.9780, 'B41'],   // Flatbush Ave central
+    [40.6870, -73.9770, 40.6020, -73.9510, 'B44'],   // Nostrand Ave full
+    [40.6850, -73.9740, 40.6130, -73.9360, 'B46'],   // Utica Ave
+    [40.6870, -73.9900, 40.6510, -74.0030, 'B51'],   // 4th Ave
+    [40.6910, -73.9950, 40.6080, -73.9900, 'B60'],   // Smith/Coney Island
+    [40.6790, -73.9710, 40.6220, -73.8940, 'B63'],   // East Brooklyn
+    [40.6740, -73.9640, 40.5830, -73.9520, 'B68'],   // Coney Island Ave
+    [40.6280, -73.9250, 40.5920, -73.8880, 'B82'],   // Flatlands east
+    [40.6940, -73.9930, 40.6940, -73.9340, 'B103'],  // Myrtle Ave
+  ];
+
+  // ---- QUEENS (major routes) ----
+  const queensCorridors = [
+    [40.7430, -73.9230, 40.7100, -73.8200, 'Q1'],    // Queens Blvd
+    [40.7570, -73.9240, 40.7570, -73.8490, 'Q2'],    // Northern Blvd east
+    [40.7680, -73.9170, 40.7680, -73.8460, 'Q4'],    // Northern Blvd far
+    [40.7420, -73.9150, 40.6970, -73.8530, 'Q5'],    // Jamaica Ave south
+    [40.7380, -73.9100, 40.6940, -73.7920, 'Q6'],    // Jamaica Ave east
+    [40.7280, -73.9000, 40.6990, -73.7870, 'Q9'],    // Union Tpke
+    [40.7430, -73.9200, 40.7430, -73.8100, 'Q10'],   // Roosevelt Ave
+    [40.7160, -73.8360, 40.6750, -73.8360, 'Q11'],   // Springfield Blvd
+    [40.6680, -73.8640, 40.6680, -73.7600, 'Q13'],   // Rockaway south
+    [40.6900, -73.8150, 40.6520, -73.7560, 'Q27'],   // SE Queens
+    [40.7460, -73.8740, 40.7120, -73.7960, 'Q30'],   // Main St/Kissena
+    [40.7530, -73.9220, 40.7530, -73.8600, 'Q33'],   // Astoria south
+    [40.7500, -73.9170, 40.7120, -73.8300, 'Q44'],   // Flushing local
+    [40.6700, -73.8100, 40.6310, -73.7600, 'Q54'],   // Far Rockaway
+    [40.6960, -73.8460, 40.6600, -73.7780, 'Q65'],   // SE Queens local
+    [40.6720, -73.8340, 40.6350, -73.7730, 'Q113'],  // Rockaway east
+    // Major N-S routes
+    [40.7700, -73.9200, 40.7100, -73.8500, 'Q18'],   // Steinway/Parsons
+    [40.7600, -73.8700, 40.7100, -73.8300, 'Q20'],   // Main St Flushing south
+    [40.7400, -73.8600, 40.6800, -73.8300, 'Q36'],   // Francis Lewis Blvd
+  ];
+
+  // ---- BRONX (major routes) ----
+  const bronxCorridors = [
+    [40.8100, -73.9290, 40.8790, -73.8780, 'Bx1'],   // Grand Concourse south
+    [40.8240, -73.9140, 40.8790, -73.8790, 'Bx2'],   // Grand Concourse north
+    [40.8100, -73.9300, 40.8100, -73.8520, 'Bx4'],   // E 149th St crosstown
+    [40.8150, -73.9200, 40.8560, -73.8290, 'Bx5'],   // Westchester Ave
+    [40.8180, -73.9270, 40.8930, -73.8890, 'Bx7'],   // Broadway/Riverdale
+    [40.8420, -73.9130, 40.8420, -73.8540, 'Bx11'],  // Pelham Pkwy crosstown
+    [40.8530, -73.9080, 40.8530, -73.8440, 'Bx12'],  // Fordham Rd crosstown
+    [40.8280, -73.9170, 40.8280, -73.8550, 'Bx15'],  // Tremont Ave crosstown
+    [40.8200, -73.9240, 40.8870, -73.8970, 'Bx19'],  // Jerome Ave
+    [40.8190, -73.9210, 40.8740, -73.8610, 'Bx21'],  // White Plains Rd
+    [40.8160, -73.9250, 40.8720, -73.8700, 'Bx22'],  // Southern Blvd
+    [40.8200, -73.9260, 40.8910, -73.8950, 'Bx32'],  // Grand Concourse full
+    [40.8700, -73.9020, 40.8700, -73.8430, 'Bx39'],  // Gun Hill Rd crosstown
+    [40.8800, -73.9000, 40.8800, -73.8500, 'Bx41'],  // E 233rd crosstown
+    [40.8150, -73.9270, 40.8590, -73.8310, 'Bx46'],  // Soundview
+    [40.8600, -73.9100, 40.8890, -73.8960, 'Bx55'],  // Riverdale north
+  ];
+
+  // ---- STATEN ISLAND (major routes, sparser coverage) ----
+  const siCorridors = [
+    [40.6430, -74.0770, 40.5600, -74.1380, 'S40'],   // Bay St/Hylan north
+    [40.6370, -74.0830, 40.5700, -74.1500, 'S42'],   // Victory Blvd
+    [40.6340, -74.0890, 40.5880, -74.1410, 'S44'],   // Richmond Ave north
+    [40.6300, -74.0780, 40.5200, -74.2280, 'S46'],   // Hylan Blvd full
+    [40.6310, -74.0930, 40.5650, -74.1520, 'S48'],   // Forest Ave
+    [40.6250, -74.0830, 40.5300, -74.2100, 'S51'],   // Amboy Rd
+    [40.6050, -74.0700, 40.5600, -74.1100, 'S54'],   // Hylan Blvd east
+    [40.6000, -74.1100, 40.5400, -74.1850, 'S62'],   // Arthur Kill Rd
+    [40.6280, -74.0880, 40.5500, -74.2000, 'S78'],   // Hylan/Arthur Kill
+  ];
+
+  // Pick the right cross-street list for each corridor set and generate all stops
+  const allStops = [];
+  const corridorSets = [
+    { corridors: manhattanCorridors, nsStreets: manhattanNSStreets, ewStreets: manhattanEWStreets },
+    { corridors: brooklynCorridors, streets: brooklynStreets },
+    { corridors: queensCorridors, streets: queensStreets },
+    { corridors: bronxCorridors, streets: bronxStreets },
+    { corridors: siCorridors, streets: siStreets },
+  ];
+
+  for (const set of corridorSets) {
+    for (const c of set.corridors) {
+      const [startLat, startLng, endLat, endLng, route] = c;
+      // For Manhattan, pick NS or EW cross-street list based on corridor orientation
+      let crossStreets;
+      if (set.nsStreets) {
+        const isNorthSouth = Math.abs(endLat - startLat) > Math.abs(endLng - startLng);
+        crossStreets = isNorthSouth ? set.nsStreets : set.ewStreets;
+      } else {
+        crossStreets = set.streets;
       }
+      const corridorStops = generateStopsAlongCorridor(
+        startLat, startLng, endLat, endLng, route, crossStreets
+      );
+      allStops.push(...corridorStops);
     }
   }
-  return stops;
+
+  return allStops;
 }
 
 function buildFallbackDistricts() {
