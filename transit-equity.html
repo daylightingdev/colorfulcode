@@ -28,6 +28,16 @@
       <!-- Controls (hidden until map loads) -->
       <div id="controls" class="hidden">
         <div class="control-group">
+          <label for="address-search">Search Address</label>
+          <div class="search-wrapper">
+            <input type="text" id="address-search" placeholder="e.g. 125 E 14th St, Manhattan">
+            <button id="address-clear" class="search-clear hidden">&times;</button>
+          </div>
+          <div id="search-results" class="search-results hidden"></div>
+          <p id="search-status" class="help-text"></p>
+        </div>
+
+        <div class="control-group">
           <label for="district-select">Council Districts <span class="hint">(select up to 4)</span></label>
           <select id="district-select" multiple size="6">
             <option value="" selected>All NYC</option>
