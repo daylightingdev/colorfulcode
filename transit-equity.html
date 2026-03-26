@@ -28,10 +28,11 @@
       <!-- Controls (hidden until map loads) -->
       <div id="controls" class="hidden">
         <div class="control-group">
-          <label for="district-select">Council District</label>
-          <select id="district-select">
-            <option value="">All NYC — select a district</option>
+          <label for="district-select">Council Districts <span class="hint">(select up to 4)</span></label>
+          <select id="district-select" multiple size="6">
+            <option value="" selected>All NYC</option>
           </select>
+          <p class="help-text">Ctrl/Cmd+click to select multiple districts</p>
         </div>
 
         <div class="control-group">
