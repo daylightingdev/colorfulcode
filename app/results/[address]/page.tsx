@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import mapboxgl from "mapbox-gl";
-import { MOCK_RESULT, CATEGORY_META, type ScoreResult } from "@/lib/mock-data";
+import { CATEGORY_META, type ScoreResult } from "@/lib/mock-data";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
@@ -325,8 +325,33 @@ function GapList({ gaps }: { gaps: string[] }) {
   );
 }
 
-export default function ResultsPage() {
-  const result = MOCK_RESULT;
+export default function ResultsPage({
+  params,
+}: {
+  params: { address: string };
+}) {
+  const [result, setResult] = useState<ScoreResult | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const address = decodeURIComponent(params.address);
+    fetch("/api/score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ address }),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "Failed to fetch score");
+        }
+        return res.json();
+      })
+      .then((data) => setResult(data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [params.address]);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -342,11 +367,29 @@ export default function ResultsPage() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        <ScoreHeader result={result} />
-        <CategoryBreakdown breakdown={result.breakdown} />
-        <AmenityMap result={result} />
-        <EquityPanel equity={result.equity} />
-        <GapList gaps={result.gaps} />
+        {loading && (
+          <div className="text-center py-20">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" />
+            <p className="mt-4 text-gray-500">Calculating score...</p>
+          </div>
+        )}
+        {error && (
+          <div className="text-center py-20">
+            <p className="text-red-500 text-lg font-medium">{error}</p>
+            <Link href="/" className="text-emerald-600 underline mt-2 inline-block">
+              Try another address
+            </Link>
+          </div>
+        )}
+        {result && (
+          <>
+            <ScoreHeader result={result} />
+            <CategoryBreakdown breakdown={result.breakdown} />
+            <AmenityMap result={result} />
+            {result.equity && <EquityPanel equity={result.equity} />}
+            <GapList gaps={result.gaps} />
+          </>
+        )}
       </div>
     </main>
   );
