@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
     const nearbyTransit = filterByDistance(TRANSIT_STOPS, lat, lng, 0.5);
     const nearbyBikeLanes = filterBikeLanesByDistance(BIKE_LANES, lat, lng, 0.25);
-    const nearbyBikeShares = filterByDistance(BIKE_SHARES, lat, lng, 0.25);
+    const nearbyBikeShares = filterByDistance(BIKE_SHARES, lat, lng, 0.5);
     const nearbyGardens = filterByDistance(COMMUNITY_GARDENS, lat, lng, 0.5);
     const nearbyCompost = filterByDistance(COMPOST_SITES, lat, lng, 0.5);
 

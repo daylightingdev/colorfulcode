@@ -28,8 +28,11 @@ async function searchNearby(
   radiusMeters: number,
   maxResults: number = 10
 ): Promise<PlaceResult[]> {
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-  if (!apiKey) return [];
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
+    console.warn("No Google Places/Maps API key configured");
+    return [];
+  }
 
   const body = {
     includedTypes,
@@ -78,7 +81,8 @@ export async function getNearbyGroceries(
     lat,
     lng,
     ["supermarket", "grocery_store"],
-    800 // ~0.5 miles
+    1200, // ~0.75 miles
+    15
   );
   // Filter out convenience stores that sneak in
   return results.filter((r) => r.type !== "convenience_store");
@@ -88,7 +92,7 @@ export async function getNearbyPharmacies(
   lat: number,
   lng: number
 ): Promise<PlaceResult[]> {
-  return searchNearby(lat, lng, ["pharmacy"], 800);
+  return searchNearby(lat, lng, ["pharmacy"], 1200, 10);
 }
 
 export async function getNearbyClinics(
@@ -107,7 +111,7 @@ export async function getNearbyLaundromats(
   lat: number,
   lng: number
 ): Promise<PlaceResult[]> {
-  return searchNearby(lat, lng, ["laundry"], 800);
+  return searchNearby(lat, lng, ["laundry"], 1200, 10);
 }
 
 export async function getNearbyThriftStores(
@@ -118,7 +122,7 @@ export async function getNearbyThriftStores(
     lat,
     lng,
     ["second_hand_store", "clothing_store"],
-    800
+    1200
   );
 }
 
@@ -130,7 +134,7 @@ export async function getNearbyEVCharging(
     lat,
     lng,
     ["electric_vehicle_charging_station"],
-    800
+    1200
   );
 }
 
