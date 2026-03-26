@@ -3,9 +3,9 @@ import "./globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 export const metadata: Metadata = {
-  title: "Low Carbon Access Score",
+  title: "Within Reach",
   description:
-    "See how well your neighborhood has been served by climate infrastructure investment.",
+    "A tool to understand how easy it is to live a climate-friendly lifestyle in your neighborhood — and what's missing.",
 };
 
 export default function RootLayout({

@@ -116,7 +116,7 @@ export default function GapMapPage() {
       <nav className="border-b border-gray-200 bg-white z-10">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
           <Link href="/" className="font-semibold text-gray-900">
-            Low Carbon Access Score
+            Within Reach
           </Link>
           <span className="text-sm text-emerald-600 font-medium">
             Citywide Gap Map

@@ -56,12 +56,12 @@ export const CATEGORY_META: Record<
   string,
   { label: string; max: number; color: string }
 > = {
-  transit: { label: "Transit", max: 30, color: "#3b82f6" },
-  activeMobility: { label: "Active Mobility", max: 20, color: "#8b5cf6" },
-  dailyNeeds: { label: "Daily Needs", max: 20, color: "#f59e0b" },
-  circularEconomy: { label: "Circular Economy", max: 15, color: "#10b981" },
-  localFood: { label: "Local Food", max: 10, color: "#ef4444" },
-  cleanEnergy: { label: "Clean Energy", max: 5, color: "#06b6d4" },
+  transit: { label: "Transit", max: 30, color: "#4a6fa5" },
+  activeMobility: { label: "Active Mobility", max: 20, color: "#57a773" },
+  dailyNeeds: { label: "Daily Needs", max: 20, color: "#e08b4a" },
+  circularEconomy: { label: "Circular Economy", max: 15, color: "#2a9d8f" },
+  localFood: { label: "Local Food", max: 10, color: "#c46a3f" },
+  cleanEnergy: { label: "Clean Energy", max: 5, color: "#5ba4cf" },
 };
 
 export const MOCK_RESULT: ScoreResult = {

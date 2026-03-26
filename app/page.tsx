@@ -18,8 +18,11 @@ export default function Home() {
     <main className="min-h-screen flex flex-col">
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="max-w-2xl w-full text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            Low Carbon Access Score
+          <h1
+            className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
+            title="A tool to understand how easy it is to live a climate-friendly lifestyle in your neighborhood — and what's missing"
+          >
+            Within Reach
           </h1>
           <p className="text-lg text-gray-600 mb-2">
             See how well your neighborhood has been served by climate

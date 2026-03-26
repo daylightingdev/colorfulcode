@@ -22,21 +22,21 @@ function getScoreColor(score: number) {
 }
 
 const AMENITY_COLORS: Record<string, string> = {
-  transitStops: "#3b82f6",
-  bikeLanes: "#8b5cf6",
-  bikeShares: "#a78bfa",
-  groceries: "#f59e0b",
-  pharmacies: "#fbbf24",
-  clinics: "#f97316",
-  laundromats: "#fb923c",
-  thriftStores: "#10b981",
-  compostSites: "#34d399",
-  refillShops: "#6ee7b7",
-  communityGardens: "#ef4444",
-  coops: "#f87171",
-  csaPickups: "#fca5a5",
-  evCharging: "#06b6d4",
-  waterStations: "#22d3ee",
+  transitStops: "#4a6fa5",
+  bikeLanes: "#57a773",
+  bikeShares: "#6dbe8b",
+  groceries: "#e08b4a",
+  pharmacies: "#e9a36a",
+  clinics: "#d47840",
+  laundromats: "#eba86e",
+  thriftStores: "#2a9d8f",
+  compostSites: "#3db8a9",
+  refillShops: "#5ec4b6",
+  communityGardens: "#c46a3f",
+  coops: "#d4845f",
+  csaPickups: "#dea07f",
+  evCharging: "#5ba4cf",
+  waterStations: "#7bbde0",
 };
 
 const AMENITY_LABELS: Record<string, string> = {
@@ -60,7 +60,7 @@ function ScoreHeader({ result }: { result: ScoreResult }) {
   return (
     <div className="text-center py-10">
       <p className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
-        Low Carbon Access Score
+        Within Reach
       </p>
       <div
         className="text-8xl font-bold mb-3"
@@ -70,7 +70,63 @@ function ScoreHeader({ result }: { result: ScoreResult }) {
       </div>
       <p className={`text-xl font-medium ${label.color}`}>{label.text}</p>
       <p className="text-gray-500 mt-1">{result.address}</p>
+      <ScoreNarrative result={result} />
     </div>
+  );
+}
+
+function ScoreNarrative({ result }: { result: ScoreResult }) {
+  const parts: string[] = [];
+  const a = result.amenities;
+
+  // What's good
+  const transitCount = a?.transitStops?.length || 0;
+  const subways = a?.transitStops?.filter((s: { type?: string }) => s.type === "subway") || [];
+  if (subways.length > 0) {
+    parts.push(`${subways.length} subway station${subways.length > 1 ? "s" : ""} nearby`);
+  } else if (transitCount > 0) {
+    parts.push(`${transitCount} transit stop${transitCount > 1 ? "s" : ""} within walking distance`);
+  }
+
+  const bikeShares = a?.bikeShares?.length || 0;
+  if (bikeShares > 0) parts.push(`${bikeShares} bike share dock${bikeShares > 1 ? "s" : ""}`);
+
+  const groceries = a?.groceries?.length || 0;
+  if (groceries > 0) parts.push(`${groceries} grocery store${groceries > 1 ? "s" : ""}`);
+
+  const gardens = a?.communityGardens?.length || 0;
+  if (gardens > 0) parts.push(`${gardens} community garden${gardens > 1 ? "s" : ""}`);
+
+  const compost = a?.compostSites?.length || 0;
+  if (compost > 0) parts.push(`a composting drop-off`);
+
+  const pharmacies = a?.pharmacies?.length || 0;
+  if (pharmacies > 0) parts.push(`${pharmacies > 1 ? "pharmacies" : "a pharmacy"}`);
+
+  const clinics = a?.clinics?.length || 0;
+  if (clinics > 0) parts.push(`${clinics > 1 ? "health clinics" : "a health clinic"}`);
+
+  if (parts.length === 0) {
+    return (
+      <p className="text-gray-500 mt-6 max-w-lg mx-auto text-sm leading-relaxed">
+        This area has limited climate-friendly infrastructure right now — but
+        that can change. Every neighborhood deserves access to sustainable
+        options, and knowing the gaps is the first step.
+      </p>
+    );
+  }
+
+  // Build a friendly sentence
+  const listed = parts.length <= 2
+    ? parts.join(" and ")
+    : parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
+
+  return (
+    <p className="text-gray-600 mt-6 max-w-lg mx-auto text-sm leading-relaxed">
+      Your neighborhood has {listed} — that&apos;s a solid foundation
+      for low-carbon living. The score above reflects both what&apos;s already
+      here and where there&apos;s room to grow.
+    </p>
   );
 }
 
@@ -182,6 +238,33 @@ function AmenityMap({ result }: { result: ScoreResult }) {
           "line-width": 1.5,
         },
       });
+
+      // Label at top of radius circle
+      const labelLat = result.lat + (radiusKm / 111.32);
+      m.addSource("radius-label", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: { label: "0.5 mi radius" },
+          geometry: { type: "Point", coordinates: [result.lng, labelLat] },
+        },
+      });
+      m.addLayer({
+        id: "radius-label-text",
+        type: "symbol",
+        source: "radius-label",
+        layout: {
+          "text-field": ["get", "label"],
+          "text-size": 11,
+          "text-offset": [0, -0.8],
+          "text-anchor": "bottom",
+        },
+        paint: {
+          "text-color": "#9ca3af",
+          "text-halo-color": "#fff",
+          "text-halo-width": 1.5,
+        },
+      });
     });
 
     return () => m.remove();
@@ -287,7 +370,7 @@ function EquityPanel({ equity }: { equity: ScoreResult["equity"] }) {
 function GapList({ gaps }: { gaps: string[] }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">Infrastructure Gaps</h2>
+      <h2 className="text-lg font-semibold mb-1">Local Gaps</h2>
       <p className="text-sm text-gray-500 mb-4">
         What&apos;s missing and where the city could invest.
       </p>
@@ -320,6 +403,107 @@ function GapList({ gaps }: { gaps: string[] }) {
           </Link>{" "}
           to see how your neighborhood compares.
         </p>
+      </div>
+    </div>
+  );
+}
+
+interface Initiative {
+  title: string;
+  description: string;
+  timeline: string;
+  matchesGap: (gap: string) => boolean;
+}
+
+const INITIATIVES: Initiative[] = [
+  {
+    title: "NYC Streets Plan — Protected Bike Lanes Expansion",
+    description:
+      "The city is required to build 250 miles of protected bike lanes by 2026 under the Streets Plan law, with a focus on high-injury corridors and transit deserts.",
+    timeline: "Ongoing through 2026",
+    matchesGap: (g) => /bike lane/i.test(g),
+  },
+  {
+    title: "Curbside Composting — Citywide Rollout",
+    description:
+      "DSNY's curbside composting program is expanding borough by borough. All five boroughs are expected to have curbside food scrap collection by late 2025.",
+    timeline: "Citywide by late 2025",
+    matchesGap: (g) => /compost/i.test(g),
+  },
+  {
+    title: "MTA Fast Forward Plan — Subway Accessibility & Frequency",
+    description:
+      "The MTA's capital plan includes signal modernization on key lines, bus network redesigns, and new ADA-accessible stations to improve transit frequency and coverage.",
+    timeline: "Through 2029",
+    matchesGap: (g) => /subway|bus|transit/i.test(g),
+  },
+  {
+    title: "FRESH Program — Grocery Store Incentives",
+    description:
+      "The Food Retail Expansion to Support Health (FRESH) program offers tax incentives and zoning flexibility to attract grocery stores to underserved neighborhoods.",
+    timeline: "Ongoing",
+    matchesGap: (g) => /grocery/i.test(g),
+  },
+  {
+    title: "NYC Clean Fleets & EV Infrastructure",
+    description:
+      "The city aims to install 10,000 curbside EV chargers by 2030 through partnerships with private operators and the PlugNYC program.",
+    timeline: "10,000 chargers by 2030",
+    matchesGap: (g) => /EV charging/i.test(g),
+  },
+  {
+    title: "Community Health Center Expansion",
+    description:
+      "NYC Health + Hospitals is expanding Federally Qualified Health Centers in underserved areas, with several new sites planned in Brooklyn and the Bronx.",
+    timeline: "New sites opening 2025–2027",
+    matchesGap: (g) => /clinic|health/i.test(g),
+  },
+  {
+    title: "GreenThumb — Community Garden Support",
+    description:
+      "NYC Parks' GreenThumb program supports 500+ community gardens citywide and is actively helping neighborhoods start new gardens on vacant lots.",
+    timeline: "Ongoing — new gardens each season",
+    matchesGap: (g) => /community garden/i.test(g),
+  },
+  {
+    title: "Zero Waste NYC — Reuse & Refill Infrastructure",
+    description:
+      "The city's zero-waste goals include expanding reuse centers, supporting refill shops, and piloting water bottle refill stations at parks and transit hubs.",
+    timeline: "Pilots through 2026",
+    matchesGap: (g) => /refill|zero-waste|water/i.test(g),
+  },
+];
+
+function PolicySection({ gaps }: { gaps: string[] }) {
+  const relevant = INITIATIVES.filter((init) =>
+    gaps.some((gap) => init.matchesGap(gap))
+  );
+
+  if (relevant.length === 0) return null;
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 className="text-lg font-semibold mb-1">What&apos;s Being Done</h2>
+      <p className="text-sm text-gray-500 mb-4">
+        Current city initiatives working to close these gaps.
+      </p>
+      <div className="space-y-4">
+        {relevant.map((init, i) => (
+          <div
+            key={i}
+            className="border-l-2 border-emerald-400 pl-4 py-1"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="text-sm font-semibold text-gray-900">
+                {init.title}
+              </h3>
+              <span className="text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                {init.timeline}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600 mt-1">{init.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -358,7 +542,7 @@ export default function ResultsPage({
       <nav className="border-b border-gray-200 bg-white">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
           <Link href="/" className="font-semibold text-gray-900">
-            Low Carbon Access Score
+            Within Reach
           </Link>
           <Link href="/map" className="text-sm text-gray-500 hover:text-gray-900">
             Gap Map
@@ -388,6 +572,7 @@ export default function ResultsPage({
             <AmenityMap result={result} />
             {result.equity && <EquityPanel equity={result.equity} />}
             <GapList gaps={result.gaps} />
+            <PolicySection gaps={result.gaps} />
           </>
         )}
       </div>
