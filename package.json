@@ -12,6 +12,9 @@
     "type": "git",
     "url": "http://local_proxy@127.0.0.1:43785/git/daylightingdev/colorfulcode"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -29,6 +32,6 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "25.5.0"
+    "@types/node": "^20.19.37"
   }
 }
