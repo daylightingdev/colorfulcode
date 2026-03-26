@@ -8,6 +8,7 @@ import {
   type BikeLaneSegment,
   type Place,
 } from "@/lib/scoring";
+import { getAllPlacesData } from "@/lib/datasources/google-places";
 
 // --- Load static data at module level (kept in memory between requests) ---
 
@@ -75,32 +76,34 @@ export async function POST(request: Request) {
 
     const { lat, lng } = geo;
 
-    // Step 2: Filter static data by proximity (all in parallel)
+    // Step 2: Filter static data by proximity + fetch Google Places in parallel
+    const [placesData] = await Promise.all([
+      getAllPlacesData(lat, lng),
+    ]);
+
     const nearbyTransit = filterByDistance(TRANSIT_STOPS, lat, lng, 0.5);
     const nearbyBikeLanes = filterBikeLanesByDistance(BIKE_LANES, lat, lng, 0.25);
     const nearbyBikeShares = filterByDistance(BIKE_SHARES, lat, lng, 0.25);
     const nearbyGardens = filterByDistance(COMMUNITY_GARDENS, lat, lng, 0.5);
     const nearbyCompost = filterByDistance(COMPOST_SITES, lat, lng, 0.5);
 
-    // Step 3: Build amenity results
-    // Daily needs + circular economy + clean energy will be filled by Google Places in Phase 4
-    // For now, use empty arrays for those (score will reflect only static data)
+    // Step 3: Build amenity results from static data + Google Places
     const amenities: AmenityResults = {
       transitStops: nearbyTransit,
       bikeLanes: nearbyBikeLanes,
       bikeShares: nearbyBikeShares,
-      groceries: [],       // Phase 4: Google Places
-      pharmacies: [],      // Phase 4: Google Places
-      clinics: [],         // Phase 4: Google Places
-      laundromats: [],     // Phase 4: Google Places
-      thriftStores: [],    // Phase 4: Google Places
+      groceries: placesData.groceries,
+      pharmacies: placesData.pharmacies,
+      clinics: placesData.clinics,
+      laundromats: placesData.laundromats,
+      thriftStores: placesData.thriftStores,
       compostSites: nearbyCompost,
-      refillShops: [],     // Phase 4: Google Places
+      refillShops: [],     // Rare category — hard to find via Places API types
       communityGardens: nearbyGardens,
-      coops: [],           // Phase 4: Google Places
-      csaPickups: [],      // Phase 4: Google Places
-      evCharging: [],      // Phase 4: Google Places
-      waterStations: [],   // Phase 4: Google Places
+      coops: [],           // Not a standard Places type
+      csaPickups: [],      // Not a standard Places type
+      evCharging: placesData.evCharging,
+      waterStations: [],   // Not a standard Places type
     };
 
     // Step 4: Score
