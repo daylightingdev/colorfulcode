@@ -547,6 +547,9 @@ export default function ResultsPage({
           <Link href="/map" className="text-sm text-gray-500 hover:text-gray-900">
             Gap Map
           </Link>
+          <Link href="/methodology" className="text-sm text-gray-500 hover:text-gray-900">
+            Methodology
+          </Link>
         </div>
       </nav>
 

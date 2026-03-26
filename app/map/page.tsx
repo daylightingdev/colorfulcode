@@ -121,6 +121,9 @@ export default function GapMapPage() {
           <span className="text-sm text-emerald-600 font-medium">
             Citywide Gap Map
           </span>
+          <Link href="/methodology" className="text-sm text-gray-500 hover:text-gray-900">
+            Methodology
+          </Link>
         </div>
       </nav>
 

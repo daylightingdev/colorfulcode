@@ -192,6 +192,12 @@ export default function Home() {
               </p>
             </div>
           </div>
+          <p className="mt-8 text-sm text-gray-500">
+            Want to understand how scores are calculated?{" "}
+            <Link href="/methodology" className="text-emerald-600 underline">
+              Read our methodology
+            </Link>
+          </p>
         </div>
       </div>
     </main>
