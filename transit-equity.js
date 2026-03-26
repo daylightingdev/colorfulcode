@@ -33,6 +33,7 @@ const state = {
   analysisGrid: null,
   walkTimeMinutes: 10,
   selectedDistricts: [],
+  searchLocation: null, // { lat, lng, name }
   showSubway: true,
   showBus: true,
   showShelters: true,
@@ -50,6 +51,10 @@ const dom = {
   walkTimeVal: document.getElementById('walk-time-val'),
   showSubway: document.getElementById('show-subway'),
   showBus: document.getElementById('show-bus'),
+  addressSearch: document.getElementById('address-search'),
+  addressClear: document.getElementById('address-clear'),
+  searchResults: document.getElementById('search-results'),
+  searchStatus: document.getElementById('search-status'),
   showShelters: document.getElementById('show-shelters'),
   showWalkshed: document.getElementById('show-walkshed'),
   statZones: document.getElementById('stat-zones'),
@@ -848,10 +853,26 @@ function runAnalysis() {
 
   let stopsToAnalyze = activeStops;
   let analysisBounds = [[-74.27, 40.48], [-73.68, 40.92]];
+  let useSearchArea = false;
 
-  // Filter to selected districts
+  // Filter to searched address (takes priority)
+  if (state.searchLocation) {
+    const { lat, lng } = state.searchLocation;
+    const radiusKm = 1.5; // ~1 mile analysis radius around address
+    const center = turf.point([lng, lat]);
+    const buffered = turf.buffer(center, radiusKm, { units: 'kilometers' });
+    const bbox = turf.bbox(buffered);
+    analysisBounds = [[bbox[0], bbox[1]], [bbox[2], bbox[3]]];
+    stopsToAnalyze = activeStops.filter(s => {
+      const d = turf.distance(turf.point([s.lng, s.lat]), center, { units: 'kilometers' });
+      return d <= radiusKm + 0.5;
+    });
+    useSearchArea = true;
+  }
+
+  // Filter to selected districts (if no search active)
   let distFeatures = [];
-  if (state.selectedDistricts.length > 0 && state.councilDistricts) {
+  if (!useSearchArea && state.selectedDistricts.length > 0 && state.councilDistricts) {
     distFeatures = state.councilDistricts.features.filter(f => {
       const d = f.properties.coun_dist || f.properties.council_district || f.properties.COUN_DIST;
       return state.selectedDistricts.includes(String(d));
@@ -876,7 +897,7 @@ function runAnalysis() {
   const radiusMiles = getWalkRadiusMiles(state.walkTimeMinutes);
 
   // Generate hex grid for analysis
-  const cellSize = state.selectedDistricts.length > 0 ? 0.15 : 0.5;
+  const cellSize = (useSearchArea || state.selectedDistricts.length > 0) ? 0.15 : 0.5;
   const grid = generateAnalysisGrid(analysisBounds, cellSize);
 
   // Calculate equity gap score for each cell
@@ -1252,6 +1273,120 @@ function setupEventListeners() {
     state.map.setLayoutProperty('walkshed-fill', 'visibility', vis);
     state.map.setLayoutProperty('walkshed-line', 'visibility', vis);
   });
+
+  // Address search
+  let searchTimeout = null;
+  dom.addressSearch.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+    clearTimeout(searchTimeout);
+    if (query.length < 3) {
+      dom.searchResults.classList.add('hidden');
+      dom.addressClear.classList.toggle('hidden', !query);
+      return;
+    }
+    dom.addressClear.classList.remove('hidden');
+    searchTimeout = setTimeout(() => geocodeAddress(query), 350);
+  });
+
+  dom.addressSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      clearTimeout(searchTimeout);
+      const query = dom.addressSearch.value.trim();
+      if (query.length >= 3) geocodeAddress(query);
+    }
+  });
+
+  dom.addressClear.addEventListener('click', () => {
+    dom.addressSearch.value = '';
+    dom.addressClear.classList.add('hidden');
+    dom.searchResults.classList.add('hidden');
+    dom.searchStatus.textContent = '';
+    clearSearchLocation();
+  });
+}
+
+// ============================================================
+// ADDRESS SEARCH (Mapbox Geocoding API)
+// ============================================================
+
+async function geocodeAddress(query) {
+  const token = mapboxgl.accessToken;
+  const bbox = '-74.27,40.48,-73.68,40.92'; // NYC bounds
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${token}&bbox=${bbox}&limit=5&types=address,poi,neighborhood,locality`;
+
+  try {
+    dom.searchStatus.textContent = 'Searching...';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Geocoding failed: ${res.status}`);
+    const data = await res.json();
+
+    if (!data.features || data.features.length === 0) {
+      dom.searchResults.classList.add('hidden');
+      dom.searchStatus.textContent = 'No results found in NYC';
+      return;
+    }
+
+    dom.searchStatus.textContent = '';
+    dom.searchResults.innerHTML = '';
+    dom.searchResults.classList.remove('hidden');
+
+    for (const feature of data.features) {
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+      const name = feature.text || feature.place_name;
+      const context = feature.place_name.replace(name + ', ', '');
+      item.innerHTML = `<div class="result-name">${name}</div><div class="result-context">${context}</div>`;
+      item.addEventListener('click', () => selectSearchResult(feature));
+      dom.searchResults.appendChild(item);
+    }
+  } catch (e) {
+    console.warn('Geocoding error:', e);
+    dom.searchStatus.textContent = 'Search failed';
+  }
+}
+
+function selectSearchResult(feature) {
+  const [lng, lat] = feature.center;
+  const name = feature.place_name;
+
+  state.searchLocation = { lat, lng, name };
+  dom.addressSearch.value = feature.text || name;
+  dom.searchResults.classList.add('hidden');
+  dom.searchStatus.textContent = name;
+
+  // Add/update search marker
+  updateSearchMarker(lng, lat, feature.text || name);
+
+  // Zoom to location and run analysis around it
+  state.map.flyTo({ center: [lng, lat], zoom: 14 });
+  runAnalysis();
+}
+
+function clearSearchLocation() {
+  state.searchLocation = null;
+  removeSearchMarker();
+  runAnalysis();
+}
+
+let searchMarker = null;
+
+function updateSearchMarker(lng, lat, title) {
+  removeSearchMarker();
+  const el = document.createElement('div');
+  el.style.cssText = 'width:16px;height:16px;background:#E11D48;border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);';
+  searchMarker = new mapboxgl.Marker({ element: el })
+    .setLngLat([lng, lat])
+    .setPopup(new mapboxgl.Popup({ offset: 12 }).setHTML(`<div class="popup-title">${title}</div>`))
+    .addTo(state.map);
+  searchMarker.togglePopup();
+}
+
+function removeSearchMarker() {
+  if (searchMarker) {
+    searchMarker.remove();
+    searchMarker = null;
+  }
 }
 
 function updateStats(grid) {
