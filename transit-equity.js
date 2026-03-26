@@ -8,11 +8,12 @@ const MTA_SUBWAY_STOPS_URLS = [
   'https://data.cityofnewyork.us/resource/kk4q-3rt2.json?$limit=1000',
   'https://data.ny.gov/resource/39hk-dx4f.json?$limit=1000',
 ];
-// NYC Open Data: Bus Stop Shelters as partial source + Transportation Sites
+// NYC Open Data: Transportation Sites for bus stops
 const MTA_BUS_STOPS_URLS = [
-  'https://data.cityofnewyork.us/resource/qu8g-sxqf.json?$limit=10000',
   'https://data.cityofnewyork.us/resource/hg3c-2jsy.json?$limit=10000',
 ];
+// NYC Open Data: Bus Stop Shelters (separate layer)
+const BUS_SHELTERS_URL = 'https://data.cityofnewyork.us/resource/qu8g-sxqf.json?$limit=10000';
 const COUNCIL_DISTRICTS_URL = 'https://data.cityofnewyork.us/resource/yusd-j4xi.geojson?$limit=100';
 const CENSUS_TRACTS_URL = 'https://data.cityofnewyork.us/resource/i69b-3rdj.json?$limit=5000';
 
@@ -26,6 +27,7 @@ const state = {
   mapLoaded: false,
   subwayStops: [],
   busStops: [],
+  busShelters: [],
   councilDistricts: null,
   censusData: [],
   analysisGrid: null,
@@ -33,6 +35,7 @@ const state = {
   selectedDistrict: null,
   showSubway: true,
   showBus: true,
+  showShelters: true,
   showWalkshed: false,
 };
 
@@ -47,6 +50,7 @@ const dom = {
   walkTimeVal: document.getElementById('walk-time-val'),
   showSubway: document.getElementById('show-subway'),
   showBus: document.getElementById('show-bus'),
+  showShelters: document.getElementById('show-shelters'),
   showWalkshed: document.getElementById('show-walkshed'),
   statZones: document.getElementById('stat-zones'),
   statGaps: document.getElementById('stat-gaps'),
@@ -121,14 +125,16 @@ async function startApp(token) {
 
 async function loadAllData() {
   showLoading('Fetching transit & census data...');
-  const [subway, bus, districts, census] = await Promise.all([
+  const [subway, bus, shelters, districts, census] = await Promise.all([
     fetchSubwayStops(),
     fetchBusStops(),
+    fetchBusShelters(),
     fetchCouncilDistricts(),
     fetchCensusData(),
   ]);
   state.subwayStops = subway;
   state.busStops = bus;
+  state.busShelters = shelters;
   state.councilDistricts = districts;
   state.censusData = census;
   populateDistrictDropdown();
@@ -222,6 +228,42 @@ async function fetchBusStops() {
 
   console.warn('All bus APIs failed, using fallback');
   return generateFallbackBusStops();
+}
+
+async function fetchBusShelters() {
+  showLoading('Loading bus shelters...');
+  try {
+    const res = await fetch(BUS_SHELTERS_URL);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data
+      .filter(s => {
+        if (s.the_geom && s.the_geom.coordinates) return true;
+        if (s.latitude && s.longitude) return true;
+        return false;
+      })
+      .map(s => {
+        let lat, lng;
+        if (s.the_geom && s.the_geom.coordinates) {
+          lng = parseFloat(s.the_geom.coordinates[0]);
+          lat = parseFloat(s.the_geom.coordinates[1]);
+        } else {
+          lat = parseFloat(s.latitude);
+          lng = parseFloat(s.longitude);
+        }
+        return {
+          type: 'shelter',
+          name: s.shelter_id || s.stop_name || s.name || 'Bus Shelter',
+          routes: s.routes || s.route || '',
+          lat,
+          lng,
+        };
+      })
+      .filter(s => !isNaN(s.lat) && !isNaN(s.lng));
+  } catch (e) {
+    console.warn('Bus shelters fetch failed', e);
+    return [];
+  }
 }
 
 async function fetchCouncilDistricts() {
@@ -964,6 +1006,25 @@ function setupMapLayers() {
     },
   });
 
+  // Bus shelters source & layer
+  map.addSource('bus-shelters', {
+    type: 'geojson',
+    data: stopsToGeoJSON(state.busShelters),
+  });
+
+  map.addLayer({
+    id: 'bus-shelters-layer',
+    type: 'circle',
+    source: 'bus-shelters',
+    paint: {
+      'circle-radius': 4,
+      'circle-color': '#8B5CF6',
+      'circle-stroke-color': '#fff',
+      'circle-stroke-width': 1,
+      'circle-opacity': 0.85,
+    },
+  });
+
   // Analysis grid source & layer
   map.addSource('analysis-grid', {
     type: 'geojson',
@@ -1079,6 +1140,17 @@ function setupMapLayers() {
         <div class="popup-row"><span class="popup-label">Type</span><span class="popup-value">Bus</span></div>`)
       .addTo(map);
   });
+
+  map.on('click', 'bus-shelters-layer', (e) => {
+    if (!e.features.length) return;
+    const p = e.features[0].properties;
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`<div class="popup-title">${p.name}</div>
+        <div class="popup-row"><span class="popup-label">Routes</span><span class="popup-value">${p.routes || '—'}</span></div>
+        <div class="popup-row"><span class="popup-label">Type</span><span class="popup-value">Bus Shelter</span></div>`)
+      .addTo(map);
+  });
 }
 
 function stopsToGeoJSON(stops) {
@@ -1153,6 +1225,11 @@ function setupEventListeners() {
     state.showBus = e.target.checked;
     state.map.setLayoutProperty('bus-stops-layer', 'visibility', state.showBus ? 'visible' : 'none');
     runAnalysis();
+  });
+
+  dom.showShelters.addEventListener('change', (e) => {
+    state.showShelters = e.target.checked;
+    state.map.setLayoutProperty('bus-shelters-layer', 'visibility', state.showShelters ? 'visible' : 'none');
   });
 
   dom.showWalkshed.addEventListener('change', (e) => {
