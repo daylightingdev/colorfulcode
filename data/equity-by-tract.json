@@ -1,0 +1,387 @@
+{
+  "36005000100": {
+    "median_income": 21800,
+    "nyc_median_income": 70600,
+    "pct_white": 3,
+    "displacement_risk": "low",
+    "rent_burden_pct": 58
+  },
+  "36005000900": {
+    "median_income": 24500,
+    "nyc_median_income": 70600,
+    "pct_white": 5,
+    "displacement_risk": "low",
+    "rent_burden_pct": 55
+  },
+  "36005001200": {
+    "median_income": 19200,
+    "nyc_median_income": 70600,
+    "pct_white": 2,
+    "displacement_risk": "low",
+    "rent_burden_pct": 61
+  },
+  "36005002600": {
+    "median_income": 28900,
+    "nyc_median_income": 70600,
+    "pct_white": 7,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 52
+  },
+  "36005003900": {
+    "median_income": 32100,
+    "nyc_median_income": 70600,
+    "pct_white": 12,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 49
+  },
+  "36005004300": {
+    "median_income": 26700,
+    "nyc_median_income": 70600,
+    "pct_white": 4,
+    "displacement_risk": "high",
+    "rent_burden_pct": 56
+  },
+  "36005005100": {
+    "median_income": 36400,
+    "nyc_median_income": 70600,
+    "pct_white": 18,
+    "displacement_risk": "high",
+    "rent_burden_pct": 47
+  },
+  "36005006000": {
+    "median_income": 44200,
+    "nyc_median_income": 70600,
+    "pct_white": 31,
+    "displacement_risk": "high",
+    "rent_burden_pct": 42
+  },
+  "36005007000": {
+    "median_income": 55100,
+    "nyc_median_income": 70600,
+    "pct_white": 52,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 35
+  },
+  "36005008000": {
+    "median_income": 23700,
+    "nyc_median_income": 70600,
+    "pct_white": 3,
+    "displacement_risk": "low",
+    "rent_burden_pct": 57
+  },
+  "36047002900": {
+    "median_income": 31200,
+    "nyc_median_income": 70600,
+    "pct_white": 6,
+    "displacement_risk": "high",
+    "rent_burden_pct": 53
+  },
+  "36047005500": {
+    "median_income": 105800,
+    "nyc_median_income": 70600,
+    "pct_white": 72,
+    "displacement_risk": "low",
+    "rent_burden_pct": 25
+  },
+  "36047006900": {
+    "median_income": 118200,
+    "nyc_median_income": 70600,
+    "pct_white": 78,
+    "displacement_risk": "low",
+    "rent_burden_pct": 22
+  },
+  "36047007700": {
+    "median_income": 96400,
+    "nyc_median_income": 70600,
+    "pct_white": 65,
+    "displacement_risk": "low",
+    "rent_burden_pct": 27
+  },
+  "36047011900": {
+    "median_income": 72500,
+    "nyc_median_income": 70600,
+    "pct_white": 48,
+    "displacement_risk": "high",
+    "rent_burden_pct": 36
+  },
+  "36047015300": {
+    "median_income": 55800,
+    "nyc_median_income": 70600,
+    "pct_white": 34,
+    "displacement_risk": "high",
+    "rent_burden_pct": 43
+  },
+  "36047023100": {
+    "median_income": 41300,
+    "nyc_median_income": 70600,
+    "pct_white": 15,
+    "displacement_risk": "high",
+    "rent_burden_pct": 48
+  },
+  "36047029500": {
+    "median_income": 38400,
+    "nyc_median_income": 70600,
+    "pct_white": 18,
+    "displacement_risk": "high",
+    "rent_burden_pct": 54
+  },
+  "36047035200": {
+    "median_income": 29800,
+    "nyc_median_income": 70600,
+    "pct_white": 4,
+    "displacement_risk": "low",
+    "rent_burden_pct": 56
+  },
+  "36047036200": {
+    "median_income": 27400,
+    "nyc_median_income": 70600,
+    "pct_white": 3,
+    "displacement_risk": "low",
+    "rent_burden_pct": 59
+  },
+  "36047038200": {
+    "median_income": 33900,
+    "nyc_median_income": 70600,
+    "pct_white": 8,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 51
+  },
+  "36047040100": {
+    "median_income": 42600,
+    "nyc_median_income": 70600,
+    "pct_white": 22,
+    "displacement_risk": "high",
+    "rent_burden_pct": 45
+  },
+  "36047046400": {
+    "median_income": 85200,
+    "nyc_median_income": 70600,
+    "pct_white": 59,
+    "displacement_risk": "low",
+    "rent_burden_pct": 29
+  },
+  "36047050200": {
+    "median_income": 62300,
+    "nyc_median_income": 70600,
+    "pct_white": 41,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 38
+  },
+  "36047054600": {
+    "median_income": 78100,
+    "nyc_median_income": 70600,
+    "pct_white": 55,
+    "displacement_risk": "low",
+    "rent_burden_pct": 31
+  },
+  "36061000700": {
+    "median_income": 152300,
+    "nyc_median_income": 70600,
+    "pct_white": 82,
+    "displacement_risk": "low",
+    "rent_burden_pct": 18
+  },
+  "36061001502": {
+    "median_income": 185600,
+    "nyc_median_income": 70600,
+    "pct_white": 87,
+    "displacement_risk": "low",
+    "rent_burden_pct": 15
+  },
+  "36061002201": {
+    "median_income": 142800,
+    "nyc_median_income": 70600,
+    "pct_white": 79,
+    "displacement_risk": "low",
+    "rent_burden_pct": 19
+  },
+  "36061003100": {
+    "median_income": 128400,
+    "nyc_median_income": 70600,
+    "pct_white": 74,
+    "displacement_risk": "low",
+    "rent_burden_pct": 21
+  },
+  "36061005800": {
+    "median_income": 98700,
+    "nyc_median_income": 70600,
+    "pct_white": 61,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 28
+  },
+  "36061006700": {
+    "median_income": 112500,
+    "nyc_median_income": 70600,
+    "pct_white": 68,
+    "displacement_risk": "low",
+    "rent_burden_pct": 24
+  },
+  "36061009700": {
+    "median_income": 76200,
+    "nyc_median_income": 70600,
+    "pct_white": 44,
+    "displacement_risk": "high",
+    "rent_burden_pct": 37
+  },
+  "36061016100": {
+    "median_income": 48500,
+    "nyc_median_income": 70600,
+    "pct_white": 19,
+    "displacement_risk": "high",
+    "rent_burden_pct": 46
+  },
+  "36061019500": {
+    "median_income": 35200,
+    "nyc_median_income": 70600,
+    "pct_white": 8,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 52
+  },
+  "36061021300": {
+    "median_income": 30800,
+    "nyc_median_income": 70600,
+    "pct_white": 5,
+    "displacement_risk": "low",
+    "rent_burden_pct": 55
+  },
+  "36061023100": {
+    "median_income": 33600,
+    "nyc_median_income": 70600,
+    "pct_white": 9,
+    "displacement_risk": "high",
+    "rent_burden_pct": 50
+  },
+  "36061024300": {
+    "median_income": 29100,
+    "nyc_median_income": 70600,
+    "pct_white": 4,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 57
+  },
+  "36081001700": {
+    "median_income": 68200,
+    "nyc_median_income": 70600,
+    "pct_white": 42,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 37
+  },
+  "36081009300": {
+    "median_income": 82400,
+    "nyc_median_income": 70600,
+    "pct_white": 56,
+    "displacement_risk": "low",
+    "rent_burden_pct": 30
+  },
+  "36081014100": {
+    "median_income": 54700,
+    "nyc_median_income": 70600,
+    "pct_white": 24,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 44
+  },
+  "36081019700": {
+    "median_income": 91300,
+    "nyc_median_income": 70600,
+    "pct_white": 63,
+    "displacement_risk": "low",
+    "rent_burden_pct": 26
+  },
+  "36081023300": {
+    "median_income": 47800,
+    "nyc_median_income": 70600,
+    "pct_white": 18,
+    "displacement_risk": "high",
+    "rent_burden_pct": 47
+  },
+  "36081029900": {
+    "median_income": 62100,
+    "nyc_median_income": 70600,
+    "pct_white": 35,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 39
+  },
+  "36081038100": {
+    "median_income": 73500,
+    "nyc_median_income": 70600,
+    "pct_white": 47,
+    "displacement_risk": "low",
+    "rent_burden_pct": 33
+  },
+  "36081043100": {
+    "median_income": 58900,
+    "nyc_median_income": 70600,
+    "pct_white": 29,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 41
+  },
+  "36081051500": {
+    "median_income": 41200,
+    "nyc_median_income": 70600,
+    "pct_white": 12,
+    "displacement_risk": "high",
+    "rent_burden_pct": 49
+  },
+  "36081059900": {
+    "median_income": 36800,
+    "nyc_median_income": 70600,
+    "pct_white": 9,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 52
+  },
+  "36081067500": {
+    "median_income": 79600,
+    "nyc_median_income": 70600,
+    "pct_white": 51,
+    "displacement_risk": "low",
+    "rent_burden_pct": 31
+  },
+  "36081073300": {
+    "median_income": 104200,
+    "nyc_median_income": 70600,
+    "pct_white": 68,
+    "displacement_risk": "low",
+    "rent_burden_pct": 24
+  },
+  "36085001300": {
+    "median_income": 82700,
+    "nyc_median_income": 70600,
+    "pct_white": 71,
+    "displacement_risk": "low",
+    "rent_burden_pct": 28
+  },
+  "36085002700": {
+    "median_income": 91400,
+    "nyc_median_income": 70600,
+    "pct_white": 76,
+    "displacement_risk": "low",
+    "rent_burden_pct": 25
+  },
+  "36085004300": {
+    "median_income": 68900,
+    "nyc_median_income": 70600,
+    "pct_white": 62,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 34
+  },
+  "36085012200": {
+    "median_income": 75300,
+    "nyc_median_income": 70600,
+    "pct_white": 67,
+    "displacement_risk": "low",
+    "rent_burden_pct": 31
+  },
+  "36085015800": {
+    "median_income": 98500,
+    "nyc_median_income": 70600,
+    "pct_white": 79,
+    "displacement_risk": "low",
+    "rent_burden_pct": 23
+  },
+  "36085017900": {
+    "median_income": 56200,
+    "nyc_median_income": 70600,
+    "pct_white": 48,
+    "displacement_risk": "moderate",
+    "rent_burden_pct": 39
+  }
+}

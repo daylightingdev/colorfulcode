@@ -9,6 +9,7 @@ import {
   type Place,
 } from "@/lib/scoring";
 import { getAllPlacesData } from "@/lib/datasources/google-places";
+import { identifyTract, getEquityData } from "@/lib/equity";
 
 // --- Load static data at module level (kept in memory between requests) ---
 
@@ -109,16 +110,20 @@ export async function POST(request: Request) {
     // Step 4: Score
     const scoreResult = calculateScore(amenities);
 
-    // Step 5: Return
+    // Step 5: Identify census tract and look up equity data
+    const tract = identifyTract(lat, lng);
+    const equity = tract ? getEquityData(tract) : null;
+
+    // Step 6: Return
     return NextResponse.json({
       address: geo.address,
       lat: geo.lat,
       lng: geo.lng,
-      tract: null, // Phase 5: census tract lookup
+      tract,
       score: scoreResult.total,
       breakdown: scoreResult.breakdown,
       amenities,
-      equity: null, // Phase 5: equity data lookup
+      equity,
       gaps: scoreResult.gaps,
     });
   } catch (error) {

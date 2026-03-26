@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import mapboxgl from "mapbox-gl";
-import { MOCK_TRACT_SCORES } from "@/lib/mock-data";
+type TractScores = Record<string, { score: number; lat: number; lng: number }>;
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
@@ -37,22 +37,25 @@ export default function GapMapPage() {
     map.current = m;
 
     m.on("load", () => {
-      // Build GeoJSON from mock tract scores (point-based for now, will be polygons in v2)
-      const features = Object.entries(MOCK_TRACT_SCORES).map(
-        ([tractId, data]) => ({
-          type: "Feature" as const,
-          properties: { tractId, score: data.score },
-          geometry: {
-            type: "Point" as const,
-            coordinates: [data.lng, data.lat],
-          },
-        })
-      );
+      // Fetch pre-computed tract scores from API
+      fetch("/api/tract-scores")
+        .then((res) => res.json())
+        .then((tractScores: TractScores) => {
+          const features = Object.entries(tractScores).map(
+            ([tractId, data]) => ({
+              type: "Feature" as const,
+              properties: { tractId, score: data.score },
+              geometry: {
+                type: "Point" as const,
+                coordinates: [data.lng, data.lat],
+              },
+            })
+          );
 
-      m.addSource("tract-scores", {
-        type: "geojson",
-        data: { type: "FeatureCollection", features },
-      });
+          m.addSource("tract-scores", {
+            type: "geojson",
+            data: { type: "FeatureCollection", features },
+          });
 
       // Heatmap-like circles as choropleth proxy until we have real tract polygons
       m.addLayer({
@@ -85,23 +88,24 @@ export default function GapMapPage() {
         },
       });
 
-      // Click handler
-      m.on("click", "tract-circles", (e) => {
-        if (e.features && e.features[0]) {
-          const props = e.features[0].properties!;
-          setSelectedTract({
-            id: props.tractId,
-            score: props.score,
+          // Click handler
+          m.on("click", "tract-circles", (e) => {
+            if (e.features && e.features[0]) {
+              const props = e.features[0].properties!;
+              setSelectedTract({
+                id: props.tractId,
+                score: props.score,
+              });
+            }
           });
-        }
-      });
 
-      m.on("mouseenter", "tract-circles", () => {
-        m.getCanvas().style.cursor = "pointer";
-      });
-      m.on("mouseleave", "tract-circles", () => {
-        m.getCanvas().style.cursor = "";
-      });
+          m.on("mouseenter", "tract-circles", () => {
+            m.getCanvas().style.cursor = "pointer";
+          });
+          m.on("mouseleave", "tract-circles", () => {
+            m.getCanvas().style.cursor = "";
+          });
+        });
     });
 
     return () => m.remove();
