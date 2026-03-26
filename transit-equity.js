@@ -32,7 +32,7 @@ const state = {
   censusData: [],
   analysisGrid: null,
   walkTimeMinutes: 10,
-  selectedDistrict: null,
+  selectedDistricts: [],
   showSubway: true,
   showBus: true,
   showShelters: true,
@@ -849,22 +849,26 @@ function runAnalysis() {
   let stopsToAnalyze = activeStops;
   let analysisBounds = [[-74.27, 40.48], [-73.68, 40.92]];
 
-  // Filter to selected district
-  if (state.selectedDistrict && state.councilDistricts) {
-    const distFeature = state.councilDistricts.features.find(f => {
+  // Filter to selected districts
+  let distFeatures = [];
+  if (state.selectedDistricts.length > 0 && state.councilDistricts) {
+    distFeatures = state.councilDistricts.features.filter(f => {
       const d = f.properties.coun_dist || f.properties.council_district || f.properties.COUN_DIST;
-      return String(d) === String(state.selectedDistrict);
+      return state.selectedDistricts.includes(String(d));
     });
-    if (distFeature) {
-      const bbox = turf.bbox(distFeature);
+    if (distFeatures.length > 0) {
+      // Combine bounding boxes of all selected districts
+      const combined = turf.featureCollection(distFeatures);
+      const bbox = turf.bbox(combined);
       analysisBounds = [[bbox[0], bbox[1]], [bbox[2], bbox[3]]];
-      // Filter stops within district (with buffer)
-      const buffered = turf.buffer(distFeature, 0.3, { units: 'miles' });
+      // Filter stops within any selected district (with buffer)
       stopsToAnalyze = activeStops.filter(s => {
         const pt = turf.point([s.lng, s.lat]);
-        return turf.booleanPointInPolygon(pt, buffered);
+        return distFeatures.some(df => {
+          const buffered = turf.buffer(df, 0.3, { units: 'miles' });
+          return turf.booleanPointInPolygon(pt, buffered);
+        });
       });
-      // Fit map to district
       state.map.fitBounds(analysisBounds, { padding: 50 });
     }
   }
@@ -872,7 +876,7 @@ function runAnalysis() {
   const radiusMiles = getWalkRadiusMiles(state.walkTimeMinutes);
 
   // Generate hex grid for analysis
-  const cellSize = state.selectedDistrict ? 0.15 : 0.5;
+  const cellSize = state.selectedDistricts.length > 0 ? 0.15 : 0.5;
   const grid = generateAnalysisGrid(analysisBounds, cellSize);
 
   // Calculate equity gap score for each cell
@@ -919,18 +923,12 @@ function runAnalysis() {
     return cell;
   });
 
-  // Filter out cells outside NYC land area (rough filter)
-  if (state.selectedDistrict && state.councilDistricts) {
-    const distFeature = state.councilDistricts.features.find(f => {
-      const d = f.properties.coun_dist || f.properties.council_district || f.properties.COUN_DIST;
-      return String(d) === String(state.selectedDistrict);
+  // Filter out cells outside selected districts
+  if (distFeatures.length > 0) {
+    grid.features = grid.features.filter(cell => {
+      const center = turf.center(cell);
+      return distFeatures.some(df => turf.booleanPointInPolygon(center, df));
     });
-    if (distFeature) {
-      grid.features = grid.features.filter(cell => {
-        const center = turf.center(cell);
-        return turf.booleanPointInPolygon(center, distFeature);
-      });
-    }
   }
 
   state.analysisGrid = grid;
@@ -1200,7 +1198,23 @@ function updateWalkshedLayer(stops, radiusMiles) {
 function setupEventListeners() {
   // District select
   dom.districtSelect.addEventListener('change', (e) => {
-    state.selectedDistrict = e.target.value || null;
+    const selected = Array.from(e.target.selectedOptions)
+      .map(o => o.value)
+      .filter(v => v !== '');
+    // Limit to 4 districts
+    if (selected.length > 4) {
+      // Deselect the earliest beyond 4
+      Array.from(e.target.options).forEach(o => {
+        if (o.value && !selected.slice(-4).includes(o.value)) o.selected = false;
+      });
+      state.selectedDistricts = selected.slice(-4);
+    } else {
+      state.selectedDistricts = selected;
+    }
+    // If "All NYC" is selected along with districts, deselect "All NYC"
+    if (state.selectedDistricts.length > 0) {
+      e.target.options[0].selected = false;
+    }
     runAnalysis();
   });
 

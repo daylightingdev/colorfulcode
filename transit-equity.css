@@ -138,6 +138,32 @@ select option {
   color: #fff;
 }
 
+select[multiple] {
+  appearance: auto;
+  padding: 4px;
+  background-image: none;
+  overflow-y: auto;
+}
+
+select[multiple] option {
+  padding: 6px 8px;
+  border-radius: 4px;
+  margin: 1px 0;
+}
+
+select[multiple] option:checked {
+  background: var(--accent) linear-gradient(0deg, var(--accent) 0%, var(--accent) 100%);
+  color: #fff;
+}
+
+.hint {
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: var(--sidebar-muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 /* Range slider */
 input[type="range"] {
   -webkit-appearance: none;
