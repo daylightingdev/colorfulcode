@@ -201,7 +201,7 @@ export default function MethodologyPage() {
                   <td className="px-4 py-2.5 font-bold text-emerald-700">
                     75–100
                   </td>
-                  <td className="px-4 py-2.5">Excellent</td>
+                  <td className="px-4 py-2.5">Excellent access</td>
                   <td className="px-4 py-2.5">
                     Strong investment across most categories. Car-free living is
                     genuinely convenient here.
@@ -211,7 +211,7 @@ export default function MethodologyPage() {
                   <td className="px-4 py-2.5 font-bold text-yellow-600">
                     50–74
                   </td>
-                  <td className="px-4 py-2.5">Moderate</td>
+                  <td className="px-4 py-2.5">Moderate access</td>
                   <td className="px-4 py-2.5">
                     Good transit and some walkable amenities, but notable gaps in
                     one or more categories.

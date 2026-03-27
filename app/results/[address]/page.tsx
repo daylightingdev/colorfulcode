@@ -8,9 +8,9 @@ import { CATEGORY_META, type ScoreResult } from "@/lib/mock-data";
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
 function getScoreLabel(score: number) {
-  if (score >= 75) return { text: "Excellent investment", color: "text-emerald-700" };
-  if (score >= 50) return { text: "Moderate investment", color: "text-yellow-600" };
-  if (score >= 25) return { text: "Limited investment", color: "text-orange-600" };
+  if (score >= 75) return { text: "Excellent access", color: "text-emerald-700" };
+  if (score >= 50) return { text: "Moderate access", color: "text-yellow-600" };
+  if (score >= 25) return { text: "Limited access", color: "text-orange-600" };
   return { text: "Severely underserved", color: "text-red-600" };
 }
 
