@@ -14,12 +14,16 @@ import { identifyTract, getEquityData } from "@/lib/equity";
 // --- Load static data at module level (kept in memory between requests) ---
 
 import gtfsStops from "@/data/gtfs-stops.json";
+import busStops from "@/data/bus-stops.json";
 import bikeLanes from "@/data/bike-lanes.json";
 import bikeshareDocks from "@/data/bikeshare-docks.json";
 import communityGardens from "@/data/community-gardens.json";
 import compostingSites from "@/data/composting-sites.json";
 
-const TRANSIT_STOPS: TransitStop[] = gtfsStops as TransitStop[];
+const TRANSIT_STOPS: TransitStop[] = [
+  ...(gtfsStops as TransitStop[]),
+  ...(busStops as TransitStop[]),
+];
 const BIKE_LANES: BikeLaneSegment[] = bikeLanes as BikeLaneSegment[];
 const BIKE_SHARES: Place[] = bikeshareDocks as Place[];
 const COMMUNITY_GARDENS: Place[] = communityGardens as Place[];

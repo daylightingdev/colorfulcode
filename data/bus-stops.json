@@ -1,0 +1,4700 @@
+[
+  {
+    "stop_id": "M1_001",
+    "name": "5th Av / E 138th St",
+    "lat": 40.814226,
+    "lng": -73.936998,
+    "routes": [
+      "M1"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_002",
+    "name": "5th Av / E 125th St",
+    "lat": 40.804537,
+    "lng": -73.944213,
+    "routes": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_003",
+    "name": "5th Av / E 110th St",
+    "lat": 40.796117,
+    "lng": -73.951352,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_004",
+    "name": "5th Av / E 96th St",
+    "lat": 40.784527,
+    "lng": -73.954874,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_005",
+    "name": "5th Av / E 86th St",
+    "lat": 40.779017,
+    "lng": -73.959915,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_006",
+    "name": "5th Av / E 72nd St",
+    "lat": 40.771916,
+    "lng": -73.965721,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_007",
+    "name": "5th Av / E 59th St",
+    "lat": 40.764631,
+    "lng": -73.972714,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_008",
+    "name": "5th Av / E 42nd St",
+    "lat": 40.754814,
+    "lng": -73.981997,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_009",
+    "name": "5th Av / W 34th St",
+    "lat": 40.748793,
+    "lng": -73.985656,
+    "routes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_010",
+    "name": "5th Av / W 23rd St",
+    "lat": 40.742718,
+    "lng": -73.989421,
+    "routes": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M1_011",
+    "name": "5th Av / W 14th St",
+    "lat": 40.736812,
+    "lng": -73.993456,
+    "routes": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M2_001",
+    "name": "Madison Av / E 110th St",
+    "lat": 40.795836,
+    "lng": -73.950119,
+    "routes": [
+      "M2",
+      "M3"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M2_002",
+    "name": "Madison Av / E 96th St",
+    "lat": 40.784042,
+    "lng": -73.952943,
+    "routes": [
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M2_003",
+    "name": "Madison Av / E 86th St",
+    "lat": 40.778547,
+    "lng": -73.957724,
+    "routes": [
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M2_004",
+    "name": "Madison Av / E 72nd St",
+    "lat": 40.771442,
+    "lng": -73.963552,
+    "routes": [
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M2_005",
+    "name": "Madison Av / E 59th St",
+    "lat": 40.764143,
+    "lng": -73.970429,
+    "routes": [
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M4_001",
+    "name": "Broadway / W 168th St",
+    "lat": 40.840712,
+    "lng": -73.940631,
+    "routes": [
+      "M4",
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M4_002",
+    "name": "Broadway / W 155th St",
+    "lat": 40.831037,
+    "lng": -73.942758,
+    "routes": [
+      "M4",
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M4_003",
+    "name": "Broadway / W 145th St",
+    "lat": 40.823672,
+    "lng": -73.944899,
+    "routes": [
+      "M4",
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M5_001",
+    "name": "Riverside Dr / W 96th St",
+    "lat": 40.793821,
+    "lng": -73.972847,
+    "routes": [
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M5_002",
+    "name": "Riverside Dr / W 72nd St",
+    "lat": 40.780128,
+    "lng": -73.981647,
+    "routes": [
+      "M5"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M5_003",
+    "name": "6th Av / W 42nd St",
+    "lat": 40.754527,
+    "lng": -73.984215,
+    "routes": [
+      "M5",
+      "M7"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M5_004",
+    "name": "6th Av / W 34th St",
+    "lat": 40.748392,
+    "lng": -73.987882,
+    "routes": [
+      "M5",
+      "M7"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M7_001",
+    "name": "Amsterdam Av / W 125th St",
+    "lat": 40.811216,
+    "lng": -73.952341,
+    "routes": [
+      "M7",
+      "M11",
+      "M100"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M7_002",
+    "name": "Columbus Av / W 96th St",
+    "lat": 40.793712,
+    "lng": -73.968831,
+    "routes": [
+      "M7",
+      "M11"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M7_003",
+    "name": "Columbus Av / W 72nd St",
+    "lat": 40.777627,
+    "lng": -73.979842,
+    "routes": [
+      "M7",
+      "M11"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M10_001",
+    "name": "8th Av / W 145th St",
+    "lat": 40.823218,
+    "lng": -73.940176,
+    "routes": [
+      "M10"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M10_002",
+    "name": "8th Av / W 125th St",
+    "lat": 40.808142,
+    "lng": -73.945897,
+    "routes": [
+      "M10",
+      "M100"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M10_003",
+    "name": "Central Park West / W 96th St",
+    "lat": 40.793146,
+    "lng": -73.963241,
+    "routes": [
+      "M10"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M10_004",
+    "name": "Central Park West / W 86th St",
+    "lat": 40.786812,
+    "lng": -73.968547,
+    "routes": [
+      "M10"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M10_005",
+    "name": "8th Av / W 42nd St",
+    "lat": 40.757218,
+    "lng": -73.990147,
+    "routes": [
+      "M10",
+      "M42"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M11_001",
+    "name": "11th Av / W 57th St",
+    "lat": 40.767543,
+    "lng": -73.997842,
+    "routes": [
+      "M11"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M11_002",
+    "name": "11th Av / W 42nd St",
+    "lat": 40.759318,
+    "lng": -74.002341,
+    "routes": [
+      "M11"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M15_001",
+    "name": "1st Av / E 125th St",
+    "lat": 40.803517,
+    "lng": -73.931982,
+    "routes": [
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_002",
+    "name": "1st Av / E 96th St",
+    "lat": 40.782871,
+    "lng": -73.944762,
+    "routes": [
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_003",
+    "name": "1st Av / E 72nd St",
+    "lat": 40.768827,
+    "lng": -73.954918,
+    "routes": [
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_004",
+    "name": "1st Av / E 42nd St",
+    "lat": 40.750982,
+    "lng": -73.968142,
+    "routes": [
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_005",
+    "name": "1st Av / E 14th St",
+    "lat": 40.733287,
+    "lng": -73.981253,
+    "routes": [
+      "M15",
+      "M15-SBS",
+      "M14A"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_006",
+    "name": "2nd Av / Houston St",
+    "lat": 40.724163,
+    "lng": -73.987842,
+    "routes": [
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M15_007",
+    "name": "Allen St / Canal St",
+    "lat": 40.716892,
+    "lng": -73.993527,
+    "routes": [
+      "M15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M14A_001",
+    "name": "14th St / 8th Av",
+    "lat": 40.739852,
+    "lng": -74.003218,
+    "routes": [
+      "M14A"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M14A_002",
+    "name": "14th St / 6th Av",
+    "lat": 40.738217,
+    "lng": -73.997647,
+    "routes": [
+      "M14A",
+      "M14D"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M14A_003",
+    "name": "14th St / Union Square",
+    "lat": 40.736726,
+    "lng": -73.990318,
+    "routes": [
+      "M14A",
+      "M14D"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M14D_001",
+    "name": "14th St / 3rd Av",
+    "lat": 40.732841,
+    "lng": -73.986241,
+    "routes": [
+      "M14D"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M14D_002",
+    "name": "14th St / 1st Av",
+    "lat": 40.733182,
+    "lng": -73.981342,
+    "routes": [
+      "M14D",
+      "M14A"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M23_001",
+    "name": "23rd St / 10th Av",
+    "lat": 40.748126,
+    "lng": -74.003827,
+    "routes": [
+      "M23-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M23_002",
+    "name": "23rd St / 8th Av",
+    "lat": 40.745287,
+    "lng": -73.998147,
+    "routes": [
+      "M23-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M23_003",
+    "name": "23rd St / 6th Av",
+    "lat": 40.742718,
+    "lng": -73.992431,
+    "routes": [
+      "M23-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M23_004",
+    "name": "23rd St / Park Av S",
+    "lat": 40.741284,
+    "lng": -73.987218,
+    "routes": [
+      "M23-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M23_005",
+    "name": "23rd St / 1st Av",
+    "lat": 40.737912,
+    "lng": -73.979841,
+    "routes": [
+      "M23-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34_001",
+    "name": "34th St / 11th Av",
+    "lat": 40.754183,
+    "lng": -74.003842,
+    "routes": [
+      "M34-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34_002",
+    "name": "34th St / 8th Av",
+    "lat": 40.751942,
+    "lng": -73.994718,
+    "routes": [
+      "M34-SBS",
+      "M34A-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34_003",
+    "name": "34th St / Herald Square",
+    "lat": 40.749712,
+    "lng": -73.988413,
+    "routes": [
+      "M34-SBS",
+      "M34A-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34_004",
+    "name": "34th St / Park Av S",
+    "lat": 40.748792,
+    "lng": -73.982617,
+    "routes": [
+      "M34-SBS",
+      "M34A-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34_005",
+    "name": "34th St / 1st Av",
+    "lat": 40.747128,
+    "lng": -73.974842,
+    "routes": [
+      "M34-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M34A_001",
+    "name": "34th St / 2nd Av",
+    "lat": 40.747512,
+    "lng": -73.977218,
+    "routes": [
+      "M34A-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M42_001",
+    "name": "42nd St / 12th Av",
+    "lat": 40.760183,
+    "lng": -74.006841,
+    "routes": [
+      "M42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M42_002",
+    "name": "42nd St / 8th Av",
+    "lat": 40.757218,
+    "lng": -73.990147,
+    "routes": [
+      "M42",
+      "M10"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M42_003",
+    "name": "42nd St / Times Square",
+    "lat": 40.755872,
+    "lng": -73.986918,
+    "routes": [
+      "M42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M42_004",
+    "name": "42nd St / Grand Central",
+    "lat": 40.752726,
+    "lng": -73.977241,
+    "routes": [
+      "M42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M42_005",
+    "name": "42nd St / 1st Av",
+    "lat": 40.750982,
+    "lng": -73.968142,
+    "routes": [
+      "M42",
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M57_001",
+    "name": "57th St / 11th Av",
+    "lat": 40.769873,
+    "lng": -74.001482,
+    "routes": [
+      "M57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M57_002",
+    "name": "57th St / 8th Av",
+    "lat": 40.767312,
+    "lng": -73.991843,
+    "routes": [
+      "M57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M57_003",
+    "name": "57th St / 5th Av",
+    "lat": 40.764218,
+    "lng": -73.975642,
+    "routes": [
+      "M57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M57_004",
+    "name": "57th St / 1st Av",
+    "lat": 40.759872,
+    "lng": -73.960341,
+    "routes": [
+      "M57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M66_001",
+    "name": "66th St / Central Park West",
+    "lat": 40.773427,
+    "lng": -73.980218,
+    "routes": [
+      "M66"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M66_002",
+    "name": "66th St / Columbus Av",
+    "lat": 40.773016,
+    "lng": -73.982641,
+    "routes": [
+      "M66"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M66_003",
+    "name": "66th St / 3rd Av",
+    "lat": 40.766913,
+    "lng": -73.965518,
+    "routes": [
+      "M66"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M72_001",
+    "name": "72nd St / Central Park West",
+    "lat": 40.777918,
+    "lng": -73.978327,
+    "routes": [
+      "M72"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M72_002",
+    "name": "72nd St / 3rd Av",
+    "lat": 40.770912,
+    "lng": -73.961842,
+    "routes": [
+      "M72"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M79_001",
+    "name": "79th St / Broadway",
+    "lat": 40.783526,
+    "lng": -73.980824,
+    "routes": [
+      "M79-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M79_002",
+    "name": "79th St / Central Park West",
+    "lat": 40.782614,
+    "lng": -73.974318,
+    "routes": [
+      "M79-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M79_003",
+    "name": "79th St / 3rd Av",
+    "lat": 40.776812,
+    "lng": -73.957341,
+    "routes": [
+      "M79-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M86_001",
+    "name": "86th St / Riverside Dr",
+    "lat": 40.788142,
+    "lng": -73.977418,
+    "routes": [
+      "M86-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M86_002",
+    "name": "86th St / Central Park West",
+    "lat": 40.786812,
+    "lng": -73.968547,
+    "routes": [
+      "M86-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M86_003",
+    "name": "86th St / 5th Av",
+    "lat": 40.783217,
+    "lng": -73.959418,
+    "routes": [
+      "M86-SBS",
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M86_004",
+    "name": "86th St / 3rd Av",
+    "lat": 40.779847,
+    "lng": -73.953218,
+    "routes": [
+      "M86-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M86_005",
+    "name": "86th St / 1st Av",
+    "lat": 40.778312,
+    "lng": -73.947642,
+    "routes": [
+      "M86-SBS",
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M96_001",
+    "name": "96th St / Riverside Dr",
+    "lat": 40.795218,
+    "lng": -73.975642,
+    "routes": [
+      "M96"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M96_002",
+    "name": "96th St / Central Park West",
+    "lat": 40.793146,
+    "lng": -73.963241,
+    "routes": [
+      "M96"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M96_003",
+    "name": "96th St / 5th Av",
+    "lat": 40.789847,
+    "lng": -73.954218,
+    "routes": [
+      "M96",
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M106_001",
+    "name": "106th St / Central Park West",
+    "lat": 40.799312,
+    "lng": -73.961247,
+    "routes": [
+      "M106"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M106_002",
+    "name": "106th St / 5th Av",
+    "lat": 40.795912,
+    "lng": -73.952418,
+    "routes": [
+      "M106"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M20_001",
+    "name": "7th Av / W 14th St",
+    "lat": 40.737628,
+    "lng": -74.000142,
+    "routes": [
+      "M20"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M20_002",
+    "name": "Varick St / Houston St",
+    "lat": 40.727842,
+    "lng": -74.003817,
+    "routes": [
+      "M20"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M20_003",
+    "name": "West Broadway / Canal St",
+    "lat": 40.719217,
+    "lng": -74.003928,
+    "routes": [
+      "M20"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M22_001",
+    "name": "Chambers St / West Broadway",
+    "lat": 40.714826,
+    "lng": -74.008318,
+    "routes": [
+      "M22"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M22_002",
+    "name": "Fulton St / Broadway",
+    "lat": 40.708218,
+    "lng": -74.009741,
+    "routes": [
+      "M22"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M31_001",
+    "name": "57th St / 11th Av",
+    "lat": 40.769873,
+    "lng": -74.001482,
+    "routes": [
+      "M31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M31_002",
+    "name": "57th St / 9th Av",
+    "lat": 40.768217,
+    "lng": -73.994841,
+    "routes": [
+      "M31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M31_003",
+    "name": "57th St / 7th Av",
+    "lat": 40.766412,
+    "lng": -73.981241,
+    "routes": [
+      "M31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "M35_001",
+    "name": "125th St / 5th Av",
+    "lat": 40.804537,
+    "lng": -73.944213,
+    "routes": [
+      "M35",
+      "M100",
+      "M101"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M35_002",
+    "name": "125th St / 3rd Av",
+    "lat": 40.806012,
+    "lng": -73.938742,
+    "routes": [
+      "M35"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M35_003",
+    "name": "125th St / 1st Av",
+    "lat": 40.803517,
+    "lng": -73.931982,
+    "routes": [
+      "M35",
+      "M15",
+      "M15-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M60_001",
+    "name": "125th St / Broadway",
+    "lat": 40.812827,
+    "lng": -73.956418,
+    "routes": [
+      "M60-SBS",
+      "M100"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M60_002",
+    "name": "125th St / Amsterdam Av",
+    "lat": 40.811216,
+    "lng": -73.952341,
+    "routes": [
+      "M60-SBS",
+      "M7",
+      "M11"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M60_003",
+    "name": "125th St / Lenox Av",
+    "lat": 40.807912,
+    "lng": -73.947218,
+    "routes": [
+      "M60-SBS",
+      "M102"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "M100_001",
+    "name": "Broadway / W 225th St",
+    "lat": 40.873218,
+    "lng": -73.912341,
+    "routes": [
+      "M100"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M100_002",
+    "name": "Broadway / W 207th St",
+    "lat": 40.864312,
+    "lng": -73.919847,
+    "routes": [
+      "M100",
+      "M101"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M100_003",
+    "name": "Broadway / W 181st St",
+    "lat": 40.849742,
+    "lng": -73.933217,
+    "routes": [
+      "M100",
+      "M101",
+      "M104"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M100_004",
+    "name": "Broadway / W 168th St",
+    "lat": 40.840712,
+    "lng": -73.940631,
+    "routes": [
+      "M100",
+      "M101",
+      "M104"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_001",
+    "name": "3rd Av / E 138th St",
+    "lat": 40.814826,
+    "lng": -73.930847,
+    "routes": [
+      "M101"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_002",
+    "name": "Lexington Av / E 125th St",
+    "lat": 40.804218,
+    "lng": -73.937842,
+    "routes": [
+      "M101",
+      "M102",
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_003",
+    "name": "Lexington Av / E 96th St",
+    "lat": 40.783872,
+    "lng": -73.950418,
+    "routes": [
+      "M101",
+      "M102",
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_004",
+    "name": "Lexington Av / E 86th St",
+    "lat": 40.777628,
+    "lng": -73.955218,
+    "routes": [
+      "M101",
+      "M102",
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_005",
+    "name": "Lexington Av / E 59th St",
+    "lat": 40.762842,
+    "lng": -73.967518,
+    "routes": [
+      "M101",
+      "M102",
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M101_006",
+    "name": "Lexington Av / E 42nd St",
+    "lat": 40.751918,
+    "lng": -73.975241,
+    "routes": [
+      "M101",
+      "M102",
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M102_001",
+    "name": "Lenox Av / W 145th St",
+    "lat": 40.823847,
+    "lng": -73.937418,
+    "routes": [
+      "M102"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M102_002",
+    "name": "Lenox Av / W 116th St",
+    "lat": 40.801342,
+    "lng": -73.944218,
+    "routes": [
+      "M102"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M103_001",
+    "name": "3rd Av / E 96th St",
+    "lat": 40.784218,
+    "lng": -73.948127,
+    "routes": [
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M103_002",
+    "name": "3rd Av / E 72nd St",
+    "lat": 40.769742,
+    "lng": -73.959347,
+    "routes": [
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M103_003",
+    "name": "3rd Av / E 42nd St",
+    "lat": 40.751742,
+    "lng": -73.972841,
+    "routes": [
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M103_004",
+    "name": "3rd Av / E 14th St",
+    "lat": 40.731542,
+    "lng": -73.986418,
+    "routes": [
+      "M103"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M104_001",
+    "name": "Broadway / W 103rd St",
+    "lat": 40.798218,
+    "lng": -73.966342,
+    "routes": [
+      "M104"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M104_002",
+    "name": "Broadway / W 86th St",
+    "lat": 40.789218,
+    "lng": -73.974141,
+    "routes": [
+      "M104"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M104_003",
+    "name": "Broadway / W 72nd St",
+    "lat": 40.779842,
+    "lng": -73.981842,
+    "routes": [
+      "M104",
+      "M7"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "M104_004",
+    "name": "Broadway / W 42nd St",
+    "lat": 40.757542,
+    "lng": -73.989412,
+    "routes": [
+      "M104",
+      "M42"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B25_001",
+    "name": "Fulton St / Flatbush Av",
+    "lat": 40.6862,
+    "lng": -73.9784,
+    "routes": [
+      "B25",
+      "B26",
+      "B38"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B25_002",
+    "name": "Fulton St / Hoyt St",
+    "lat": 40.6876,
+    "lng": -73.9842,
+    "routes": [
+      "B25"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B25_003",
+    "name": "Fulton St / Nostrand Av",
+    "lat": 40.6868,
+    "lng": -73.9492,
+    "routes": [
+      "B25",
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B25_004",
+    "name": "Fulton St / Utica Av",
+    "lat": 40.6864,
+    "lng": -73.9315,
+    "routes": [
+      "B25",
+      "B46",
+      "B46-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B25_005",
+    "name": "Fulton St / Rockaway Av",
+    "lat": 40.6862,
+    "lng": -73.9196,
+    "routes": [
+      "B25"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B26_001",
+    "name": "Halsey St / Broadway",
+    "lat": 40.6934,
+    "lng": -73.9396,
+    "routes": [
+      "B26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B26_002",
+    "name": "Halsey St / Nostrand Av",
+    "lat": 40.6893,
+    "lng": -73.9494,
+    "routes": [
+      "B26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B26_003",
+    "name": "Halsey St / Tompkins Av",
+    "lat": 40.6901,
+    "lng": -73.9437,
+    "routes": [
+      "B26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B38_001",
+    "name": "DeKalb Av / Flatbush Av",
+    "lat": 40.6892,
+    "lng": -73.9788,
+    "routes": [
+      "B38"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B38_002",
+    "name": "DeKalb Av / Bedford Av",
+    "lat": 40.6899,
+    "lng": -73.9568,
+    "routes": [
+      "B38"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B38_003",
+    "name": "DeKalb Av / Nostrand Av",
+    "lat": 40.6905,
+    "lng": -73.9497,
+    "routes": [
+      "B38"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B38_004",
+    "name": "Lafayette Av / Utica Av",
+    "lat": 40.6895,
+    "lng": -73.9318,
+    "routes": [
+      "B38"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B41_001",
+    "name": "Flatbush Av / Atlantic Av",
+    "lat": 40.6848,
+    "lng": -73.9778,
+    "routes": [
+      "B41",
+      "B45",
+      "B65"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B41_002",
+    "name": "Flatbush Av / Empire Blvd",
+    "lat": 40.6698,
+    "lng": -73.9653,
+    "routes": [
+      "B41"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B41_003",
+    "name": "Flatbush Av / Church Av",
+    "lat": 40.6512,
+    "lng": -73.9619,
+    "routes": [
+      "B41",
+      "B35"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B41_004",
+    "name": "Flatbush Av / Cortelyou Rd",
+    "lat": 40.6409,
+    "lng": -73.9605,
+    "routes": [
+      "B41"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B41_005",
+    "name": "Flatbush Av / Kings Hwy",
+    "lat": 40.6283,
+    "lng": -73.9585,
+    "routes": [
+      "B41",
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B44_001",
+    "name": "Nostrand Av / Fulton St",
+    "lat": 40.6868,
+    "lng": -73.9492,
+    "routes": [
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B44_002",
+    "name": "Nostrand Av / Eastern Pkwy",
+    "lat": 40.6698,
+    "lng": -73.9503,
+    "routes": [
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B44_003",
+    "name": "Nostrand Av / Church Av",
+    "lat": 40.6506,
+    "lng": -73.9517,
+    "routes": [
+      "B44",
+      "B44-SBS",
+      "B35"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B44_004",
+    "name": "Nostrand Av / Kings Hwy",
+    "lat": 40.6287,
+    "lng": -73.9527,
+    "routes": [
+      "B44",
+      "B44-SBS",
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B44_005",
+    "name": "Nostrand Av / Av U",
+    "lat": 40.6028,
+    "lng": -73.9543,
+    "routes": [
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B46_001",
+    "name": "Utica Av / Fulton St",
+    "lat": 40.6864,
+    "lng": -73.9315,
+    "routes": [
+      "B46",
+      "B46-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B46_002",
+    "name": "Utica Av / Eastern Pkwy",
+    "lat": 40.6694,
+    "lng": -73.9325,
+    "routes": [
+      "B46",
+      "B46-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B46_003",
+    "name": "Utica Av / Church Av",
+    "lat": 40.6504,
+    "lng": -73.9337,
+    "routes": [
+      "B46",
+      "B46-SBS",
+      "B35"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B46_004",
+    "name": "Utica Av / Kings Hwy",
+    "lat": 40.6284,
+    "lng": -73.9347,
+    "routes": [
+      "B46",
+      "B46-SBS",
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B35_001",
+    "name": "Church Av / McDonald Av",
+    "lat": 40.6508,
+    "lng": -73.9768,
+    "routes": [
+      "B35"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B35_002",
+    "name": "Church Av / Flatbush Av",
+    "lat": 40.6512,
+    "lng": -73.9619,
+    "routes": [
+      "B35",
+      "B41"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B35_003",
+    "name": "Church Av / Nostrand Av",
+    "lat": 40.6506,
+    "lng": -73.9517,
+    "routes": [
+      "B35",
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B35_004",
+    "name": "Church Av / Utica Av",
+    "lat": 40.6504,
+    "lng": -73.9337,
+    "routes": [
+      "B35",
+      "B46",
+      "B46-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B36_001",
+    "name": "New Lots Av / Pennsylvania Av",
+    "lat": 40.6644,
+    "lng": -73.8968,
+    "routes": [
+      "B36",
+      "B83"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B36_002",
+    "name": "New Lots Av / Livonia Av",
+    "lat": 40.6641,
+    "lng": -73.9055,
+    "routes": [
+      "B36"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B36_003",
+    "name": "New Lots Av / Rockaway Av",
+    "lat": 40.6639,
+    "lng": -73.9164,
+    "routes": [
+      "B36"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B43_001",
+    "name": "Manhattan Av / Greenpoint Av",
+    "lat": 40.7228,
+    "lng": -73.9514,
+    "routes": [
+      "B43"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B43_002",
+    "name": "Manhattan Av / Nassau Av",
+    "lat": 40.7244,
+    "lng": -73.951,
+    "routes": [
+      "B43"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B43_003",
+    "name": "Manhattan Av / Driggs Av",
+    "lat": 40.7187,
+    "lng": -73.9524,
+    "routes": [
+      "B43"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B43_004",
+    "name": "Bedford Av / Prospect Park",
+    "lat": 40.6637,
+    "lng": -73.9617,
+    "routes": [
+      "B43",
+      "B69"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B45_001",
+    "name": "St Johns Pl / Flatbush Av",
+    "lat": 40.6718,
+    "lng": -73.9717,
+    "routes": [
+      "B45"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B45_002",
+    "name": "St Johns Pl / Bedford Av",
+    "lat": 40.6721,
+    "lng": -73.9573,
+    "routes": [
+      "B45"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B45_003",
+    "name": "St Johns Pl / Nostrand Av",
+    "lat": 40.6723,
+    "lng": -73.9498,
+    "routes": [
+      "B45"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B47_001",
+    "name": "Ralph Av / Fulton St",
+    "lat": 40.6866,
+    "lng": -73.9187,
+    "routes": [
+      "B47"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B47_002",
+    "name": "Ralph Av / Eastern Pkwy",
+    "lat": 40.6697,
+    "lng": -73.9199,
+    "routes": [
+      "B47"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B47_003",
+    "name": "Ralph Av / Church Av",
+    "lat": 40.6503,
+    "lng": -73.9207,
+    "routes": [
+      "B47"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B48_001",
+    "name": "Franklin Av / Fulton St",
+    "lat": 40.6877,
+    "lng": -73.9588,
+    "routes": [
+      "B48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B48_002",
+    "name": "Franklin Av / Eastern Pkwy",
+    "lat": 40.6697,
+    "lng": -73.9582,
+    "routes": [
+      "B48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B48_003",
+    "name": "Franklin Av / Maple St",
+    "lat": 40.6627,
+    "lng": -73.9576,
+    "routes": [
+      "B48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B49_001",
+    "name": "Ocean Av / Church Av",
+    "lat": 40.6509,
+    "lng": -73.9648,
+    "routes": [
+      "B49"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B49_002",
+    "name": "Ocean Av / Cortelyou Rd",
+    "lat": 40.6413,
+    "lng": -73.9638,
+    "routes": [
+      "B49"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B49_003",
+    "name": "Ocean Av / Av J",
+    "lat": 40.6254,
+    "lng": -73.9628,
+    "routes": [
+      "B49"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B52_001",
+    "name": "Gates Av / Broadway",
+    "lat": 40.6983,
+    "lng": -73.9403,
+    "routes": [
+      "B52"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B52_002",
+    "name": "Gates Av / Nostrand Av",
+    "lat": 40.698,
+    "lng": -73.9497,
+    "routes": [
+      "B52"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B52_003",
+    "name": "Greene Av / Flatbush Av",
+    "lat": 40.6905,
+    "lng": -73.9744,
+    "routes": [
+      "B52"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B54_001",
+    "name": "Myrtle Av / Broadway",
+    "lat": 40.7006,
+    "lng": -73.9455,
+    "routes": [
+      "B54",
+      "B57"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B54_002",
+    "name": "Myrtle Av / Nostrand Av",
+    "lat": 40.6997,
+    "lng": -73.9497,
+    "routes": [
+      "B54"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B54_003",
+    "name": "Myrtle Av / Bedford Av",
+    "lat": 40.6998,
+    "lng": -73.9569,
+    "routes": [
+      "B54"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B54_004",
+    "name": "Myrtle Av / Wyckoff Av",
+    "lat": 40.7024,
+    "lng": -73.9262,
+    "routes": [
+      "B54"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B57_001",
+    "name": "Flushing Av / Broadway",
+    "lat": 40.7016,
+    "lng": -73.9451,
+    "routes": [
+      "B57",
+      "B54"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B57_002",
+    "name": "Flushing Av / Bedford Av",
+    "lat": 40.7019,
+    "lng": -73.957,
+    "routes": [
+      "B57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B57_003",
+    "name": "Flushing Av / Flatbush Av",
+    "lat": 40.7013,
+    "lng": -73.9744,
+    "routes": [
+      "B57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B60_001",
+    "name": "Broadway / Wythe Av",
+    "lat": 40.7081,
+    "lng": -73.9619,
+    "routes": [
+      "B60",
+      "B62"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B60_002",
+    "name": "Broadway / Bedford Av",
+    "lat": 40.7094,
+    "lng": -73.9572,
+    "routes": [
+      "B60"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B60_003",
+    "name": "4th Av / Atlantic Av",
+    "lat": 40.684,
+    "lng": -73.9832,
+    "routes": [
+      "B60",
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B60_004",
+    "name": "4th Av / 86th St",
+    "lat": 40.634,
+    "lng": -74.0192,
+    "routes": [
+      "B60",
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B61_001",
+    "name": "Red Hook / Columbia St",
+    "lat": 40.6782,
+    "lng": -74.0061,
+    "routes": [
+      "B61"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B61_002",
+    "name": "Hicks St / Atlantic Av",
+    "lat": 40.6867,
+    "lng": -73.9977,
+    "routes": [
+      "B61"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B61_003",
+    "name": "Court St / Atlantic Av",
+    "lat": 40.6866,
+    "lng": -73.9929,
+    "routes": [
+      "B61",
+      "B65"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B62_001",
+    "name": "Franklin St / Greenpoint Av",
+    "lat": 40.723,
+    "lng": -73.9498,
+    "routes": [
+      "B62"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B62_002",
+    "name": "McGuinness Blvd / Nassau Av",
+    "lat": 40.7239,
+    "lng": -73.9486,
+    "routes": [
+      "B62"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B62_003",
+    "name": "Meserole Av / Manhattan Av",
+    "lat": 40.7194,
+    "lng": -73.9502,
+    "routes": [
+      "B62"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B63_001",
+    "name": "5th Av / Atlantic Av",
+    "lat": 40.6844,
+    "lng": -73.9817,
+    "routes": [
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B63_002",
+    "name": "5th Av / 9th St",
+    "lat": 40.6724,
+    "lng": -73.9882,
+    "routes": [
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B63_003",
+    "name": "5th Av / 36th St",
+    "lat": 40.6527,
+    "lng": -74.0037,
+    "routes": [
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B63_004",
+    "name": "5th Av / 86th St",
+    "lat": 40.6339,
+    "lng": -74.0147,
+    "routes": [
+      "B63"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B65_001",
+    "name": "Bergen St / Flatbush Av",
+    "lat": 40.6786,
+    "lng": -73.9753,
+    "routes": [
+      "B65"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B65_002",
+    "name": "Bergen St / 5th Av",
+    "lat": 40.6791,
+    "lng": -73.9846,
+    "routes": [
+      "B65"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B65_003",
+    "name": "Bergen St / Court St",
+    "lat": 40.6865,
+    "lng": -73.9929,
+    "routes": [
+      "B65",
+      "B61"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B67_001",
+    "name": "7th Av / Atlantic Av",
+    "lat": 40.6848,
+    "lng": -73.9795,
+    "routes": [
+      "B67"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B67_002",
+    "name": "7th Av / Flatbush Av",
+    "lat": 40.6703,
+    "lng": -73.9799,
+    "routes": [
+      "B67"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B67_003",
+    "name": "7th Av / 9th St",
+    "lat": 40.6725,
+    "lng": -73.9809,
+    "routes": [
+      "B67"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B68_001",
+    "name": "Coney Island Av / Church Av",
+    "lat": 40.6508,
+    "lng": -73.9697,
+    "routes": [
+      "B68"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B68_002",
+    "name": "Coney Island Av / Av J",
+    "lat": 40.6253,
+    "lng": -73.9694,
+    "routes": [
+      "B68"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B68_003",
+    "name": "Coney Island Av / Kings Hwy",
+    "lat": 40.6108,
+    "lng": -73.9696,
+    "routes": [
+      "B68",
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B69_001",
+    "name": "Vanderbilt Av / Atlantic Av",
+    "lat": 40.685,
+    "lng": -73.9693,
+    "routes": [
+      "B69"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B69_002",
+    "name": "Vanderbilt Av / Eastern Pkwy",
+    "lat": 40.67,
+    "lng": -73.9687,
+    "routes": [
+      "B69"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B69_003",
+    "name": "Vanderbilt Av / Prospect Park",
+    "lat": 40.6637,
+    "lng": -73.9687,
+    "routes": [
+      "B69",
+      "B43"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B82_001",
+    "name": "Kings Hwy / McDonald Av",
+    "lat": 40.6097,
+    "lng": -73.9797,
+    "routes": [
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B82_002",
+    "name": "Kings Hwy / Flatbush Av",
+    "lat": 40.6101,
+    "lng": -73.9586,
+    "routes": [
+      "B82",
+      "B82-SBS",
+      "B41"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B82_003",
+    "name": "Kings Hwy / Nostrand Av",
+    "lat": 40.6101,
+    "lng": -73.9528,
+    "routes": [
+      "B82",
+      "B82-SBS",
+      "B44",
+      "B44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B82_004",
+    "name": "Kings Hwy / Utica Av",
+    "lat": 40.6101,
+    "lng": -73.9347,
+    "routes": [
+      "B82",
+      "B82-SBS",
+      "B46",
+      "B46-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B82_005",
+    "name": "Kings Hwy / Remsen Av",
+    "lat": 40.6098,
+    "lng": -73.9103,
+    "routes": [
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "B83_001",
+    "name": "Pennsylvania Av / Fulton St",
+    "lat": 40.6862,
+    "lng": -73.8982,
+    "routes": [
+      "B83"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B83_002",
+    "name": "Pennsylvania Av / New Lots Av",
+    "lat": 40.6644,
+    "lng": -73.8968,
+    "routes": [
+      "B83",
+      "B36"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B83_003",
+    "name": "Pennsylvania Av / Kings Hwy",
+    "lat": 40.6104,
+    "lng": -73.8993,
+    "routes": [
+      "B83",
+      "B82",
+      "B82-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B6_001",
+    "name": "Av P / McDonald Av",
+    "lat": 40.6057,
+    "lng": -73.9826,
+    "routes": [
+      "B6"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B6_002",
+    "name": "Av P / Coney Island Av",
+    "lat": 40.6058,
+    "lng": -73.9718,
+    "routes": [
+      "B6"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B6_003",
+    "name": "Av P / Flatbush Av",
+    "lat": 40.6058,
+    "lng": -73.961,
+    "routes": [
+      "B6"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B1_001",
+    "name": "Bay Ridge Av / 4th Av",
+    "lat": 40.6343,
+    "lng": -74.019,
+    "routes": [
+      "B1"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B1_002",
+    "name": "Bay Ridge Av / Shore Rd",
+    "lat": 40.6347,
+    "lng": -74.0317,
+    "routes": [
+      "B1"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B4_001",
+    "name": "Brighton Beach Av / Coney Island Av",
+    "lat": 40.5784,
+    "lng": -73.9697,
+    "routes": [
+      "B4"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B4_002",
+    "name": "Brighton Beach Av / Ocean Pkwy",
+    "lat": 40.5775,
+    "lng": -73.9617,
+    "routes": [
+      "B4"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B8_001",
+    "name": "Flatlands Av / Utica Av",
+    "lat": 40.6362,
+    "lng": -73.9327,
+    "routes": [
+      "B8"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B8_002",
+    "name": "Flatlands Av / Flatbush Av",
+    "lat": 40.6362,
+    "lng": -73.9553,
+    "routes": [
+      "B8"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B8_003",
+    "name": "Flatlands Av / Nostrand Av",
+    "lat": 40.6362,
+    "lng": -73.9456,
+    "routes": [
+      "B8"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B9_001",
+    "name": "Av D / McDonald Av",
+    "lat": 40.6193,
+    "lng": -73.9821,
+    "routes": [
+      "B9"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B9_002",
+    "name": "Av D / Ocean Pkwy",
+    "lat": 40.6193,
+    "lng": -73.9734,
+    "routes": [
+      "B9"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B11_001",
+    "name": "Shore Pkwy / Flatbush Av",
+    "lat": 40.5997,
+    "lng": -73.9579,
+    "routes": [
+      "B11"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B11_002",
+    "name": "Shore Pkwy / Ocean Av",
+    "lat": 40.5993,
+    "lng": -73.9628,
+    "routes": [
+      "B11"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B15_001",
+    "name": "JFK Airport / Terminal 1",
+    "lat": 40.6448,
+    "lng": -73.7911,
+    "routes": [
+      "B15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B15_002",
+    "name": "JFK Airport / Terminal 4",
+    "lat": 40.6441,
+    "lng": -73.7821,
+    "routes": [
+      "B15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B15_003",
+    "name": "Linden Blvd / Pennsylvania Av",
+    "lat": 40.6614,
+    "lng": -73.8976,
+    "routes": [
+      "B15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B15_004",
+    "name": "Pitkin Av / Euclid Av",
+    "lat": 40.676,
+    "lng": -73.8718,
+    "routes": [
+      "B15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "B17_001",
+    "name": "Bath Av / Bay Pkwy",
+    "lat": 40.6028,
+    "lng": -73.9997,
+    "routes": [
+      "B17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B17_002",
+    "name": "Bath Av / 20th Av",
+    "lat": 40.6027,
+    "lng": -74.0076,
+    "routes": [
+      "B17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B17_003",
+    "name": "Bath Av / 86th St",
+    "lat": 40.6026,
+    "lng": -74.0136,
+    "routes": [
+      "B17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B31_001",
+    "name": "Sheepshead Bay Rd / Coney Island Av",
+    "lat": 40.5898,
+    "lng": -73.9623,
+    "routes": [
+      "B31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B31_002",
+    "name": "Sheepshead Bay Rd / Ocean Av",
+    "lat": 40.59,
+    "lng": -73.957,
+    "routes": [
+      "B31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B31_003",
+    "name": "Sheepshead Bay Rd / Nostrand Av",
+    "lat": 40.5898,
+    "lng": -73.9481,
+    "routes": [
+      "B31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "B31_004",
+    "name": "Sheepshead Bay Rd / Flatbush Av",
+    "lat": 40.5896,
+    "lng": -73.9421,
+    "routes": [
+      "B31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx1_001",
+    "name": "Grand Concourse / E 138th St",
+    "lat": 40.8108,
+    "lng": -73.9257,
+    "routes": [
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx1_002",
+    "name": "Grand Concourse / E 149th St",
+    "lat": 40.8186,
+    "lng": -73.9242,
+    "routes": [
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx1_003",
+    "name": "Grand Concourse / E 161st St",
+    "lat": 40.8278,
+    "lng": -73.9257,
+    "routes": [
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx1_004",
+    "name": "Grand Concourse / E 170th St",
+    "lat": 40.8389,
+    "lng": -73.9233,
+    "routes": [
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx1_005",
+    "name": "Grand Concourse / Fordham Rd",
+    "lat": 40.8611,
+    "lng": -73.8977,
+    "routes": [
+      "Bx1",
+      "Bx2",
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx1_006",
+    "name": "Grand Concourse / Gun Hill Rd",
+    "lat": 40.8753,
+    "lng": -73.8894,
+    "routes": [
+      "Bx1",
+      "Bx2",
+      "Bx17"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx1_007",
+    "name": "Grand Concourse / Mosholu Pkwy",
+    "lat": 40.8816,
+    "lng": -73.8879,
+    "routes": [
+      "Bx1",
+      "Bx2",
+      "Bx10"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx4_001",
+    "name": "Jerome Av / E 161st St",
+    "lat": 40.8274,
+    "lng": -73.9314,
+    "routes": [
+      "Bx4",
+      "Bx4A"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx4_002",
+    "name": "Jerome Av / Burnside Av",
+    "lat": 40.8448,
+    "lng": -73.9125,
+    "routes": [
+      "Bx4",
+      "Bx4A"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx4_003",
+    "name": "Jerome Av / E 170th St",
+    "lat": 40.8386,
+    "lng": -73.9303,
+    "routes": [
+      "Bx4",
+      "Bx4A"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx4_004",
+    "name": "Jerome Av / Fordham Rd",
+    "lat": 40.8604,
+    "lng": -73.9008,
+    "routes": [
+      "Bx4",
+      "Bx4A",
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx5_001",
+    "name": "E Tremont Av / White Plains Rd",
+    "lat": 40.8445,
+    "lng": -73.8814,
+    "routes": [
+      "Bx5"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx5_002",
+    "name": "White Plains Rd / Pelham Pkwy",
+    "lat": 40.856,
+    "lng": -73.8598,
+    "routes": [
+      "Bx5",
+      "Bx21"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx6_001",
+    "name": "Hunts Point Av / Bruckner Blvd",
+    "lat": 40.8197,
+    "lng": -73.8888,
+    "routes": [
+      "Bx6",
+      "Bx6-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx6_002",
+    "name": "Hunts Point Av / Longwood Av",
+    "lat": 40.8231,
+    "lng": -73.8956,
+    "routes": [
+      "Bx6",
+      "Bx6-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx6_003",
+    "name": "Southern Blvd / E 163rd St",
+    "lat": 40.8298,
+    "lng": -73.8983,
+    "routes": [
+      "Bx6",
+      "Bx6-SBS",
+      "Bx19"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx6_004",
+    "name": "Westchester Av / Southern Blvd",
+    "lat": 40.8241,
+    "lng": -73.894,
+    "routes": [
+      "Bx6",
+      "Bx6-SBS",
+      "Bx40",
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx7_001",
+    "name": "Broadway / W 225th St",
+    "lat": 40.8748,
+    "lng": -73.9103,
+    "routes": [
+      "Bx7"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx7_002",
+    "name": "Broadway / W 231st St",
+    "lat": 40.8796,
+    "lng": -73.9085,
+    "routes": [
+      "Bx7",
+      "Bx9"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx9_001",
+    "name": "Kingsbridge Rd / Jerome Av",
+    "lat": 40.8683,
+    "lng": -73.9017,
+    "routes": [
+      "Bx9"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx9_002",
+    "name": "Kingsbridge Rd / Grand Concourse",
+    "lat": 40.868,
+    "lng": -73.8979,
+    "routes": [
+      "Bx9",
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx10_001",
+    "name": "Mosholu Pkwy / Jerome Av",
+    "lat": 40.8796,
+    "lng": -73.8968,
+    "routes": [
+      "Bx10"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx10_002",
+    "name": "Mosholu Pkwy / Bainbridge Av",
+    "lat": 40.8804,
+    "lng": -73.8912,
+    "routes": [
+      "Bx10"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx11_001",
+    "name": "Tremont Av / 3rd Av",
+    "lat": 40.8432,
+    "lng": -73.915,
+    "routes": [
+      "Bx11"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx11_002",
+    "name": "Tremont Av / Boston Rd",
+    "lat": 40.8451,
+    "lng": -73.8892,
+    "routes": [
+      "Bx11",
+      "Bx35"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx12_001",
+    "name": "Fordham Rd / Grand Concourse",
+    "lat": 40.8611,
+    "lng": -73.8977,
+    "routes": [
+      "Bx12",
+      "Bx12-SBS",
+      "Bx1",
+      "Bx2"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx12_002",
+    "name": "Fordham Rd / Webster Av",
+    "lat": 40.8613,
+    "lng": -73.8888,
+    "routes": [
+      "Bx12",
+      "Bx12-SBS",
+      "Bx17"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx12_003",
+    "name": "Fordham Rd / Valentine Av",
+    "lat": 40.8609,
+    "lng": -73.8933,
+    "routes": [
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx12_004",
+    "name": "Fordham Rd / Pelham Pkwy S",
+    "lat": 40.8618,
+    "lng": -73.8848,
+    "routes": [
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx12_005",
+    "name": "Fordham Rd / University Av",
+    "lat": 40.8619,
+    "lng": -73.9057,
+    "routes": [
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Bx15_001",
+    "name": "3rd Av / E 138th St",
+    "lat": 40.8098,
+    "lng": -73.9214,
+    "routes": [
+      "Bx15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx15_002",
+    "name": "3rd Av / E 149th St",
+    "lat": 40.818,
+    "lng": -73.9175,
+    "routes": [
+      "Bx15"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx15_003",
+    "name": "3rd Av / Tremont Av",
+    "lat": 40.844,
+    "lng": -73.9157,
+    "routes": [
+      "Bx15",
+      "Bx11"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx15_004",
+    "name": "3rd Av / Fordham Rd",
+    "lat": 40.8603,
+    "lng": -73.907,
+    "routes": [
+      "Bx15",
+      "Bx12",
+      "Bx12-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Bx17_001",
+    "name": "Webster Av / E 170th St",
+    "lat": 40.8389,
+    "lng": -73.9008,
+    "routes": [
+      "Bx17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx17_002",
+    "name": "Webster Av / E 183rd St",
+    "lat": 40.8534,
+    "lng": -73.8946,
+    "routes": [
+      "Bx17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx17_003",
+    "name": "Webster Av / Gun Hill Rd",
+    "lat": 40.8731,
+    "lng": -73.8879,
+    "routes": [
+      "Bx17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx19_001",
+    "name": "Southern Blvd / E 149th St",
+    "lat": 40.8179,
+    "lng": -73.8994,
+    "routes": [
+      "Bx19"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx19_002",
+    "name": "Southern Blvd / Westchester Av",
+    "lat": 40.8241,
+    "lng": -73.894,
+    "routes": [
+      "Bx19",
+      "Bx40",
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx19_003",
+    "name": "Southern Blvd / E 163rd St",
+    "lat": 40.8297,
+    "lng": -73.8977,
+    "routes": [
+      "Bx19",
+      "Bx6",
+      "Bx6-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx21_001",
+    "name": "Pelham Pkwy N / White Plains Rd",
+    "lat": 40.8571,
+    "lng": -73.8601,
+    "routes": [
+      "Bx21"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx21_002",
+    "name": "Pelham Pkwy / Boston Rd",
+    "lat": 40.8564,
+    "lng": -73.8673,
+    "routes": [
+      "Bx21"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx21_003",
+    "name": "Pelham Pkwy / Williamsbridge Rd",
+    "lat": 40.8558,
+    "lng": -73.8732,
+    "routes": [
+      "Bx21"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx22_001",
+    "name": "City Island Av / Rochelle St",
+    "lat": 40.8518,
+    "lng": -73.7872,
+    "routes": [
+      "Bx22"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx22_002",
+    "name": "City Island Av / Centre St",
+    "lat": 40.8484,
+    "lng": -73.7898,
+    "routes": [
+      "Bx22"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx22_003",
+    "name": "Pelham Bay Park / City Island Rd",
+    "lat": 40.8561,
+    "lng": -73.8007,
+    "routes": [
+      "Bx22",
+      "Bx29"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx26_001",
+    "name": "Castle Hill Av / Westchester Av",
+    "lat": 40.8296,
+    "lng": -73.8628,
+    "routes": [
+      "Bx26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx26_002",
+    "name": "Castle Hill Av / Bruckner Blvd",
+    "lat": 40.8198,
+    "lng": -73.8607,
+    "routes": [
+      "Bx26",
+      "Bx36"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx27_001",
+    "name": "Laconia Av / Gun Hill Rd",
+    "lat": 40.8753,
+    "lng": -73.8614,
+    "routes": [
+      "Bx27"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx27_002",
+    "name": "Burke Av / White Plains Rd",
+    "lat": 40.8691,
+    "lng": -73.8558,
+    "routes": [
+      "Bx27"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx28_001",
+    "name": "Nereid Av / White Plains Rd",
+    "lat": 40.8958,
+    "lng": -73.8556,
+    "routes": [
+      "Bx28"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx28_002",
+    "name": "Nereid Av / Laconia Av",
+    "lat": 40.8964,
+    "lng": -73.8613,
+    "routes": [
+      "Bx28"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx29_001",
+    "name": "Middletown Rd / Westchester Av",
+    "lat": 40.8368,
+    "lng": -73.8319,
+    "routes": [
+      "Bx29"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx29_002",
+    "name": "Middletown Rd / Bruckner Blvd",
+    "lat": 40.8228,
+    "lng": -73.8275,
+    "routes": [
+      "Bx29"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx30_001",
+    "name": "Co-op City Blvd / Bartow Av",
+    "lat": 40.8719,
+    "lng": -73.8324,
+    "routes": [
+      "Bx30"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx30_002",
+    "name": "Baychester Av / Boston Rd",
+    "lat": 40.8821,
+    "lng": -73.8408,
+    "routes": [
+      "Bx30"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx35_001",
+    "name": "E Tremont Av / Grand Concourse",
+    "lat": 40.8444,
+    "lng": -73.9133,
+    "routes": [
+      "Bx35"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx35_002",
+    "name": "E Tremont Av / 3rd Av",
+    "lat": 40.8433,
+    "lng": -73.9151,
+    "routes": [
+      "Bx35",
+      "Bx15"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx35_003",
+    "name": "E Tremont Av / Boston Rd",
+    "lat": 40.8451,
+    "lng": -73.8892,
+    "routes": [
+      "Bx35",
+      "Bx11"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx36_001",
+    "name": "Bruckner Blvd / E 138th St",
+    "lat": 40.8124,
+    "lng": -73.9122,
+    "routes": [
+      "Bx36"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx36_002",
+    "name": "Bruckner Blvd / Hunts Point Av",
+    "lat": 40.8161,
+    "lng": -73.8959,
+    "routes": [
+      "Bx36",
+      "Bx6",
+      "Bx6-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx36_003",
+    "name": "Bruckner Blvd / Castle Hill Av",
+    "lat": 40.8198,
+    "lng": -73.8607,
+    "routes": [
+      "Bx36",
+      "Bx26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx39_001",
+    "name": "Sedgwick Av / W Fordham Rd",
+    "lat": 40.863,
+    "lng": -73.9108,
+    "routes": [
+      "Bx39"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx39_002",
+    "name": "Sedgwick Av / University Av",
+    "lat": 40.8535,
+    "lng": -73.9156,
+    "routes": [
+      "Bx39"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx40_001",
+    "name": "Westchester Av / E 174th St",
+    "lat": 40.835,
+    "lng": -73.8922,
+    "routes": [
+      "Bx40",
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx40_002",
+    "name": "Westchester Av / White Plains Rd",
+    "lat": 40.8352,
+    "lng": -73.8744,
+    "routes": [
+      "Bx40",
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx40_003",
+    "name": "Westchester Av / Pugsley Av",
+    "lat": 40.8302,
+    "lng": -73.8569,
+    "routes": [
+      "Bx40",
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Bx42_001",
+    "name": "Westchester Av / Simpson St",
+    "lat": 40.8267,
+    "lng": -73.9001,
+    "routes": [
+      "Bx42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q1_001",
+    "name": "Sutphin Blvd / Jamaica Av",
+    "lat": 40.7021,
+    "lng": -73.8013,
+    "routes": [
+      "Q1"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q1_002",
+    "name": "Linden Blvd / Merrick Blvd",
+    "lat": 40.6913,
+    "lng": -73.7901,
+    "routes": [
+      "Q1",
+      "Q4"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q2_001",
+    "name": "Merrick Blvd / Jamaica Av",
+    "lat": 40.6997,
+    "lng": -73.7875,
+    "routes": [
+      "Q2",
+      "Q3"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q3_001",
+    "name": "Francis Lewis Blvd / Linden Blvd",
+    "lat": 40.6871,
+    "lng": -73.7705,
+    "routes": [
+      "Q3"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q4_001",
+    "name": "Springfield Blvd / Linden Blvd",
+    "lat": 40.6902,
+    "lng": -73.7608,
+    "routes": [
+      "Q4"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q5_001",
+    "name": "Merrick Blvd / Hollis Av",
+    "lat": 40.7048,
+    "lng": -73.7731,
+    "routes": [
+      "Q5"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q6_001",
+    "name": "Liberty Av / Ozone Park",
+    "lat": 40.6766,
+    "lng": -73.8494,
+    "routes": [
+      "Q6"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q7_001",
+    "name": "Rockaway Blvd / Elderts Lane",
+    "lat": 40.6801,
+    "lng": -73.8316,
+    "routes": [
+      "Q7",
+      "Q8"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q8_001",
+    "name": "Lefferts Blvd / Liberty Av",
+    "lat": 40.6839,
+    "lng": -73.8415,
+    "routes": [
+      "Q8"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q9_001",
+    "name": "Woodhaven Blvd / Jamaica Av",
+    "lat": 40.6993,
+    "lng": -73.8568,
+    "routes": [
+      "Q9"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q10_001",
+    "name": "Lefferts Blvd / S Conduit Av",
+    "lat": 40.6614,
+    "lng": -73.8274,
+    "routes": [
+      "Q10"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q10_002",
+    "name": "Howard Beach / JFK Terminal",
+    "lat": 40.6599,
+    "lng": -73.8301,
+    "routes": [
+      "Q10"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q11_001",
+    "name": "Main St / Roosevelt Av (Flushing)",
+    "lat": 40.7598,
+    "lng": -73.8301,
+    "routes": [
+      "Q11",
+      "Q12",
+      "Q13"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q12_001",
+    "name": "Main St / Kissena Blvd",
+    "lat": 40.7487,
+    "lng": -73.8296,
+    "routes": [
+      "Q12"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q13_001",
+    "name": "College Point Blvd / Flushing",
+    "lat": 40.768,
+    "lng": -73.8402,
+    "routes": [
+      "Q13"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q15_001",
+    "name": "Parsons Blvd / Jamaica Av",
+    "lat": 40.7041,
+    "lng": -73.7933,
+    "routes": [
+      "Q15",
+      "Q16"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q16_001",
+    "name": "Hillside Av / 164th St",
+    "lat": 40.7179,
+    "lng": -73.7882,
+    "routes": [
+      "Q16"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q17_001",
+    "name": "Hillside Av / 188th St",
+    "lat": 40.7166,
+    "lng": -73.7611,
+    "routes": [
+      "Q17"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q20_001",
+    "name": "Jamaica Av / 169th St",
+    "lat": 40.7061,
+    "lng": -73.7836,
+    "routes": [
+      "Q20A",
+      "Q20B"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q25_001",
+    "name": "Main St / Kissena Blvd (Flushing)",
+    "lat": 40.7591,
+    "lng": -73.8299,
+    "routes": [
+      "Q25",
+      "Q34"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q25_002",
+    "name": "Kissena Blvd / Hillside Av",
+    "lat": 40.7204,
+    "lng": -73.7967,
+    "routes": [
+      "Q25"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q26_001",
+    "name": "Union Tpke / Utopia Pkwy",
+    "lat": 40.7234,
+    "lng": -73.7685,
+    "routes": [
+      "Q26"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q27_001",
+    "name": "Francis Lewis Blvd / Northern Blvd",
+    "lat": 40.7617,
+    "lng": -73.7521,
+    "routes": [
+      "Q27"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q28_001",
+    "name": "Northern Blvd / Bell Blvd (Bayside)",
+    "lat": 40.7609,
+    "lng": -73.7706,
+    "routes": [
+      "Q28",
+      "Q31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q29_001",
+    "name": "Union Tpke / Little Neck Pkwy",
+    "lat": 40.7268,
+    "lng": -73.7301,
+    "routes": [
+      "Q29"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q30_001",
+    "name": "Hillside Av / Little Neck Pkwy",
+    "lat": 40.7261,
+    "lng": -73.7281,
+    "routes": [
+      "Q30",
+      "Q31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q31_001",
+    "name": "Northern Blvd / Little Neck Pkwy",
+    "lat": 40.7686,
+    "lng": -73.7268,
+    "routes": [
+      "Q31"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q32_001",
+    "name": "Roosevelt Av / 74th St (Jackson Heights)",
+    "lat": 40.7468,
+    "lng": -73.8963,
+    "routes": [
+      "Q32"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q32_002",
+    "name": "Queens Blvd / Queens Plaza",
+    "lat": 40.7503,
+    "lng": -73.9371,
+    "routes": [
+      "Q32"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q33_001",
+    "name": "Astoria Blvd / Steinway St",
+    "lat": 40.772,
+    "lng": -73.9041,
+    "routes": [
+      "Q33"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q33_002",
+    "name": "Ditmars Blvd / 31st St (LGA Link)",
+    "lat": 40.7749,
+    "lng": -73.9308,
+    "routes": [
+      "Q33",
+      "Q70-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q39_001",
+    "name": "Grand Av / Myrtle Av (Ridgewood)",
+    "lat": 40.704,
+    "lng": -73.9056,
+    "routes": [
+      "Q39"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q41_001",
+    "name": "Linden Blvd / 101st Av",
+    "lat": 40.694,
+    "lng": -73.8228,
+    "routes": [
+      "Q41"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q42_001",
+    "name": "Rockaway Blvd / 150th St",
+    "lat": 40.6793,
+    "lng": -73.8051,
+    "routes": [
+      "Q42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q43_001",
+    "name": "Hillside Av / Parsons Blvd",
+    "lat": 40.7154,
+    "lng": -73.7964,
+    "routes": [
+      "Q43"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q44_001",
+    "name": "Main St / Kissena Blvd",
+    "lat": 40.759,
+    "lng": -73.8296,
+    "routes": [
+      "Q44",
+      "Q44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q44_002",
+    "name": "Main St / Jamaica Av",
+    "lat": 40.7041,
+    "lng": -73.8023,
+    "routes": [
+      "Q44",
+      "Q44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q44_003",
+    "name": "Main St / Hillside Av",
+    "lat": 40.7199,
+    "lng": -73.8058,
+    "routes": [
+      "Q44",
+      "Q44-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q46_001",
+    "name": "Union Tpke / 188th St",
+    "lat": 40.7184,
+    "lng": -73.7617,
+    "routes": [
+      "Q46"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q47_001",
+    "name": "Queens Blvd / Kew Gardens",
+    "lat": 40.715,
+    "lng": -73.8317,
+    "routes": [
+      "Q47"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q48_001",
+    "name": "Linden Hill Blvd / College Point Blvd",
+    "lat": 40.7701,
+    "lng": -73.8357,
+    "routes": [
+      "Q48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q49_001",
+    "name": "Astoria Blvd / 85th St",
+    "lat": 40.7741,
+    "lng": -73.8748,
+    "routes": [
+      "Q49"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q50_001",
+    "name": "Murray Hill / Main St (Flushing)",
+    "lat": 40.768,
+    "lng": -73.83,
+    "routes": [
+      "Q50"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q52_001",
+    "name": "Woodhaven Blvd / Liberty Av",
+    "lat": 40.6949,
+    "lng": -73.857,
+    "routes": [
+      "Q52",
+      "Q53-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q52_002",
+    "name": "Cross Bay Blvd / Liberty Av",
+    "lat": 40.6891,
+    "lng": -73.8522,
+    "routes": [
+      "Q52",
+      "Q53-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q52_003",
+    "name": "Woodhaven Blvd / Atlantic Av",
+    "lat": 40.7069,
+    "lng": -73.8566,
+    "routes": [
+      "Q52",
+      "Q53-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q54_001",
+    "name": "Myrtle Av / Wyckoff Av (Ridgewood)",
+    "lat": 40.7064,
+    "lng": -73.9058,
+    "routes": [
+      "Q54"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q55_001",
+    "name": "Woodhaven Blvd / Forest Hills",
+    "lat": 40.7234,
+    "lng": -73.8602,
+    "routes": [
+      "Q55"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q56_001",
+    "name": "Jamaica Av / 168th St",
+    "lat": 40.7062,
+    "lng": -73.7857,
+    "routes": [
+      "Q56"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q58_001",
+    "name": "Fresh Pond Rd / Myrtle Av",
+    "lat": 40.7082,
+    "lng": -73.8975,
+    "routes": [
+      "Q58"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q59_001",
+    "name": "Metropolitan Av / Woodhaven Blvd",
+    "lat": 40.7121,
+    "lng": -73.8597,
+    "routes": [
+      "Q59"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q60_001",
+    "name": "Queens Blvd / Union Tpke",
+    "lat": 40.7208,
+    "lng": -73.838,
+    "routes": [
+      "Q60"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q60_002",
+    "name": "Queens Blvd / Jamaica Av",
+    "lat": 40.7166,
+    "lng": -73.824,
+    "routes": [
+      "Q60"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q65_001",
+    "name": "Kissena Blvd / Booth Memorial Av",
+    "lat": 40.7468,
+    "lng": -73.8126,
+    "routes": [
+      "Q65"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q66_001",
+    "name": "Northern Blvd / Junction Blvd (Jackson Hts)",
+    "lat": 40.7534,
+    "lng": -73.8825,
+    "routes": [
+      "Q66"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "Q67_001",
+    "name": "21st St / Queens Plaza N (Astoria)",
+    "lat": 40.7531,
+    "lng": -73.9393,
+    "routes": [
+      "Q67"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q69_001",
+    "name": "Vernon Blvd / Broadway (Astoria)",
+    "lat": 40.7612,
+    "lng": -73.9313,
+    "routes": [
+      "Q69"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q70_001",
+    "name": "Jackson Heights / Roosevelt Av LGA Link",
+    "lat": 40.7468,
+    "lng": -73.8963,
+    "routes": [
+      "Q70-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q70_002",
+    "name": "LGA Airport / Terminal B",
+    "lat": 40.7769,
+    "lng": -73.874,
+    "routes": [
+      "Q70-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "Q72_001",
+    "name": "JFK Airport / Jamaica Station",
+    "lat": 40.7021,
+    "lng": -73.8013,
+    "routes": [
+      "Q72"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q72_002",
+    "name": "JFK Airport / Terminal 4",
+    "lat": 40.6441,
+    "lng": -73.7834,
+    "routes": [
+      "Q72"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q76_001",
+    "name": "Hollis Av / Springfield Blvd",
+    "lat": 40.7161,
+    "lng": -73.7527,
+    "routes": [
+      "Q76"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q83_001",
+    "name": "Rockaway Blvd / Guy Brewer Blvd",
+    "lat": 40.6839,
+    "lng": -73.7879,
+    "routes": [
+      "Q83"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q84_001",
+    "name": "Merrick Blvd / Rockaway Blvd",
+    "lat": 40.6884,
+    "lng": -73.7811,
+    "routes": [
+      "Q84"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "Q85_001",
+    "name": "Linden Blvd / Guy Brewer Blvd",
+    "lat": 40.6921,
+    "lng": -73.7878,
+    "routes": [
+      "Q85"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S40_001",
+    "name": "St George Terminal / Richmond Terrace",
+    "lat": 40.6431,
+    "lng": -74.0741,
+    "routes": [
+      "S40",
+      "S90",
+      "S44",
+      "S46",
+      "S48",
+      "S52",
+      "S92",
+      "SIM1",
+      "SIM3",
+      "SIM4"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "S40_002",
+    "name": "Victory Blvd / Jewett Av",
+    "lat": 40.6272,
+    "lng": -74.1044,
+    "routes": [
+      "S40",
+      "S90",
+      "S44",
+      "S46"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "S40_003",
+    "name": "Richmond Av / Richmond Hill Rd",
+    "lat": 40.5892,
+    "lng": -74.1461,
+    "routes": [
+      "S40",
+      "S90",
+      "S74",
+      "S84"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "S40_004",
+    "name": "Eltingville / Richmond Av Terminal",
+    "lat": 40.5541,
+    "lng": -74.1734,
+    "routes": [
+      "S40",
+      "S90"
+    ],
+    "type": "bus",
+    "headway_minutes": 10
+  },
+  {
+    "stop_id": "S42_001",
+    "name": "Victory Blvd / Broadway",
+    "lat": 40.6354,
+    "lng": -74.1148,
+    "routes": [
+      "S42"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S42_002",
+    "name": "Victory Blvd / Forest Av",
+    "lat": 40.6316,
+    "lng": -74.1201,
+    "routes": [
+      "S42",
+      "S46"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S44_001",
+    "name": "Victory Blvd / Castleton Av",
+    "lat": 40.6309,
+    "lng": -74.0904,
+    "routes": [
+      "S44",
+      "S48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S44_002",
+    "name": "Victory Blvd / Manor Rd",
+    "lat": 40.6217,
+    "lng": -74.1002,
+    "routes": [
+      "S44"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S46_001",
+    "name": "Forest Av / Victory Blvd",
+    "lat": 40.6316,
+    "lng": -74.1201,
+    "routes": [
+      "S46"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S46_002",
+    "name": "Forest Av / Jewett Av",
+    "lat": 40.6278,
+    "lng": -74.1278,
+    "routes": [
+      "S46"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S48_001",
+    "name": "Victory Blvd / Willowbrook Rd",
+    "lat": 40.6179,
+    "lng": -74.1109,
+    "routes": [
+      "S48"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S51_001",
+    "name": "Richmond Rd / Lincoln Av (Grant City)",
+    "lat": 40.5834,
+    "lng": -74.1148,
+    "routes": [
+      "S51",
+      "S81"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S51_002",
+    "name": "Richmond Rd / New Dorp Lane",
+    "lat": 40.5745,
+    "lng": -74.1172,
+    "routes": [
+      "S51",
+      "S81"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S52_001",
+    "name": "Bay St / Hylan Blvd (Stapleton)",
+    "lat": 40.6234,
+    "lng": -74.0751,
+    "routes": [
+      "S52",
+      "S92"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S52_002",
+    "name": "Bay St / Sands St (St George)",
+    "lat": 40.6384,
+    "lng": -74.0739,
+    "routes": [
+      "S52",
+      "S92"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S53_001",
+    "name": "Richmond Terrace / Jewett Av",
+    "lat": 40.6422,
+    "lng": -74.1002,
+    "routes": [
+      "S53"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S54_001",
+    "name": "Richmond Av / Forest Av",
+    "lat": 40.6301,
+    "lng": -74.1431,
+    "routes": [
+      "S54"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S55_001",
+    "name": "Castleton Av / Broadway",
+    "lat": 40.6379,
+    "lng": -74.1173,
+    "routes": [
+      "S55"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S56_001",
+    "name": "Richmond Av / Arthur Kill Rd",
+    "lat": 40.5713,
+    "lng": -74.1724,
+    "routes": [
+      "S56",
+      "S57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S57_001",
+    "name": "Arthur Kill Rd / Hylan Blvd",
+    "lat": 40.5524,
+    "lng": -74.1893,
+    "routes": [
+      "S57"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S59_001",
+    "name": "Hylan Blvd / New Dorp Lane",
+    "lat": 40.5728,
+    "lng": -74.117,
+    "routes": [
+      "S59",
+      "S78"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S59_002",
+    "name": "Hylan Blvd / Richmond Rd (Dongan Hills)",
+    "lat": 40.5888,
+    "lng": -74.0985,
+    "routes": [
+      "S59"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S61_001",
+    "name": "Castleton Av / St George",
+    "lat": 40.6428,
+    "lng": -74.0797,
+    "routes": [
+      "S61",
+      "S66"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S62_001",
+    "name": "Castleton Av / West Brighton",
+    "lat": 40.6327,
+    "lng": -74.1075,
+    "routes": [
+      "S62"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S66_001",
+    "name": "Jewett Av / Forest Av",
+    "lat": 40.6268,
+    "lng": -74.1073,
+    "routes": [
+      "S66"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S74_001",
+    "name": "Richmond Av / Victory Blvd",
+    "lat": 40.6084,
+    "lng": -74.1549,
+    "routes": [
+      "S74",
+      "S84"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S74_002",
+    "name": "Richmond Av / Richmond Hill Rd",
+    "lat": 40.5892,
+    "lng": -74.1461,
+    "routes": [
+      "S74",
+      "S84"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S76_001",
+    "name": "Castleton Av / New Brighton",
+    "lat": 40.6378,
+    "lng": -74.0956,
+    "routes": [
+      "S76",
+      "S86"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S76_002",
+    "name": "Castleton Av / Port Richmond",
+    "lat": 40.6342,
+    "lng": -74.1217,
+    "routes": [
+      "S76",
+      "S86"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S78_001",
+    "name": "Hylan Blvd / Richmond Rd (New Dorp)",
+    "lat": 40.573,
+    "lng": -74.1172,
+    "routes": [
+      "S78"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S78_002",
+    "name": "Hylan Blvd / Seguine Av (Prince's Bay)",
+    "lat": 40.5294,
+    "lng": -74.1971,
+    "routes": [
+      "S78"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "S79_001",
+    "name": "Hylan Blvd / New Dorp Lane (SBS)",
+    "lat": 40.5728,
+    "lng": -74.117,
+    "routes": [
+      "S79-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "S79_002",
+    "name": "Bay Ridge / 86th St (SBS Crosstown)",
+    "lat": 40.6218,
+    "lng": -74.0298,
+    "routes": [
+      "S79-SBS"
+    ],
+    "type": "bus",
+    "headway_minutes": 8
+  },
+  {
+    "stop_id": "SIM1_001",
+    "name": "Richmond Av / Arthur Kill Rd (SIM1)",
+    "lat": 40.5713,
+    "lng": -74.1724,
+    "routes": [
+      "SIM1"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "SIM3_001",
+    "name": "Eltingville / Richmond Av (SIM3)",
+    "lat": 40.5541,
+    "lng": -74.1734,
+    "routes": [
+      "SIM3"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  },
+  {
+    "stop_id": "SIM4_001",
+    "name": "Hylan Blvd / Arden Av (SIM4)",
+    "lat": 40.5413,
+    "lng": -74.2018,
+    "routes": [
+      "SIM4"
+    ],
+    "type": "bus",
+    "headway_minutes": 12
+  }
+]
