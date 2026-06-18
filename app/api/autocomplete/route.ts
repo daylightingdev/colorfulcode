@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { TTLCache } from "@/lib/cache";
+
+type Prediction = { description: string; place_id: string };
+const cache = new TTLCache<Prediction[]>(60);
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -6,6 +10,12 @@ export async function GET(request: Request) {
 
   if (!input || input.length < 3) {
     return NextResponse.json({ predictions: [] });
+  }
+
+  const cacheKey = input.toLowerCase().trim();
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    return NextResponse.json({ predictions: cached });
   }
 
   const apiKey =
@@ -18,10 +28,12 @@ export async function GET(request: Request) {
   // Try Places API (New) autocomplete first, then fall back to legacy
   const newApiResult = await tryNewPlacesAutocomplete(apiKey, input);
   if (newApiResult !== null) {
+    cache.set(cacheKey, newApiResult);
     return NextResponse.json({ predictions: newApiResult });
   }
 
   const legacyResult = await tryLegacyAutocomplete(apiKey, input);
+  cache.set(cacheKey, legacyResult);
   return NextResponse.json({ predictions: legacyResult });
 }
 

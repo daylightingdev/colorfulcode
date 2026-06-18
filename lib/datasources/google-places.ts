@@ -3,6 +3,8 @@
  * Uses POST to places:searchNearby with X-Goog-Api-Key header
  */
 
+import { TTLCache, roundCoord } from "@/lib/cache";
+
 interface PlaceResult {
   name: string;
   lat: number;
@@ -20,6 +22,7 @@ interface NearbySearchResponse {
 }
 
 const API_BASE = "https://places.googleapis.com/v1/places:searchNearby";
+const nearbyCache = new TTLCache<PlaceResult[]>(600);
 
 async function searchNearby(
   lat: number,
@@ -28,6 +31,10 @@ async function searchNearby(
   radiusMeters: number,
   maxResults: number = 10
 ): Promise<PlaceResult[]> {
+  const cacheKey = `${roundCoord(lat)}:${roundCoord(lng)}:${includedTypes.sort().join(",")}:${radiusMeters}`;
+  const cached = nearbyCache.get(cacheKey);
+  if (cached) return cached;
+
   const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY;
   if (!apiKey) {
     console.warn("No Google Places/Maps API key configured");
@@ -63,12 +70,15 @@ async function searchNearby(
 
   const data: NearbySearchResponse = await res.json();
 
-  return (data.places || []).map((p) => ({
+  const results = (data.places || []).map((p) => ({
     name: p.displayName?.text || "Unknown",
     lat: p.location?.latitude || 0,
     lng: p.location?.longitude || 0,
     type: p.primaryType || "",
   }));
+
+  nearbyCache.set(cacheKey, results);
+  return results;
 }
 
 // --- Category-specific search functions ---

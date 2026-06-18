@@ -10,6 +10,7 @@ import {
 } from "@/lib/scoring";
 import { getAllPlacesData } from "@/lib/datasources/google-places";
 import { identifyTract, getEquityData } from "@/lib/equity";
+import { TTLCache } from "@/lib/cache";
 
 // --- Load static data at module level (kept in memory between requests) ---
 
@@ -29,11 +30,17 @@ const BIKE_SHARES: Place[] = bikeshareDocks as Place[];
 const COMMUNITY_GARDENS: Place[] = communityGardens as Place[];
 const COMPOST_SITES: Place[] = compostingSites as Place[];
 
-// --- Geocode helper ---
+// --- Geocode helper with 30-minute cache ---
+
+const geocodeCache = new TTLCache<{ address: string; lat: number; lng: number }>(1800);
 
 async function geocode(
   address: string
 ): Promise<{ address: string; lat: number; lng: number } | null> {
+  const cacheKey = address.toLowerCase().trim();
+  const cached = geocodeCache.get(cacheKey);
+  if (cached) return cached;
+
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
   if (!apiKey) return null;
 
@@ -47,11 +54,14 @@ async function geocode(
   if (data.status !== "OK" || !data.results?.length) return null;
 
   const result = data.results[0];
-  return {
+  const geo = {
     address: result.formatted_address,
     lat: result.geometry.location.lat,
     lng: result.geometry.location.lng,
   };
+
+  geocodeCache.set(cacheKey, geo);
+  return geo;
 }
 
 // --- Main route ---
