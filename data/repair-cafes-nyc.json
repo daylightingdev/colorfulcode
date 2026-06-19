@@ -1,0 +1,15 @@
+[
+  {"_note": "This file requires manual updates. Check https://www.repaircafe.org for current NYC locations.", "_isMetadata": true},
+  {"name": "Repair Cafe NYC - Lower East Side", "lat": 40.7185, "lng": -73.9868, "address": "122 E Houston St, New York, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Park Slope", "lat": 40.6681, "lng": -73.9822, "address": "Park Slope, Brooklyn, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Astoria", "lat": 40.7592, "lng": -73.9196, "address": "Astoria, Queens, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Upper West Side", "lat": 40.7870, "lng": -73.9754, "address": "Upper West Side, Manhattan, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Crown Heights", "lat": 40.6694, "lng": -73.9422, "address": "Crown Heights, Brooklyn, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Jackson Heights", "lat": 40.7488, "lng": -73.8830, "address": "Jackson Heights, Queens, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Harlem", "lat": 40.8116, "lng": -73.9465, "address": "Harlem, Manhattan, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Bay Ridge", "lat": 40.6340, "lng": -74.0283, "address": "Bay Ridge, Brooklyn, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Bronx", "lat": 40.8448, "lng": -73.8648, "address": "Bronx, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Staten Island", "lat": 40.5834, "lng": -74.1496, "address": "Staten Island, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Washington Heights", "lat": 40.8417, "lng": -73.9393, "address": "Washington Heights, Manhattan, NY", "website": "https://www.repaircafe.org"},
+  {"name": "Repair Cafe NYC - Flatbush", "lat": 40.6529, "lng": -73.9619, "address": "Flatbush, Brooklyn, NY", "website": "https://www.repaircafe.org"}
+]

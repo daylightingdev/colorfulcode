@@ -55,6 +55,24 @@ const AMENITY_LABELS: Record<string, string> = {
   waterStations: "Water Stations",
 };
 
+const LAYER_COLORS: Record<string, string> = {
+  farmersMarkets: "#8B5E3C",
+  gardens: "#2D6A4F",
+  parks: "#52B788",
+  libraries: "#7B2D8E",
+  donateNyc: "#E07B39",
+  repairCafes: "#D4A017",
+};
+
+const LAYER_LABELS: Record<string, string> = {
+  farmersMarkets: "Farmers Markets",
+  gardens: "Community Gardens",
+  parks: "Parks",
+  libraries: "Libraries",
+  donateNyc: "Donation Centers",
+  repairCafes: "Repair Cafes",
+};
+
 function ScoreHeader({ result }: { result: ScoreResult }) {
   const label = getScoreLabel(result.score);
   return (
@@ -161,11 +179,11 @@ function CategoryBreakdown({ breakdown }: { breakdown: ScoreResult["breakdown"] 
   );
 }
 
-function AmenityMap({ result }: { result: ScoreResult }) {
+function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | null }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [visibleLayers, setVisibleLayers] = useState<Set<string>>(
-    new Set(Object.keys(AMENITY_LABELS))
+    new Set([...Object.keys(AMENITY_LABELS), ...Object.keys(LAYER_LABELS)])
   );
 
   useEffect(() => {
@@ -265,10 +283,90 @@ function AmenityMap({ result }: { result: ScoreResult }) {
           "text-halo-width": 1.5,
         },
       });
+
+      // --- Additional layer markers ---
+      if (layers) {
+        const addLayerMarkers = (
+          items: any[],
+          categoryKey: string,
+          popupFn: (item: any) => string
+        ) => {
+          const color = LAYER_COLORS[categoryKey] || "#888";
+          for (const item of items) {
+            if (item.lat == null || item.lng == null) continue;
+            const marker = new mapboxgl.Marker({ color, scale: 0.7 })
+              .setLngLat([item.lng, item.lat])
+              .setPopup(
+                new mapboxgl.Popup({ offset: 25 }).setHTML(popupFn(item))
+              )
+              .addTo(m);
+            marker.getElement().dataset.category = categoryKey;
+          }
+        };
+
+        // Farmers Markets
+        addLayerMarkers(
+          layers.farmersMarkets || [],
+          "farmersMarkets",
+          (item) => {
+            let html = `<strong>${item.name || "Farmers Market"}</strong>`;
+            if (item.daysHours) html += `<br/>${item.daysHours}`;
+            if (item.days) html += `<br/>${item.days}`;
+            if (item.hours) html += `<br/>${item.hours}`;
+            if (item.acceptsEBT)
+              html += `<br/><span style="background:#059669;color:#fff;padding:1px 6px;border-radius:4px;font-size:11px;">Accepts EBT</span>`;
+            html += `<br/><span style="color:${LAYER_COLORS.farmersMarkets}">Farmers Market</span>`;
+            return html;
+          }
+        );
+
+        // Community Gardens (GreenThumb)
+        addLayerMarkers(layers.gardens || [], "gardens", (item) => {
+          let html = `<strong>${item.name || "Community Garden"}</strong>`;
+          if (item.address) html += `<br/>${item.address}`;
+          html += `<br/><span style="color:${LAYER_COLORS.gardens}">Community Garden</span>`;
+          return html;
+        });
+
+        // Parks
+        addLayerMarkers(layers.parks || [], "parks", (item) => {
+          let html = `<strong>${item.name || "Park"}</strong>`;
+          if (item.type) html += `<br/>Type: ${item.type}`;
+          if (item.acres) html += `<br/>${item.acres} acres`;
+          html += `<br/><span style="color:${LAYER_COLORS.parks}">Park</span>`;
+          return html;
+        });
+
+        // Libraries
+        addLayerMarkers(layers.libraries || [], "libraries", (item) => {
+          let html = `<strong>${item.name || "Library"}</strong>`;
+          if (item.system) html += `<br/>${item.system}`;
+          if (item.address) html += `<br/>${item.address}`;
+          html += `<br/><span style="color:${LAYER_COLORS.libraries}">Library</span>`;
+          return html;
+        });
+
+        // DonateNYC
+        addLayerMarkers(layers.donateNyc || [], "donateNyc", (item) => {
+          let html = `<strong>${item.name || "Donation Center"}</strong>`;
+          if (item.categories) html += `<br/>Accepts: ${item.categories}`;
+          if (item.hours) html += `<br/>${item.hours}`;
+          html += `<br/><span style="color:${LAYER_COLORS.donateNyc}">Donation Center</span>`;
+          return html;
+        });
+
+        // Repair Cafes
+        addLayerMarkers(layers.repairCafes || [], "repairCafes", (item) => {
+          let html = `<strong>${item.name || "Repair Cafe"}</strong>`;
+          if (item.address) html += `<br/>${item.address}`;
+          html += `<br/><span style="color:${LAYER_COLORS.repairCafes}">Repair Cafe</span>`;
+          return html;
+        });
+      }
     });
 
     return () => m.remove();
-  }, [result]);
+  }, [result, layers]);
 
   // Toggle layer visibility
   useEffect(() => {
@@ -315,6 +413,33 @@ function AmenityMap({ result }: { result: ScoreResult }) {
             </button>
           ))}
         </div>
+        {layers && (
+          <>
+            <p className="text-xs text-gray-400 mt-3 mb-1 uppercase tracking-wide font-medium">
+              Community Resources
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(LAYER_LABELS).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => toggleLayer(key)}
+                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                    visibleLayers.has(key)
+                      ? "border-transparent text-white"
+                      : "border-gray-300 text-gray-400 bg-white"
+                  }`}
+                  style={
+                    visibleLayers.has(key)
+                      ? { backgroundColor: LAYER_COLORS[key] }
+                      : undefined
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
       {MAPBOX_TOKEN ? (
         <div ref={mapContainer} className="h-[450px] w-full" />
@@ -515,6 +640,7 @@ export default function ResultsPage({
   params: { address: string };
 }) {
   const [result, setResult] = useState<ScoreResult | null>(null);
+  const [layers, setLayers] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -532,7 +658,19 @@ export default function ResultsPage({
         }
         return res.json();
       })
-      .then((data) => setResult(data))
+      .then(async (data) => {
+        setResult(data);
+        // Fetch additional layers using the geocoded lat/lng
+        try {
+          const layersRes = await fetch(`/api/layers?lat=${data.lat}&lng=${data.lng}`);
+          if (layersRes.ok) {
+            const layersData = await layersRes.json();
+            setLayers(layersData);
+          }
+        } catch {
+          // Layers are optional — don't block the page if they fail
+        }
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [params.address]);
@@ -572,7 +710,7 @@ export default function ResultsPage({
           <>
             <ScoreHeader result={result} />
             <CategoryBreakdown breakdown={result.breakdown} />
-            <AmenityMap result={result} />
+            <AmenityMap result={result} layers={layers} />
             {result.equity && <EquityPanel equity={result.equity} />}
             <GapList gaps={result.gaps} />
             <PolicySection gaps={result.gaps} />
