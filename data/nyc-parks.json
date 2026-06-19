@@ -1,1 +1,4811 @@
-[]
+[
+  {
+    "name": "Wolfe's Pond Park",
+    "address": "Holton Ave., Chisolm St., Luten Ave., Arbutus Ave. and Raritan Bay",
+    "lat": 40.52064901796191,
+    "lng": -74.1905805309938,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 302.693
+  },
+  {
+    "name": "Aqueduct Walk",
+    "address": "Dr. MLK Jr. Blvd. bet. W. Tremont Ave. and E. Fordham Rd.",
+    "lat": 40.855022077582085,
+    "lng": -73.91066747617032,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 8.607
+  },
+  {
+    "name": "Gerard P. Dugan Playground",
+    "address": "280 MILL ROAD",
+    "lat": 40.56152077691543,
+    "lng": -74.11090999433596,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 3.333
+  },
+  {
+    "name": "Little Bay Park",
+    "address": "Cross Island Pkwy. bet. Utopia Pkwy. and Totten Ave.",
+    "lat": 40.789211569623916,
+    "lng": -73.78887208107054,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 55.22
+  },
+  {
+    "name": "Herbert Von King Park",
+    "address": "Marcy Ave., Tompkins Ave., bet. Greene Ave. and Lafayette Ave.",
+    "lat": 40.68957304604841,
+    "lng": -73.94633306189021,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 7.819
+  },
+  {
+    "name": "Inwood Hill Park",
+    "address": "269 DYCKMAN STREET",
+    "lat": 40.87307158455518,
+    "lng": -73.92606276973945,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 196.398
+  },
+  {
+    "name": "Bayswater Park",
+    "address": "701 BAY 32 STREET",
+    "lat": 40.59900256847528,
+    "lng": -73.76951511950845,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 40.16
+  },
+  {
+    "name": "Dyker Beach Park",
+    "address": "9001 7 AVENUE",
+    "lat": 40.60762066871355,
+    "lng": -74.01877546426888,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 216.655
+  },
+  {
+    "name": "Union Square Park",
+    "address": "69 EAST 17 STREET",
+    "lat": 40.73530132892315,
+    "lng": -73.99030230938034,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 6.51
+  },
+  {
+    "name": "Betsy Head Park",
+    "address": "245 DUMONT AVENUE, 167 LIVONIA AVENUE",
+    "lat": 40.663495444912996,
+    "lng": -73.91238363457568,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 10.555
+  },
+  {
+    "name": "Clove Lakes Park",
+    "address": "1321 VICTORY BOULEVARD",
+    "lat": 40.62177152065948,
+    "lng": -74.11598367387387,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 193.423
+  },
+  {
+    "name": "Asser Levy Playground",
+    "address": "384 ASSER LEVY PLACE",
+    "lat": 40.736306486602004,
+    "lng": -73.97524543829262,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 2.436
+  },
+  {
+    "name": "Brownsville Playground",
+    "address": "1555 LINDEN BOULEVARD",
+    "lat": 40.656244709418395,
+    "lng": -73.90277276680618,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 3.017
+  },
+  {
+    "name": "Elmhurst Park",
+    "address": "78-01 57 AVENUE",
+    "lat": 40.729987325383654,
+    "lng": -73.88507804886964,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 6.219
+  },
+  {
+    "name": "Loreto Playground",
+    "address": "1100 MORRIS PARK AVENUE",
+    "lat": 40.848973956236556,
+    "lng": -73.85196920759256,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 2.181
+  },
+  {
+    "name": "Asphalt Green",
+    "address": "1712 YORK AVENUE",
+    "lat": 40.778705156648094,
+    "lng": -73.9437380470423,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 4.35
+  },
+  {
+    "name": "Steeplechase Park",
+    "address": "1904 SURF AVENUE",
+    "lat": 40.57387329264788,
+    "lng": -73.98454550090115,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 10.01
+  },
+  {
+    "name": "Alfred E. Smith Playground",
+    "address": "86 CATHERINE STREET",
+    "lat": 40.71051714916963,
+    "lng": -73.99749880374507,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 1.75
+  },
+  {
+    "name": "Lost Battalion Hall Recreation Center",
+    "address": "93-29 QUEENS BOULEVARD",
+    "lat": 40.732272178414625,
+    "lng": -73.86482619815304,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 2.412
+  },
+  {
+    "name": "Riverside Park South",
+    "address": "400 RIVERSIDE DRIVE",
+    "lat": 40.77791840938467,
+    "lng": -73.98977703552903,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 71.933
+  },
+  {
+    "name": "Silver Lake Park",
+    "address": "927 VICTORY BOULEVARD",
+    "lat": 40.62482533680378,
+    "lng": -74.10021470068362,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 205.977
+  },
+  {
+    "name": "Fort Tryon Park",
+    "address": "4565 BROADWAY",
+    "lat": 40.86150625610265,
+    "lng": -73.93351529934922,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 67.213
+  },
+  {
+    "name": "Dry Dock Playground",
+    "address": "149 EAST 10 STREET",
+    "lat": 40.72536727910372,
+    "lng": -73.97541266196566,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 1.5
+  },
+  {
+    "name": "Big Bush Playground",
+    "address": "45-25 63 STREET",
+    "lat": 40.73936535779689,
+    "lng": -73.90276566096689,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 2.5
+  },
+  {
+    "name": "Sheltering Arms Playground",
+    "address": "500 WEST 129 STREET",
+    "lat": 40.81487300981163,
+    "lng": -73.95588041513143,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 1.43
+  },
+  {
+    "name": "Friends Field",
+    "address": "1310 EAST 4 STREET",
+    "lat": 40.61863596158953,
+    "lng": -73.97339725704892,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 6.7
+  },
+  {
+    "name": "St. Mary's Park",
+    "address": "376 ST ANN'S AV",
+    "lat": 40.81177033883884,
+    "lng": -73.9111938392133,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 35.311
+  },
+  {
+    "name": "Howard Playground",
+    "address": "1550 EAST NEW YORK AVENUE",
+    "lat": 40.67174440395862,
+    "lng": -73.90819257059931,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 1
+  },
+  {
+    "name": "CPL. Thompson Park",
+    "address": "799 HENDERSON AVENUE",
+    "lat": 40.638073981728645,
+    "lng": -74.11887032928807,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 10.5
+  },
+  {
+    "name": "Marcy Playground",
+    "address": "753 MYRTLE AVENUE",
+    "lat": 40.69564552332918,
+    "lng": -73.95081844283509,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 3.201
+  },
+  {
+    "name": "Willowbrook Park",
+    "address": "1953 RICHMOND AVENUE",
+    "lat": 40.59867664193803,
+    "lng": -74.15493665699167,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 214.947
+  },
+  {
+    "name": "Roy Wilkins Recreation Center",
+    "address": "117-05 MERRICK BOULEVARD",
+    "lat": 40.68740515081785,
+    "lng": -73.77232407836684,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 56.831
+  },
+  {
+    "name": "Highland Park",
+    "address": "58-02 VERMONT AVENUE",
+    "lat": 40.6873063807691,
+    "lng": -73.88837648434532,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 101.28
+  },
+  {
+    "name": "Macombs Dam Park",
+    "address": "40-44 EAST 161 STREET",
+    "lat": 40.82927967179785,
+    "lng": -73.93000127996405,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 44.174
+  },
+  {
+    "name": "Flushing Fields",
+    "address": "25-03 149 STREET",
+    "lat": 40.772885105515364,
+    "lng": -73.8165102809735,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 7.671
+  },
+  {
+    "name": "Glen Oaks Oval",
+    "address": "73-80 260 STREET",
+    "lat": 40.749514407459635,
+    "lng": -73.71565631316818,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 2.948
+  },
+  {
+    "name": "Mafera Park",
+    "address": "65 PLACE",
+    "lat": 40.70722790773657,
+    "lng": -73.8907920759044,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 5.4
+  },
+  {
+    "name": "Montbellier Park",
+    "address": "138-02 SPRINGFIELD BLVD",
+    "lat": 40.675518240459546,
+    "lng": -73.7563964509,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 4.427
+  },
+  {
+    "name": "St. John's Park",
+    "address": "119 TROY AVENUE",
+    "lat": 40.67416715846769,
+    "lng": -73.9348170770808,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 9.04
+  },
+  {
+    "name": "Lindower Park",
+    "address": "6120 EAST 60 PLACE",
+    "lat": 40.61217429167347,
+    "lng": -73.91092156269099,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 6.7
+  },
+  {
+    "name": "Breukelen Ballfields",
+    "address": "276 STANLEY AVENUE",
+    "lat": 40.65219627796228,
+    "lng": -73.89230083299825,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 16.16
+  },
+  {
+    "name": "Clason Point Park",
+    "address": "Cornell Ave., Soundview Ave., Westchester Creek",
+    "lat": 40.80658256829743,
+    "lng": -73.84891044385198,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 14.872
+  },
+  {
+    "name": "Juniper Valley Park",
+    "address": "71-01 JUNIPER BLVD SOUTH",
+    "lat": 40.720964562931265,
+    "lng": -73.8776985077887,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 55.639
+  },
+  {
+    "name": "Canarsie Park",
+    "address": "9006 SEAVIEW AVENUE",
+    "lat": 40.632451422971926,
+    "lng": -73.88612786076263,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 132.2
+  },
+  {
+    "name": "Manhattan Beach Park",
+    "address": "760 ORIENTAL BOULEVARD",
+    "lat": 40.576154191005735,
+    "lng": -73.94026105046399,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 42.941
+  },
+  {
+    "name": "Gen. Douglas MacArthur Park",
+    "address": "254 JEFFERSON STREET",
+    "lat": 40.58695960374274,
+    "lng": -74.10013312755898,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 5.165
+  },
+  {
+    "name": "Phil \"Scooter\" Rizzuto Park",
+    "address": "125-02 ATLANTIC AVENUE",
+    "lat": 40.69456031395587,
+    "lng": -73.82125875706319,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 4.353
+  },
+  {
+    "name": "Carter G. Woodson Children's Park",
+    "address": "184 CHRISTOPHER AVENUE",
+    "lat": 40.66834418061169,
+    "lng": -73.90591347098552,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 0.918
+  },
+  {
+    "name": "Rev. T. Wendell Foster Park and Recreation Center",
+    "address": "1015 RIVER AVENUE",
+    "lat": 40.833398725299574,
+    "lng": -73.92385156223324,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 15.049
+  },
+  {
+    "name": "Jacob Joffe Fields",
+    "address": "1163 EAST 58 STREET",
+    "lat": 40.624706551800095,
+    "lng": -73.91931141279498,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 2.984
+  },
+  {
+    "name": "DiGilio Playground",
+    "address": "102 AVENUE F",
+    "lat": 40.632650403474166,
+    "lng": -73.97697562857209,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 0.826
+  },
+  {
+    "name": "Marine Park",
+    "address": "Flatbush, Gerritsen & Fillmore Aves, Jamaica Bay",
+    "lat": 40.590519766237534,
+    "lng": -73.91325299242237,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 800
+  },
+  {
+    "name": "Springfield Park",
+    "address": "146-02 SPRINGFIELD BLVD",
+    "lat": 40.661658969740536,
+    "lng": -73.76181920981676,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 23.543
+  },
+  {
+    "name": "Bloomingdale Park",
+    "address": "299 BLOOMINGDALE ROAD",
+    "lat": 40.53342074908596,
+    "lng": -74.21947263395627,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 138.1
+  },
+  {
+    "name": "Baisley Pond Park",
+    "address": "116-01 116 AVENUE",
+    "lat": 40.677863580857,
+    "lng": -73.78622303200966,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 109.609
+  },
+  {
+    "name": "Paerdegat Park",
+    "address": "4002 FOSTER AVENUE",
+    "lat": 40.63785356676207,
+    "lng": -73.93803869373832,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 3.56
+  },
+  {
+    "name": "Thomas Greene Playground",
+    "address": "225 NEVINS STREET",
+    "lat": 40.6802971310738,
+    "lng": -73.9851413182071,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 2.525
+  },
+  {
+    "name": "Frank Principe Park",
+    "address": "Maurice Ave., 63 St. bet. 54 Ave. and Borden Ave.",
+    "lat": 40.72736550132491,
+    "lng": -73.90500505822104,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 7.461
+  },
+  {
+    "name": "Cambria Playground",
+    "address": "Francis Lewis Blvd., 121 Ave. bet. 219 St. and 222 St.",
+    "lat": 40.68915896424435,
+    "lng": -73.74269577172431,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 4.635
+  },
+  {
+    "name": "McCarren Park",
+    "address": "Nassau Ave, Bayard, Leonard & N 12 Sts",
+    "lat": 40.721718807153444,
+    "lng": -73.95301325822017,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 36.493
+  },
+  {
+    "name": "Shore Park and Parkway",
+    "address": "7420 Shore Rd",
+    "lat": 40.63087701110183,
+    "lng": -74.03460301432305,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 58
+  },
+  {
+    "name": "Marc And Jason's Playground",
+    "address": "360 EMPIRE BOULEVARD",
+    "lat": 40.663566031446344,
+    "lng": -73.94956084905549,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 1.148
+  },
+  {
+    "name": "Commodore Barry Park",
+    "address": "65 PARK AVENUE",
+    "lat": 40.69743118044639,
+    "lng": -73.9789442055747,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 10.391
+  },
+  {
+    "name": "Kissena Corridor Park",
+    "address": "Lawrence St,N Hempstead Tpk,Elder Ave,Kissena Blvd",
+    "lat": 40.74863548214688,
+    "lng": -73.82511905742135,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 100.873
+  },
+  {
+    "name": "Fairview Park",
+    "address": "Englewood Ave., W. Shore Expwy., Veterans Rd. W.",
+    "lat": 40.53036340485355,
+    "lng": -74.22947302562743,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 42.6
+  },
+  {
+    "name": "Claremont Park",
+    "address": "Clay Ave., Anthony Ave. bet. Mount Eden Pkwy. and E. 170 St",
+    "lat": 40.8396688792193,
+    "lng": -73.90748252910495,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 38.536
+  },
+  {
+    "name": "Faber Pool and Park",
+    "address": "2175 RICHMOND TERRACE",
+    "lat": 40.64104057900743,
+    "lng": -74.13586198946182,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 4.339
+  },
+  {
+    "name": "Fort Greene Park",
+    "address": "100 WASHINGTON PARK",
+    "lat": 40.69172307944322,
+    "lng": -73.9765977259603,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 30.168
+  },
+  {
+    "name": "Red Hook Recreation Area",
+    "address": "825 HENRY STREET",
+    "lat": 40.67218054389284,
+    "lng": -74.00595723423521,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 58.503
+  },
+  {
+    "name": "Kaiser Park",
+    "address": "2529 NEPTUNE AVENUE",
+    "lat": 40.579358383046035,
+    "lng": -73.99730405463674,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 26.257
+  },
+  {
+    "name": "Astoria Park",
+    "address": "24-02 19 STREET",
+    "lat": 40.779155607119264,
+    "lng": -73.9222991445556,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 59.956
+  },
+  {
+    "name": "Kissena Park",
+    "address": "164-01 BOOTH MEMORIAL AVE",
+    "lat": 40.74519621091081,
+    "lng": -73.80300732440215,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 237.147
+  },
+  {
+    "name": "Seton Park",
+    "address": "751 WEST 232 STREET",
+    "lat": 40.886317855263336,
+    "lng": -73.91694084596175,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 11.689
+  },
+  {
+    "name": "Sunset Park",
+    "address": "4200 5 AVENUE",
+    "lat": 40.64788101283248,
+    "lng": -74.00317619666967,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 24.498
+  },
+  {
+    "name": "Lincoln Terrace / Arthur S. Somers Park",
+    "address": "1266 EASTERN PARKWAY",
+    "lat": 40.666634856646645,
+    "lng": -73.92634408505528,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 17.14
+  },
+  {
+    "name": "Bushwick Playground",
+    "address": "817 FLUSHING AVENUE",
+    "lat": 40.702033690994675,
+    "lng": -73.93946672564769,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 1.29
+  },
+  {
+    "name": "Hamilton Fish Park",
+    "address": "128 PITT STREET",
+    "lat": 40.71977101371464,
+    "lng": -73.98053996750225,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 4.3
+  },
+  {
+    "name": "Crocheron Park",
+    "address": "214 Pl., 214 La., 215 Pl, Cross Island Pkwy. bet. 33 Ave. and 35 Ave.",
+    "lat": 40.771054178579966,
+    "lng": -73.76695844679,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 45.79
+  },
+  {
+    "name": "Damrosch Park",
+    "address": "60 LINCOLN CENTER PLAZA",
+    "lat": 40.772265765919556,
+    "lng": -73.98479861433886,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 2.443
+  },
+  {
+    "name": "Police Officer Edward Byrne Park",
+    "address": "N. Conduit Ave., 135 Ave. bet. 130 Pl. and 134 St.",
+    "lat": 40.667406214750216,
+    "lng": -73.80675118092992,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 4.966
+  },
+  {
+    "name": "Howard Pool",
+    "address": "1560 EAST NEW YORK AVENUE",
+    "lat": 40.672737755907214,
+    "lng": -73.90884892389869,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 0.67
+  },
+  {
+    "name": "Harvey Park",
+    "address": "144 St., Whitestone Exwy. bet. 15 Ave. and 20 Ave.",
+    "lat": 40.78334033959832,
+    "lng": -73.82287884935312,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 9.154
+  },
+  {
+    "name": "Wagner Houses Pool",
+    "address": "2435 1 AVENUE",
+    "lat": 40.80162267559923,
+    "lng": -73.9324914385564,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 1.64
+  },
+  {
+    "name": "Rockaway Community Park",
+    "address": "54-02 ALMEDA AVENUE",
+    "lat": 40.59905181738705,
+    "lng": -73.78354817420906,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 255.4
+  },
+  {
+    "name": "John Golden Park",
+    "address": "215 Pl., Cross Island Pkwy. bet. 31 Rd. and 33 Ave.",
+    "lat": 40.77372988628833,
+    "lng": -73.76814198970165,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 17
+  },
+  {
+    "name": "Asser Levy Park",
+    "address": "2955 SEA BREEZE AVENUE",
+    "lat": 40.574969658826674,
+    "lng": -73.97170894037437,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 21.039
+  },
+  {
+    "name": "Freshkills Park",
+    "address": "Victory Blvd., Signs Rd., Travis Ave., Arthur Kill Rd.",
+    "lat": 40.58222749445591,
+    "lng": -74.18085392890214,
+    "borough": "R",
+    "type": "Community Park",
+    "acres": 953.065
+  },
+  {
+    "name": "Archie Spigner Park",
+    "address": "169 St., Merrick Blvd., Marne Pl. bet. Linden Blvd., Sayres Ave., and 111 Rd.",
+    "lat": 40.69338630799375,
+    "lng": -73.77967672306565,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 10.79
+  },
+  {
+    "name": "Thomas Jefferson Park",
+    "address": "2158 1 AVENUE",
+    "lat": 40.79282044421742,
+    "lng": -73.93481999905852,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 15.524
+  },
+  {
+    "name": "Highbridge Park",
+    "address": "506 EDGECOMBE AVENUE",
+    "lat": 40.839277335082876,
+    "lng": -73.9347968475053,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 130.1
+  },
+  {
+    "name": "Callahan-Kelly Playground",
+    "address": "Fulton St., Truxton St., bet. Eastern Pkwy. and Van Sinderen Ave.",
+    "lat": 40.678492451477716,
+    "lng": -73.90449954831776,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 3.461
+  },
+  {
+    "name": "Recreational Area",
+    "address": "W. 145 St., W. 155 St., Hudson River",
+    "lat": 40.83073215215467,
+    "lng": -73.95128221419989,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 23.093
+  },
+  {
+    "name": "Kissena Corridor Park",
+    "address": "Peck & Underhill Aves, Utopia Pkwy, Horace Harding",
+    "lat": 40.74144785067024,
+    "lng": -73.77998310051372,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 45.937
+  },
+  {
+    "name": "John Jay Park",
+    "address": "76-01 FDR DRIVE",
+    "lat": 40.76922828423987,
+    "lng": -73.94949484602226,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 3.312
+  },
+  {
+    "name": "Joyce Kilmer Park",
+    "address": "Grand Concourse to Walton Av bet. E 161 St and E 164 St",
+    "lat": 40.827442522604976,
+    "lng": -73.92288940649294,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 6.882
+  },
+  {
+    "name": "Fort Washington Park",
+    "address": "Riverside Dr., Hudson River, W. 155 St. to Dyckman St.",
+    "lat": 40.84778211007849,
+    "lng": -73.94357432059738,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 184.143
+  },
+  {
+    "name": "Judge Moses Weinstein Playground",
+    "address": "Union Turnpike, Vleigh Pl., 141 St.",
+    "lat": 40.71811232173607,
+    "lng": -73.82075476341193,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 3.25
+  },
+  {
+    "name": "Detective Keith L Williams Park",
+    "address": "Liberty Ave. bet. 172 St. and 173 St.",
+    "lat": 40.70240825762363,
+    "lng": -73.78380784816265,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 7.683
+  },
+  {
+    "name": "The High Line",
+    "address": "Gansevoort St. To W. 30 St. bet. Washington St. and 11 Ave.",
+    "lat": 40.74671817808756,
+    "lng": -74.00521877246808,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 6.73
+  },
+  {
+    "name": "Brookville Park",
+    "address": "S. Conduit Ave., 149 Ave. bet. 232 St. and 235 St.",
+    "lat": 40.65965210616139,
+    "lng": -73.74489231396866,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 89.946
+  },
+  {
+    "name": "Battery Park City",
+    "address": "Hudson River, Liberty St. West St, and Pier A",
+    "lat": 40.71380873011195,
+    "lng": -74.01596224996533,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 26.042
+  },
+  {
+    "name": "Queensbridge Park",
+    "address": "40-50 VERNON BOULEVARD",
+    "lat": 40.75396066129917,
+    "lng": -73.94690198540927,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 20.863
+  },
+  {
+    "name": "Morningside Park",
+    "address": "W 110 St To W 123 St, Manhattan Av To Morningside Av",
+    "lat": 40.80611389519268,
+    "lng": -73.95804133129677,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 29.888
+  },
+  {
+    "name": "Spring Creek Park",
+    "address": "Shore Pkwy and Seaview Ave., Schenk Ave.",
+    "lat": 40.6520072994345,
+    "lng": -73.87082454009187,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 42.583
+  },
+  {
+    "name": "Abraham Lincoln Playground",
+    "address": "5 Ave. and E. 135 St.",
+    "lat": 40.811962032766715,
+    "lng": -73.93693676046486,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 0.991
+  },
+  {
+    "name": "Aqueduct Walk",
+    "address": "Aqueduct Ave. W. bet. W. Fordham Rd. and W. Kingsbridge Rd.",
+    "lat": 40.86502570844478,
+    "lng": -73.90223891893739,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 4.926
+  },
+  {
+    "name": "John V. Lindsay East River Park",
+    "address": "Montgomery St. To E. 12 St., FDR Drive",
+    "lat": 40.71323549923844,
+    "lng": -73.9789870613228,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 45.88
+  },
+  {
+    "name": "Tudor Park",
+    "address": "N. Conduit Ave., 133 Ave. bet. 80 St. and 88 St.",
+    "lat": 40.67282438907475,
+    "lng": -73.85207134367171,
+    "borough": "Q",
+    "type": "Community Park",
+    "acres": 13.543
+  },
+  {
+    "name": "Brooklyn Bridge Park",
+    "address": "Brooklyn Waterfront From Washington St To Atlantic Ave",
+    "lat": 40.70059549697904,
+    "lng": -73.99585112470494,
+    "borough": "B",
+    "type": "Community Park",
+    "acres": 21.377
+  },
+  {
+    "name": "Franz Sigel Park",
+    "address": "613 GRAND CONCOURSE",
+    "lat": 40.822638083758015,
+    "lng": -73.92609805880222,
+    "borough": "X",
+    "type": "Community Park",
+    "acres": 15.99
+  },
+  {
+    "name": "Marcus Garvey Park",
+    "address": "18 MT MORRIS PARK WEST",
+    "lat": 40.80436986379128,
+    "lng": -73.94411791188682,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 20.165
+  },
+  {
+    "name": "Riverside Park",
+    "address": "Riverside Dr. to Hudson River, W. 72 St.to St Clair Pl.",
+    "lat": 40.80132441324047,
+    "lng": -73.97247156471418,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 253.168
+  },
+  {
+    "name": "Isham Park",
+    "address": "570 WEST 214 STREET",
+    "lat": 40.869813313562766,
+    "lng": -73.9196572300313,
+    "borough": "M",
+    "type": "Community Park",
+    "acres": 20.132
+  },
+  {
+    "name": "Soundview Park",
+    "address": "Bronx River, Bronx River Ave. bet. Lafayette Ave., Surf Dr.",
+    "lat": 40.80936907033099,
+    "lng": -73.86129664255607,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 269.415
+  },
+  {
+    "name": "Central Park",
+    "address": "1000 5 AVENUE",
+    "lat": 40.77389276582414,
+    "lng": -73.97198840328755,
+    "borough": "M",
+    "type": "Flagship Park",
+    "acres": 840.01
+  },
+  {
+    "name": "Cunningham Park",
+    "address": "196-10 UNION TURNPIKE",
+    "lat": 40.73451181990777,
+    "lng": -73.76699314319308,
+    "borough": "Q",
+    "type": "Flagship Park",
+    "acres": 358
+  },
+  {
+    "name": "Highland Park",
+    "address": "375 JAMAICA AVENUE",
+    "lat": 40.68421958738742,
+    "lng": -73.89066835927609,
+    "borough": "B",
+    "type": "Flagship Park",
+    "acres": 45.059
+  },
+  {
+    "name": "Crotona Park",
+    "address": "1700 CROTONA AVENUE",
+    "lat": 40.836735919551636,
+    "lng": -73.89635387177904,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 127.5
+  },
+  {
+    "name": "Van Cortlandt Park",
+    "address": "3545 JEROME AVENUE",
+    "lat": 40.89551805786798,
+    "lng": -73.88865555844504,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 1146.43
+  },
+  {
+    "name": "Alley Pond Park",
+    "address": "Little Neck Bay to Springfield Blvd, Union Tpke",
+    "lat": 40.75371589216128,
+    "lng": -73.74602455209948,
+    "borough": "Q",
+    "type": "Flagship Park",
+    "acres": 635.514
+  },
+  {
+    "name": "Prospect Park",
+    "address": "95 PROSPECT PARK WEST",
+    "lat": 40.662104694156795,
+    "lng": -73.96894233026497,
+    "borough": "B",
+    "type": "Flagship Park",
+    "acres": 526.25
+  },
+  {
+    "name": "LaTourette Park & Golf Course",
+    "address": "1001 RICHMOND HILL ROAD",
+    "lat": 40.571792033543254,
+    "lng": -74.15427773737014,
+    "borough": "R",
+    "type": "Flagship Park",
+    "acres": 760.79
+  },
+  {
+    "name": "Bronx Park",
+    "address": "2120 BOSTON ROAD",
+    "lat": 40.86007401472518,
+    "lng": -73.87384430325903,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 718.373
+  },
+  {
+    "name": "Ferry Point Park",
+    "address": "Schley Ave., LI Sound bet. Westchester Creek and Balcom Ave.",
+    "lat": 40.81357057964818,
+    "lng": -73.83507412642146,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 413.8
+  },
+  {
+    "name": "Pelham Bay Park",
+    "address": "Bruckner Blvd, Eastchester, Hutchinson",
+    "lat": 40.86723513135394,
+    "lng": -73.80676356014003,
+    "borough": "X",
+    "type": "Flagship Park",
+    "acres": 2771.747
+  },
+  {
+    "name": "Randall's Island Park",
+    "address": "East River and Harlem River",
+    "lat": 40.79825053904893,
+    "lng": -73.9227360412486,
+    "borough": "M",
+    "type": "Flagship Park",
+    "acres": 254.3
+  },
+  {
+    "name": "Forest Park",
+    "address": "80-30 PARK LANE",
+    "lat": 40.70430025043814,
+    "lng": -73.85215051053494,
+    "borough": "Q",
+    "type": "Flagship Park",
+    "acres": 506.86
+  },
+  {
+    "name": "Flushing Meadows Corona Park",
+    "address": "Grand Central Pkwy, Van Wyck Exwy",
+    "lat": 40.744172816726014,
+    "lng": -73.84117996374003,
+    "borough": "Q",
+    "type": "Flagship Park",
+    "acres": 870.761
+  },
+  {
+    "name": "Fresh Creek Nature Preserve",
+    "address": "Flatlands Ave, Louisiana Ave., E 108 St. and Belt Parkway",
+    "lat": 40.644944256183884,
+    "lng": -73.88632484407891,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 77.044
+  },
+  {
+    "name": "Overlook Park",
+    "address": "Ditmars Blvd., 22 Dr. bet. 97 St. and 100 St.",
+    "lat": 40.77049132379296,
+    "lng": -73.87253990798104,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 2.327
+  },
+  {
+    "name": "New Dorp Park",
+    "address": "8 St., bet. Allison Ave. and Beach Ave.",
+    "lat": 40.569717182934205,
+    "lng": -74.11832565723408,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.785
+  },
+  {
+    "name": "Seagirt Ave Wetlands",
+    "address": "Seagirt Blvd., Seagirt Ave. bet. Beach 5 St. and Queens County Border",
+    "lat": 40.597043263662194,
+    "lng": -73.73919265352724,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 5.323
+  },
+  {
+    "name": "Isle Of Meadows",
+    "address": "Arthur Kills Near Fresh Kills Landfill",
+    "lat": 40.575881650535386,
+    "lng": -74.20368411799097,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 87.516
+  },
+  {
+    "name": "Hybrid Oak Woods Park",
+    "address": "Joline Ave. bet. Hylan Blvd. to Surf Ave.",
+    "lat": 40.50301809288399,
+    "lng": -74.23423321931368,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 9.763
+  },
+  {
+    "name": "Staten Island Industrial Park",
+    "address": "SI Expwy., W. Shore Expwy., Graham Ave., South Ave.",
+    "lat": 40.61092697591775,
+    "lng": -74.17662633499987,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 210.928
+  },
+  {
+    "name": "Riverdale Park",
+    "address": "Hudson River, W 254 St, Palisade Av, W 2",
+    "lat": 40.89200172816661,
+    "lng": -73.91806668217598,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 144.29
+  },
+  {
+    "name": "Four Sparrow Marsh",
+    "address": "Flatbush Ave., Belt Pkwy., Mill Basin",
+    "lat": 40.60159556070163,
+    "lng": -73.90462991666575,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 64.665
+  },
+  {
+    "name": "Bunker Ponds Park",
+    "address": "Hylan Blvd., Chester Ave., Arbutus Ave., Huguenot Ave.",
+    "lat": 40.5235218585682,
+    "lng": -74.18250414909217,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 36.691
+  },
+  {
+    "name": "City Island Wetlands",
+    "address": "Bay St, Tier St, Echester Bay",
+    "lat": 40.84814804505977,
+    "lng": -73.79116851126138,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 8.005
+  },
+  {
+    "name": "Vernam Barbadoes Peninsula",
+    "address": "Amstel Blvd., Jamaica Bay",
+    "lat": 40.5936543668043,
+    "lng": -73.80553957362393,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 23.958
+  },
+  {
+    "name": "High Rock Park",
+    "address": "132 ALTAMONT STREET",
+    "lat": 40.5821274834158,
+    "lng": -74.1255481907584,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 94.1
+  },
+  {
+    "name": "Blood Root Valley",
+    "address": "411 ROCKLAND AVENUE",
+    "lat": 40.5915686844403,
+    "lng": -74.13268285229177,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 161.242
+  },
+  {
+    "name": "Clearview Park",
+    "address": "199-01 22 AVENUE",
+    "lat": 40.77717868356029,
+    "lng": -73.7856087668294,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 6.05
+  },
+  {
+    "name": "Conference House Park",
+    "address": "298 SATERLEE STREET",
+    "lat": 40.50108512752425,
+    "lng": -74.23980570077661,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 286.557
+  },
+  {
+    "name": "Tottenville Shore Park",
+    "address": "117 1/2 HOPPING AVENUE",
+    "lat": 40.5105765697526,
+    "lng": -74.25343676350413,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 9.181
+  },
+  {
+    "name": "Reed's Basket Willow Swamp Park",
+    "address": "83 OLD FARMERS LANE",
+    "lat": 40.601266445867225,
+    "lng": -74.10379964410012,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 52.68328275
+  },
+  {
+    "name": "Bradys Pond Park",
+    "address": "SI Expressway, Hylan Blvd., Narrows Rd. S.",
+    "lat": 40.605162810392635,
+    "lng": -74.07896869621388,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 6.402
+  },
+  {
+    "name": "Seton Falls Park",
+    "address": "3701 SETON AVENUE",
+    "lat": 40.887056989601575,
+    "lng": -73.83831180341564,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 35.771
+  },
+  {
+    "name": "Motor Parkway",
+    "lat": 40.73672097758033,
+    "lng": -73.75508808548221,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 13.894
+  },
+  {
+    "name": "Raoul Wallenberg Forest",
+    "address": "3600 PALISSADE AVENUE",
+    "lat": 40.88749255267693,
+    "lng": -73.91795393019791,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 4.73
+  },
+  {
+    "name": "Givans Creek Woods",
+    "address": "821 Co-Op City Boulevard",
+    "lat": 40.87982023701166,
+    "lng": -73.82978314600304,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 10.735
+  },
+  {
+    "name": "Idlewild Park",
+    "address": "230-11 ROCKAWAY BOULEVARD",
+    "lat": 40.64979082016938,
+    "lng": -73.75078829080796,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 180.85
+  },
+  {
+    "name": "Long Pond Park",
+    "address": "Page Ave., Hylan Blvd., and Amboy Rd.",
+    "lat": 40.51374259884795,
+    "lng": -74.22895385265286,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 91.086
+  },
+  {
+    "name": "Gwen Ifill Park",
+    "address": "129 Ave. bet. 172 St. and 176 St.",
+    "lat": 40.677964341582395,
+    "lng": -73.76738602116505,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 16.439
+  },
+  {
+    "name": "Meredith Woods",
+    "address": "Meredith Ave., W. Shore Exwy., Chelsea Creek",
+    "lat": 40.59765735645576,
+    "lng": -74.19448041128226,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 15.368
+  },
+  {
+    "name": "Snug Harbor Cemetery",
+    "address": "Prospect Ave. bet. Lois Pl and N. Randall Ave.",
+    "lat": 40.63782936045088,
+    "lng": -74.10025508370012,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 6.489
+  },
+  {
+    "name": "Crescent Beach Park",
+    "address": "Tennyson Dr. bet. Hales Ave. and Wiman Ave.",
+    "lat": 40.53464531377822,
+    "lng": -74.14773627237861,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 111.53
+  },
+  {
+    "name": "Jones Woods Park",
+    "address": "Arnold St., Brighton Ave., Lafayette Ave.",
+    "lat": 40.6374075103453,
+    "lng": -74.09092922126125,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 16.93
+  },
+  {
+    "name": "Brant Point Wildlife Sanctuary",
+    "address": "Beach 72 St. bet. Bayfields Ave. and Hillmeyer Ave.",
+    "lat": 40.59840552869994,
+    "lng": -73.80291548776998,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 19.693
+  },
+  {
+    "name": "Ocean Breeze Park",
+    "address": "Quintard St. and Mason Ave, Seaside Blvd., (Father Capodanno Blvd.)",
+    "lat": 40.586588178968405,
+    "lng": -74.07820965413934,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 136.568
+  },
+  {
+    "name": "Manor Park",
+    "address": "Manor Rd. and Rockland Ave.",
+    "lat": 40.58882360941996,
+    "lng": -74.12723831466592,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 1.78
+  },
+  {
+    "name": "Fort Hill Park",
+    "address": "Sherman Ave. bet. Fort Pl. and Hendricks Ave.",
+    "lat": 40.641108059960246,
+    "lng": -74.0817513425767,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.845
+  },
+  {
+    "name": "Huguenot Ponds Park",
+    "address": "Billiou St. and Comely St. bet. Huguenot Ave. and Kingdom Ave.",
+    "lat": 40.5302424861159,
+    "lng": -74.18941978653005,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 1.53
+  },
+  {
+    "name": "Sunset Cove Park",
+    "address": "W. 19 Rd. bet Jamaica Bay and Cross Bay Blvd.",
+    "lat": 40.59870829511572,
+    "lng": -73.82274495496476,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 9.375
+  },
+  {
+    "name": "Powell's Cove Park",
+    "address": "11 Ave. bet. 130 St., Powell's Cove Blvd. and 138 Pl., 9 Ave.",
+    "lat": 40.79009511377024,
+    "lng": -73.83561061533415,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 59.629
+  },
+  {
+    "name": "Spring Creek Park",
+    "address": "Belt Pkwy., Fresh Creek, Seaview Ave.",
+    "lat": 40.64035072744355,
+    "lng": -73.87846684798197,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 2.203
+  },
+  {
+    "name": "South Beach Wetlands",
+    "address": "Qunitard St., Pearsall St., Frank Capodanno Blvd.",
+    "lat": 40.58727049928274,
+    "lng": -74.07188882993695,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 5.188
+  },
+  {
+    "name": "North Brother Island",
+    "address": "East River",
+    "lat": 40.80169816406748,
+    "lng": -73.89755434283533,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 30.395
+  },
+  {
+    "name": "Arbutus Woods Park",
+    "address": "Eylandt St., Stecher St. and Colon St.",
+    "lat": 40.52858817304614,
+    "lng": -74.18515891323487,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 2.65
+  },
+  {
+    "name": "Jerome Slope",
+    "address": "Jerome Ave. at E. 165 St.",
+    "lat": 40.8327206396397,
+    "lng": -73.92589591249886,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 0.764
+  },
+  {
+    "name": "Richmond Terrace Park",
+    "address": "Richmond Ter. bet. Van Pelt Ave. and Van Name Ave.",
+    "lat": 40.637974230271695,
+    "lng": -74.1535961231964,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 11.193
+  },
+  {
+    "name": "Ingram Woods",
+    "address": "SI Expressway, Warwick Ave., Purdy Ave., and Ingram Ave.",
+    "lat": 40.60902774458566,
+    "lng": -74.13649420465244,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 3.77
+  },
+  {
+    "name": "Westwood Park",
+    "address": "SI Expressway, Woodward Ave., Wooley Ave. and Westwood Ave.",
+    "lat": 40.60654148154509,
+    "lng": -74.14198836440065,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 6.563
+  },
+  {
+    "name": "Palmer Inlet",
+    "address": "Outlook Ave and Library Ave. bet. Griswold Ave. and Lucerne St.",
+    "lat": 40.843956128128504,
+    "lng": -73.81665452927928,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 7.49
+  },
+  {
+    "name": "Laredo Avenue Parcel",
+    "address": "Annadale Rd. bet. Laredo Ave. and Lamoka Ave., Memphis Ave.",
+    "lat": 40.548257939030044,
+    "lng": -74.17416114292139,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 2.223
+  },
+  {
+    "name": "Siedenburg Park",
+    "address": "Greaves Ave., Dewey Ave. and Evergreen St.",
+    "lat": 40.556801564675624,
+    "lng": -74.14429519797358,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 22.882
+  },
+  {
+    "name": "South Brother Island",
+    "address": "East River",
+    "lat": 40.796328476039356,
+    "lng": -73.89752033672166,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 21.10936646
+  },
+  {
+    "name": "Broad Channel Wetlands",
+    "address": "Jamaica Bay west of Cross Bay Blvd. bet. E 1 Rd. and E. 10 Rd.",
+    "lat": 40.61176171462148,
+    "lng": -73.82135134026993,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 37.95
+  },
+  {
+    "name": "Bayview Terrace Park",
+    "address": "Bayview Ter. from Barclay Ave. to Harold Ave.",
+    "lat": 40.52608911305061,
+    "lng": -74.16421939472424,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 16.944
+  },
+  {
+    "name": "Park",
+    "address": "Boundary Ave., Midland Ave., Lincoln Ave., Poultney St.",
+    "lat": 40.57631311472922,
+    "lng": -74.10066887617921,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 5.765
+  },
+  {
+    "name": "Kingdom Pond Park",
+    "address": "Kingdom Ave. bet. Hylan Blvd. and Jansen St.",
+    "lat": 40.52533085826535,
+    "lng": -74.1849401667516,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 4.22
+  },
+  {
+    "name": "Arden Woods",
+    "address": "Arthur Kill Rd., Arden Ave. and Halpin Ave.",
+    "lat": 40.558296510864444,
+    "lng": -74.19113111641654,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 146.126
+  },
+  {
+    "name": "Carlton Park",
+    "address": "Carlton Blvd. and Crown Ave.",
+    "lat": 40.55188362771982,
+    "lng": -74.18429712934231,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 1.25
+  },
+  {
+    "name": "Forest Grove",
+    "address": "Forest Ave., Elizabet.h Grove Rd.",
+    "lat": 40.627050623398446,
+    "lng": -74.1739990950215,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.39
+  },
+  {
+    "name": "Pugsley Creek Park",
+    "address": "White Plains Rd., Stephens Ave., Westchester Creek bet. Randall Ave., Lacombe Ave. and Cornell Ave.",
+    "lat": 40.812539975759684,
+    "lng": -73.85111374171589,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 68.017
+  },
+  {
+    "name": "Allison Pond Park",
+    "address": "Prospect Ave., N Randall Ave. and Brentwood Ave.",
+    "lat": 40.63684111070122,
+    "lng": -74.10111964911411,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 9.2
+  },
+  {
+    "name": "Pralls Island",
+    "address": "Pralls River and Arthur Kill",
+    "lat": 40.60842657396518,
+    "lng": -74.20048795522831,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 107.514
+  },
+  {
+    "name": "Udall's Park Preserve",
+    "address": "Northern Blvd., 244 St. to 247 St., Douglas Rd., Little Neck Bay",
+    "lat": 40.77287952823389,
+    "lng": -73.74417921557158,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 44.44
+  },
+  {
+    "name": "Shooters Island",
+    "address": "Kill Van Kull and Newark Bay",
+    "lat": 40.64222227017327,
+    "lng": -74.15829806042484,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 34.689
+  },
+  {
+    "name": "Arverne East Nature Preserve",
+    "address": "Edgemere Ave. bet. B. 56 Pl. and B. 44 St.",
+    "lat": 40.59117131106315,
+    "lng": -73.782021822763,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 32.86
+  },
+  {
+    "name": "Deere Park",
+    "address": "Richmond Pkwy., Ocean Terr., Tiber Pl., Staten Island Blvd.",
+    "lat": 40.60539743629134,
+    "lng": -74.11059501992102,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 39.13085296
+  },
+  {
+    "name": "Mill Rock Park",
+    "address": "East River Opp E. 96 St.",
+    "lat": 40.7801650914319,
+    "lng": -73.93879187342633,
+    "borough": "M",
+    "type": "Nature Area",
+    "acres": 8.639
+  },
+  {
+    "name": "Maple Woods",
+    "address": "Richmond Rd. bet. Pierce St. and Steuben St.",
+    "lat": 40.61109596677878,
+    "lng": -74.08808208957659,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.765
+  },
+  {
+    "name": "Dubos Point Wildlife Sanctuary",
+    "address": "Decosta Ave, B 63 St, Bayfield Ave, Barbadoes Dr",
+    "lat": 40.59993653235196,
+    "lng": -73.79427391349273,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 53.298
+  },
+  {
+    "name": "Paerdegat Basin Park",
+    "address": "Bergen Ave., E. 76 St., Paerdegat Ave. North",
+    "lat": 40.62613643167976,
+    "lng": -73.90818312518303,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 118.795
+  },
+  {
+    "name": "Bennett Rest",
+    "address": "Henry Hudson Pkwy, Cabrini Blvd, at W186 St",
+    "lat": 40.85797017869149,
+    "lng": -73.93701246979674,
+    "borough": "M",
+    "type": "Nature Area",
+    "acres": 3.567
+  },
+  {
+    "name": "Park",
+    "address": "Cross Bay Blvd. and W. 16 Rd. to W. 19 Rd.",
+    "lat": 40.6008014465062,
+    "lng": -73.82179491779135,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 1.226
+  },
+  {
+    "name": "Park",
+    "address": "Drumgoole Rd. W., Darlington Ave., Nippon Ave.",
+    "lat": 40.53732125211502,
+    "lng": -74.19047209095811,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.735
+  },
+  {
+    "name": "Wegener Park",
+    "address": "Drumgoole Rd. E., Annadale Rd., Genesee Ave.",
+    "lat": 40.552390984475856,
+    "lng": -74.17599536366485,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 3.464
+  },
+  {
+    "name": "Park",
+    "address": "Drumgoole Rd. E., Albee Ave., Ionia Ave.",
+    "lat": 40.54064487880495,
+    "lng": -74.18521486002615,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 0.554
+  },
+  {
+    "name": "Eibs Pond Park",
+    "address": "Mosel Ave., Palma Dr., Hanover Ave.",
+    "lat": 40.61193567148528,
+    "lng": -74.08065494427413,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 16.505
+  },
+  {
+    "name": "Park",
+    "address": "Rockaway Boardwalk bet. B. 28 St and B. 26 St.",
+    "lat": 40.592548002521326,
+    "lng": -73.7595023911472,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 1.14
+  },
+  {
+    "name": "Last Chance Pond Park",
+    "address": "Zoe St., Husson St., Naughton Ave., Seaver Ave.",
+    "lat": 40.58529813298023,
+    "lng": -74.09870684539712,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 3.903
+  },
+  {
+    "name": "King Fisher Park",
+    "address": "Miles Ave., Corbin Ave., Barlow Ave., Fairfield St.",
+    "lat": 40.56230901454393,
+    "lng": -74.15072007732991,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 23.01
+  },
+  {
+    "name": "Great Kills Park",
+    "address": "Hylan Blvd., Old Mill Rd., Cedar Grove Ave. bet. Hopkins Ave. and New Dorp La.",
+    "lat": 40.55440096484711,
+    "lng": -74.1138537268548,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 334.502
+  },
+  {
+    "name": "Graniteville Quarry Park",
+    "address": "Forest Ave. Wilcox Ave., bet. Van Name Ave. and Eunice Pl.",
+    "lat": 40.62500582989681,
+    "lng": -74.15422333731367,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 4.465
+  },
+  {
+    "name": "Blue Heron Park",
+    "address": "Amboy Rd., Barclay Ave., Hylan Blvd. and Bertram Ave.",
+    "lat": 40.53213558614112,
+    "lng": -74.17607728616517,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 217.543
+  },
+  {
+    "name": "Graniteville Swamp Park",
+    "address": "Goethals Rd. N., Meeker Ave., Morrow St.",
+    "lat": 40.62523288449537,
+    "lng": -74.17539387529516,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 9.187
+  },
+  {
+    "name": "Spuyten Duyvil Shorefront Park",
+    "address": "Palisade Av, Johnson Av, Edsall Ave",
+    "lat": 40.87910289112905,
+    "lng": -73.92107580015119,
+    "borough": "X",
+    "type": "Nature Area",
+    "acres": 6.6
+  },
+  {
+    "name": "Old Place Creek Park",
+    "address": "Gulf Ave., Goethals Br. Appr. bet. Western Ave. and Arthur Kill",
+    "lat": 40.63097215317496,
+    "lng": -74.19214166890559,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 44.733
+  },
+  {
+    "name": "Coney Island Creek Park",
+    "address": "3871 POLAR STREET",
+    "lat": 40.581209454030365,
+    "lng": -74.0053273471629,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 8.892
+  },
+  {
+    "name": "Spring Creek Park Addition",
+    "address": "155 Ave., Flatlands Ave., Belt Pkwy. bet. Fountain Ave. and 80 St.",
+    "lat": 40.65916707520382,
+    "lng": -73.85888627563432,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 50.436
+  },
+  {
+    "name": "Jamaica Bay Park",
+    "address": "Mott Basin to the City Line",
+    "lat": 40.61250626235783,
+    "lng": -73.76549641246096,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 149.54
+  },
+  {
+    "name": "Hook Creek Park",
+    "address": "Brookville Blvd., Huxley St. bet. 149 Ave. and Hook Creek Basin",
+    "lat": 40.64803140294467,
+    "lng": -73.74368784842368,
+    "borough": "Q",
+    "type": "Nature Area",
+    "acres": 111.163
+  },
+  {
+    "name": "Saw Mill Creek Marsh",
+    "address": "West Shore Exwy. to Kill Van Kull from River Rd. to South Ave.",
+    "lat": 40.60962353594302,
+    "lng": -74.19087600036572,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 181.923
+  },
+  {
+    "name": "Park",
+    "lat": 40.63713947123689,
+    "lng": -74.07214129745788,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 2.356
+  },
+  {
+    "name": "Meredith Woods",
+    "address": "West Shore Exwy. Meredith Ave. to South Ave., and at Richmond Pkwy.",
+    "lat": 40.54778050429443,
+    "lng": -74.21597562211969,
+    "borough": "R",
+    "type": "Nature Area",
+    "acres": 37.064
+  },
+  {
+    "name": "Spring Creek Park",
+    "address": "Fountain Ave., 75 St. bet. Belt Pkwy., Flatlands Ave.,",
+    "lat": 40.659578236866864,
+    "lng": -73.86040321922437,
+    "borough": "B",
+    "type": "Nature Area",
+    "acres": 54.963
+  },
+  {
+    "name": "Barrier Playground",
+    "address": "Horace Harding Exwy. Sr. Rd. S., 62 Ave. bet. 102 St. and Yellowstone Blvd.",
+    "lat": 40.736324365002076,
+    "lng": -73.85493586810298,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.867
+  },
+  {
+    "name": "Christopher J. Igneri Playground",
+    "address": "Schmidts La., Manor Rd. and Laguardia Ave.",
+    "lat": 40.60855431480022,
+    "lng": -74.11935953111325,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 1.145
+  },
+  {
+    "name": "Kaltenmeier Playground",
+    "address": "Virginia Ave. and Anderson St.",
+    "lat": 40.61489823649666,
+    "lng": -74.06887709218212,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 1.02
+  },
+  {
+    "name": "Westerleigh Park",
+    "address": "Willard Ave., Springfield Ave., Maine Ave., Neal Dow Ave.",
+    "lat": 40.61974703050721,
+    "lng": -74.13459799301863,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 2.889
+  },
+  {
+    "name": "Marion Hopkinson Playground",
+    "address": "89 HOPKINSON AVENUE",
+    "lat": 40.68182197800392,
+    "lng": -73.91317006947361,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.32
+  },
+  {
+    "name": "Steuben Playground",
+    "address": "Flushing Ave., Steuben St., Williamsburg Pl.",
+    "lat": 40.697221516318066,
+    "lng": -73.96334012189259,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.171
+  },
+  {
+    "name": "Mahoney Playground",
+    "address": "163 JERSEY STREET",
+    "lat": 40.64342347754777,
+    "lng": -74.08603158525138,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 2.21
+  },
+  {
+    "name": "Woodside Houses Park",
+    "lat": 40.75575655488196,
+    "lng": -73.9115225636998,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.145
+  },
+  {
+    "name": "Concrete Plant Park",
+    "address": "1490 SHERIDAN EXPRESSWAY",
+    "lat": 40.825494958005734,
+    "lng": -73.88508173001466,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 6.282
+  },
+  {
+    "name": "Francis Lewis Park",
+    "address": "301 3 AVENUE",
+    "lat": 40.79680981038457,
+    "lng": -73.82544578241217,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 16.831
+  },
+  {
+    "name": "Garrison Park",
+    "address": "Edgewater Rd bet. Garrison Av and Bruckner Blvd",
+    "lat": 40.82204312674281,
+    "lng": -73.88437933586887,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.995
+  },
+  {
+    "name": "Simeone Park",
+    "address": "52-01 101 STREET",
+    "lat": 40.741127152682004,
+    "lng": -73.85994416292888,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.78
+  },
+  {
+    "name": "Hunts Point Riverside Park",
+    "address": "Lafayette Av bet. Edgewater Rd and the Bronx River",
+    "lat": 40.81770326221938,
+    "lng": -73.88107719933465,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.426
+  },
+  {
+    "name": "Bridge Park",
+    "address": "Harlem River bet. W 175 St and Alexander Hamilton Br",
+    "lat": 40.84556459213379,
+    "lng": -73.92747195219106,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 7.156
+  },
+  {
+    "name": "Fort Totten Park",
+    "address": "Cross Island Pkwy. bet. Totten Ave. and 15 Rd.",
+    "lat": 40.79220372172474,
+    "lng": -73.77798407102622,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 60.394
+  },
+  {
+    "name": "Castle Hill Park",
+    "address": "Barrett Ave., Hart St. bet. Olmstead Ave. and Zerega Ave.",
+    "lat": 40.81163917132164,
+    "lng": -73.84702932357203,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 8.834
+  },
+  {
+    "name": "Centreville Playground",
+    "address": "149-48 CENTREVILLE STREET",
+    "lat": 40.67064200522987,
+    "lng": -73.83908687025921,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.095
+  },
+  {
+    "name": "Mill Pond Park",
+    "address": "65 EAST 149 STREET - 1 EAST 150 STREET",
+    "lat": 40.82360886626707,
+    "lng": -73.93163583153651,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 11.57
+  },
+  {
+    "name": "Squibb Park",
+    "address": "68 COLUMBIA HEIGHTS",
+    "lat": 40.70081643047375,
+    "lng": -73.99542632325148,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.626
+  },
+  {
+    "name": "Columbus Park",
+    "address": "225 JORALEMON STREET",
+    "lat": 40.693327782451576,
+    "lng": -73.99028932100045,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 4.14
+  },
+  {
+    "name": "Jackie Robinson Park",
+    "address": "319 W 145 STREET",
+    "lat": 40.82923646337331,
+    "lng": -73.93981341085527,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 12.772
+  },
+  {
+    "name": "Frederick B. Judge Playground",
+    "address": "111-01 134 STREET",
+    "lat": 40.68328182805491,
+    "lng": -73.80799577915788,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.217
+  },
+  {
+    "name": "Washington's Walk",
+    "address": "2890 SEDGWICK AVENUE",
+    "lat": 40.87347527843273,
+    "lng": -73.89932298699891,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 4.637
+  },
+  {
+    "name": "Daniel M. O'Connell Playground",
+    "address": "113-01 196 STREET",
+    "lat": 40.69976677710112,
+    "lng": -73.75797381741214,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.043
+  },
+  {
+    "name": "Williamsbridge Oval",
+    "address": "3324 RESERVOIR OVAL EAST",
+    "lat": 40.87750230980381,
+    "lng": -73.87758240336764,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 19.749
+  },
+  {
+    "name": "Risse Street Park",
+    "address": "100 VAN CORTLANDT PARK E",
+    "lat": 40.87808799198186,
+    "lng": -73.88531842017012,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.806
+  },
+  {
+    "name": "Highbridge Park",
+    "address": "1345 DR M L KING JR BLVD",
+    "lat": 40.84225459195372,
+    "lng": -73.9265818505669,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.82
+  },
+  {
+    "name": "Riverside Park",
+    "address": "675 RIVERSIDE DRIVE",
+    "lat": 40.82622151224413,
+    "lng": -73.95342432887367,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 13.35
+  },
+  {
+    "name": "Dr. Gertrude B. Kelly Playground",
+    "address": "317 WEST 16 STREET",
+    "lat": 40.74159192759989,
+    "lng": -74.0020028938357,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.525
+  },
+  {
+    "name": "Luther Gulick Park",
+    "address": "21 COLUMBIA STREET",
+    "lat": 40.71580138304283,
+    "lng": -73.98173011697136,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.451
+  },
+  {
+    "name": "St. Catherine's Park",
+    "address": "1245 EAST 67 STREET",
+    "lat": 40.76510515964995,
+    "lng": -73.95866090591184,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.383
+  },
+  {
+    "name": "St. Nicholas Park",
+    "address": "48 ST NICHOLAS AVENUE",
+    "lat": 40.81777236592691,
+    "lng": -73.94907331818926,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 22.74
+  },
+  {
+    "name": "St. Vartan Park",
+    "address": "613 1 AVENUE",
+    "lat": 40.74528320259457,
+    "lng": -73.97419604745342,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 2.759
+  },
+  {
+    "name": "Vesuvio Playground",
+    "address": "85 THOMPSON STREET",
+    "lat": 40.7254096271771,
+    "lng": -74.00268394102633,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.635
+  },
+  {
+    "name": "J. Hood Wright Park",
+    "address": "301 FT WASHINGTON AVENUE",
+    "lat": 40.84663825486058,
+    "lng": -73.94206325599052,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 6.699
+  },
+  {
+    "name": "James J Walker Park",
+    "address": "410 HUDSON STREET",
+    "lat": 40.729746637247565,
+    "lng": -74.00567998644674,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.67
+  },
+  {
+    "name": "Tanahey Playground",
+    "address": "312 WATER STREET",
+    "lat": 40.71010060282198,
+    "lng": -73.99534464590884,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.254
+  },
+  {
+    "name": "Sara D. Roosevelt Park",
+    "address": "106 CHRYSTIE STREET",
+    "lat": 40.71861009107352,
+    "lng": -73.99306597657282,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 7.85
+  },
+  {
+    "name": "Bellevue South Park",
+    "address": "315 EAST 26 STREET",
+    "lat": 40.74011946451429,
+    "lng": -73.9779304602393,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.593
+  },
+  {
+    "name": "Peter Detmold Park",
+    "address": "454 EAST 51 STREET",
+    "lat": 40.753195104231864,
+    "lng": -73.96391514847404,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.588
+  },
+  {
+    "name": "Stanley Isaacs Playground",
+    "address": "1840-1860 1 AVENUE",
+    "lat": 40.7830083317247,
+    "lng": -73.94432448476367,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.227
+  },
+  {
+    "name": "Louis Cuvillier Park",
+    "address": "2412 1 AVENUE",
+    "lat": 40.800675066223114,
+    "lng": -73.93055909335872,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 2.752
+  },
+  {
+    "name": "Brigadier General Charles Young Playground",
+    "address": "680 LENOX AVENUE",
+    "lat": 40.81902182533926,
+    "lng": -73.93496222025912,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 6.423
+  },
+  {
+    "name": "Dr. Ronald E. McNair Playground",
+    "address": "167 EAST 122 STREET",
+    "lat": 40.80253745658852,
+    "lng": -73.9381303920736,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.603
+  },
+  {
+    "name": "Hell's Kitchen Park",
+    "address": "670 10 AVENUE",
+    "lat": 40.76294244816185,
+    "lng": -73.99251399400926,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.576
+  },
+  {
+    "name": "Corporal John A. Seravalli Playground",
+    "address": "638 HUDSON STREET",
+    "lat": 40.739023583744995,
+    "lng": -74.00469794754818,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.143
+  },
+  {
+    "name": "Haggerty Park",
+    "address": "202-02 JAMAICA AVENUE",
+    "lat": 40.71297310090492,
+    "lng": -73.75689583933503,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.867
+  },
+  {
+    "name": "St. Michael's Playground",
+    "address": "64-02 30 AVENUE",
+    "lat": 40.7587428474165,
+    "lng": -73.90020555843228,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.43
+  },
+  {
+    "name": "Frederick Douglass Playground",
+    "address": "825 AMSTERDAM AVENUE",
+    "lat": 40.79696119331445,
+    "lng": -73.96745566462664,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.945
+  },
+  {
+    "name": "Harmony Park",
+    "address": "1589 ATLANTIC AVENUE",
+    "lat": 40.67797109062125,
+    "lng": -73.93443143786322,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.56
+  },
+  {
+    "name": "Success Garden",
+    "address": "461 WILLIAMS AVENUE",
+    "lat": 40.66475750172893,
+    "lng": -73.89733851835845,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.918
+  },
+  {
+    "name": "Jacob's Ladder Playground",
+    "address": "557 KENT AVENUE",
+    "lat": 40.704918498448116,
+    "lng": -73.9667394823337,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.085
+  },
+  {
+    "name": "Mae Grant Playground",
+    "address": "55 East 104 STREET",
+    "lat": 40.79248421132617,
+    "lng": -73.94934343089615,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.97
+  },
+  {
+    "name": "Monsignor Kett Playground",
+    "address": "500 WEST 204 STREET",
+    "lat": 40.86257427623735,
+    "lng": -73.92078817393794,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1
+  },
+  {
+    "name": "Samuel N. Bennerson 2nd Playground",
+    "address": "200 WEST 64 STREET",
+    "lat": 40.77383196657484,
+    "lng": -73.98697256565633,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.749
+  },
+  {
+    "name": "Dean Playground",
+    "address": "500 DEAN STREET",
+    "lat": 40.68089941509693,
+    "lng": -73.97323624328409,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.3
+  },
+  {
+    "name": "Glenwood Playground",
+    "address": "5818 FARRAGUT ROAD",
+    "lat": 40.636837436999,
+    "lng": -73.91968675142436,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.43
+  },
+  {
+    "name": "Hope Ballfield",
+    "address": "506 KNICKERBOCKER AVENUE",
+    "lat": 40.69743047270896,
+    "lng": -73.9171670191351,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.363
+  },
+  {
+    "name": "Power Playground",
+    "address": "4902 AVENUE N",
+    "lat": 40.61799922533528,
+    "lng": -73.9272338761044,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.295
+  },
+  {
+    "name": "Harry Maze Playground",
+    "address": "5601 AVENUE D",
+    "lat": 40.64300899410384,
+    "lng": -73.92314918938112,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.427
+  },
+  {
+    "name": "Rodney Playground Center",
+    "address": "349 RODNEY STREET",
+    "lat": 40.71026703642574,
+    "lng": -73.95557345967161,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.189
+  },
+  {
+    "name": "West Playground",
+    "address": "2536 WEST STREET",
+    "lat": 40.5876206052918,
+    "lng": -73.97019068474425,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.387
+  },
+  {
+    "name": "St. Andrew's Playground",
+    "address": "1405 ATLANTIC AVENUE",
+    "lat": 40.67858206866785,
+    "lng": -73.94208443763031,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.38
+  },
+  {
+    "name": "P.O. Reinaldo Salgado Playground",
+    "address": "750 MONROE STREET",
+    "lat": 40.68788503120931,
+    "lng": -73.92585725154423,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.289
+  },
+  {
+    "name": "Northerleigh Park",
+    "address": "90 NORTH AVENUE",
+    "lat": 40.62289725234551,
+    "lng": -74.13359748188195,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 3.955
+  },
+  {
+    "name": "Underbridge Dog Run",
+    "address": "64-02 GRND CNTRL PKWY SR W",
+    "lat": 40.73377708046359,
+    "lng": -73.84518691153413,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.457
+  },
+  {
+    "name": "Corlears Hook Park",
+    "address": "397 FDR DRIVE W LANE",
+    "lat": 40.71165263736735,
+    "lng": -73.97901859685912,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 4.355
+  },
+  {
+    "name": "Harvard Playground",
+    "address": "90-73 179 PLACE",
+    "lat": 40.70906605762243,
+    "lng": -73.78153451895365,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.581
+  },
+  {
+    "name": "Sean's Place",
+    "address": "31-19 38 STREET",
+    "lat": 40.76073207462731,
+    "lng": -73.91820947720655,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.582
+  },
+  {
+    "name": "Owen F. Dolen Park",
+    "address": "2551 WESTCHESTER AVENUE",
+    "lat": 40.840523437574,
+    "lng": -73.84289735081245,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.4
+  },
+  {
+    "name": "Msgr. McGolrick Park",
+    "address": "744 NASSAU AVENUE",
+    "lat": 40.72422319762692,
+    "lng": -73.94315039635073,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 9.134
+  },
+  {
+    "name": "Cadman Plaza Park",
+    "address": "172 CADMAN PLAZA EAST",
+    "lat": 40.699393219413,
+    "lng": -73.99064467836598,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 10.384
+  },
+  {
+    "name": "Bill Brown Playground",
+    "address": "2401 AVENUE Y",
+    "lat": 40.59198365635823,
+    "lng": -73.94555204000758,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.214
+  },
+  {
+    "name": "Taaffe Playground",
+    "address": "390 PARK AVENUE",
+    "lat": 40.69498017672824,
+    "lng": -73.96081415031685,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.821
+  },
+  {
+    "name": "Coffey Park",
+    "address": "85 RICHARDS STREET",
+    "lat": 40.67772319587819,
+    "lng": -74.00815700552357,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 8.271
+  },
+  {
+    "name": "Kelly Park Playground",
+    "address": "1301 AVENUE S",
+    "lat": 40.60418530538035,
+    "lng": -73.95758272474315,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.449
+  },
+  {
+    "name": "P.O. Serrano Playground",
+    "address": "800 OLMSTEAD AVENUE",
+    "lat": 40.82341946785183,
+    "lng": -73.85087468063155,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 2.618
+  },
+  {
+    "name": "Brower Park",
+    "address": "195 BROOKLYN AVENUE",
+    "lat": 40.67401699130728,
+    "lng": -73.94307163232945,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 7.047
+  },
+  {
+    "name": "Park Of The Americas",
+    "address": "103-02 41 AVENUE",
+    "lat": 40.74851797263327,
+    "lng": -73.86174689043742,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.076
+  },
+  {
+    "name": "Rufus King Park",
+    "address": "150-05 JAMAICA AVENUE",
+    "lat": 40.70417723741035,
+    "lng": -73.80339282544054,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 11.5
+  },
+  {
+    "name": "Detective Omar Edwards Park",
+    "address": "227 EAST 124 STREET",
+    "lat": 40.80274082981723,
+    "lng": -73.93500001457488,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.252
+  },
+  {
+    "name": "Colucci Playground",
+    "address": "2011 MAYFLOWER AVENUE",
+    "lat": 40.853120490564265,
+    "lng": -73.83440887958876,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 4
+  },
+  {
+    "name": "Andrew Haswell Green Park",
+    "address": "555 EAST 60 STREET",
+    "lat": 40.75954867003071,
+    "lng": -73.95769358081641,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.984
+  },
+  {
+    "name": "Moore Homestead Playground",
+    "address": "82-02 BROADWAY",
+    "lat": 40.742113758194556,
+    "lng": -73.88213214212587,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.978
+  },
+  {
+    "name": "Yellowstone Park",
+    "address": "68-01 YELLOWSTONE BLVD",
+    "lat": 40.72617294219632,
+    "lng": -73.84776088951705,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.745
+  },
+  {
+    "name": "Clement Clarke Moore Park",
+    "address": "480 WEST 22 STREET",
+    "lat": 40.7465460292956,
+    "lng": -74.004332422227,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.489
+  },
+  {
+    "name": "Bleecker Playground",
+    "address": "580 HUDSON STREET",
+    "lat": 40.736600886282496,
+    "lng": -74.0055274876328,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.477
+  },
+  {
+    "name": "Penn South Playground",
+    "address": "346 WEST 26 STREET",
+    "lat": 40.74748926831348,
+    "lng": -73.99867670301077,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.6
+  },
+  {
+    "name": "Electric Playground",
+    "address": "65-40 164 STREET",
+    "lat": 40.73586157302818,
+    "lng": -73.80530731522204,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.749
+  },
+  {
+    "name": "Ravenswood Playground",
+    "address": "34-00 21 STREET",
+    "lat": 40.76228443604802,
+    "lng": -73.93533463768838,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.758
+  },
+  {
+    "name": "Howard Von Dohlen Playground",
+    "address": "138-02 91 AVENUE",
+    "lat": 40.69938187322777,
+    "lng": -73.81287298246255,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.381
+  },
+  {
+    "name": "Middle Village Playground",
+    "address": "78-38 68 ROAD",
+    "lat": 40.71005801103785,
+    "lng": -73.87364831733683,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.448
+  },
+  {
+    "name": "Junction Playground",
+    "address": "95-02 34 AVENUE",
+    "lat": 40.75471167160092,
+    "lng": -73.87211962079797,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.54
+  },
+  {
+    "name": "South Pacific Playground",
+    "address": "338 HOWARD AVENUE",
+    "lat": 40.67570046789591,
+    "lng": -73.92083292099181,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.264
+  },
+  {
+    "name": "Cobble Hill Park",
+    "address": "172 CONGRESS STREET",
+    "lat": 40.68821164504713,
+    "lng": -73.9959191425049,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.585
+  },
+  {
+    "name": "Virginia Park",
+    "address": "White Plains Rd bet. S/B Cross Bronx Exwy and Westchester Av",
+    "lat": 40.83355485853161,
+    "lng": -73.8619842198966,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.918
+  },
+  {
+    "name": "Bicentennial Veterans Memorial Park",
+    "address": "Throgg's Neck Exwy at Pennyfield Ave. and Elisworth Ave.",
+    "lat": 40.82389786865168,
+    "lng": -73.81363054192367,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 9.395
+  },
+  {
+    "name": "General Hart Playground",
+    "address": "65-01 37 AVENUE",
+    "lat": 40.74868961647876,
+    "lng": -73.89724399932248,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.896
+  },
+  {
+    "name": "Maple Playground",
+    "address": "136-50 MAPLE AVENUE",
+    "lat": 40.755895598828964,
+    "lng": -73.82598236878933,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.978
+  },
+  {
+    "name": "Colgate Close",
+    "address": "1445 BRUCKNER BOULEVARD",
+    "lat": 40.82445048426658,
+    "lng": -73.8814991623163,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.871
+  },
+  {
+    "name": "Seth Low Playground/ Bealin Square",
+    "address": "7217 BAY PARKWAY / 33 AVENUE P",
+    "lat": 40.60768507055362,
+    "lng": -73.98716749001869,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 4.945
+  },
+  {
+    "name": "The Olde Towne of Flushing Burial Ground",
+    "address": "46 Ave. bet. 164 St. and 165 St.",
+    "lat": 40.755167230062504,
+    "lng": -73.80223302208569,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.474
+  },
+  {
+    "name": "Harding Park",
+    "address": "201-125 BOLTON AVENUE",
+    "lat": 40.80923502176295,
+    "lng": -73.85659482549005,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 2.16
+  },
+  {
+    "name": "Greenpoint Public Park",
+    "address": "143 INDIA STREET",
+    "lat": 40.73202624289439,
+    "lng": -73.9618526717187,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.65
+  },
+  {
+    "name": "Underwood Park",
+    "address": "336 WAVERLY AVENUE",
+    "lat": 40.68851947582758,
+    "lng": -73.96632788252225,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.187
+  },
+  {
+    "name": "Vladeck Park",
+    "address": "656 WATER STREET",
+    "lat": 40.7122315400258,
+    "lng": -73.98197965412659,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.789
+  },
+  {
+    "name": "Gateway Park",
+    "address": "94-15 VAN WYCK EXPRESSWAY",
+    "lat": 40.69707495648867,
+    "lng": -73.81221592407945,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.901
+  },
+  {
+    "name": "Bella Abzug Park",
+    "address": "534 WEST 35 STREET",
+    "lat": 40.75598813851261,
+    "lng": -74.00016225316463,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 2.592
+  },
+  {
+    "name": "Madison Square Park",
+    "address": "2 MADISON AVENUE",
+    "lat": 40.74232704407899,
+    "lng": -73.987865981355,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 6.234
+  },
+  {
+    "name": "Richman (Echo) Park",
+    "address": "1980 RYER AVENUE",
+    "lat": 40.849049070361325,
+    "lng": -73.90148118020372,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 4.385
+  },
+  {
+    "name": "Saratoga Park",
+    "address": "842 HALSEY STREET",
+    "lat": 40.684953755341475,
+    "lng": -73.91874060485097,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.214
+  },
+  {
+    "name": "George Walker Jr. Park",
+    "address": "57 VERMONT STREET",
+    "lat": 40.678613708432856,
+    "lng": -73.89513933947389,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.591
+  },
+  {
+    "name": "Valentino Pier",
+    "address": "104 FERRIS STREET",
+    "lat": 40.678264612779195,
+    "lng": -74.018855622545,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 4.525
+  },
+  {
+    "name": "Grover Cleveland Playground",
+    "address": "3-96 GRANDVIEW AVENUE",
+    "lat": 40.711179491961545,
+    "lng": -73.9106763635739,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.1
+  },
+  {
+    "name": "Dome Playground",
+    "address": "384 DAHILL ROAD",
+    "lat": 40.63822599354312,
+    "lng": -73.9801038063253,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.385
+  },
+  {
+    "name": "Gilbert Ramirez Park",
+    "address": "62 WHITE STREET",
+    "lat": 40.70598799046,
+    "lng": -73.93425162706802,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.034
+  },
+  {
+    "name": "Rapkin-Gayle Plaza",
+    "address": "142 Grand Street",
+    "lat": 40.7203772278251,
+    "lng": -73.99919860619073,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.287
+  },
+  {
+    "name": "Green Central Knoll",
+    "address": "55 EVERGREEN AVENUE",
+    "lat": 40.70227281115168,
+    "lng": -73.93321173897084,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.741
+  },
+  {
+    "name": "Bennett Park",
+    "address": "521 FT WASHINGTON Av",
+    "lat": 40.85272811289549,
+    "lng": -73.93807646684624,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.8
+  },
+  {
+    "name": "Thomas Boyland Park",
+    "address": "16 FURMAN AVENUE",
+    "lat": 40.681723094824285,
+    "lng": -73.90743700217466,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.82
+  },
+  {
+    "name": "Robert E. Venable Park",
+    "address": "1411 SUTTER AVENUE",
+    "lat": 40.674424193106475,
+    "lng": -73.86472854329301,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.939
+  },
+  {
+    "name": "Mapes Park",
+    "address": "786 EAST 181 STREET",
+    "lat": 40.84709135174983,
+    "lng": -73.88575386388995,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.868
+  },
+  {
+    "name": "St. James Park",
+    "address": "2550 JEROME AVENUE",
+    "lat": 40.86502564190266,
+    "lng": -73.89777386385049,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 11.39
+  },
+  {
+    "name": "Marconi Park",
+    "address": "155-01 109 AVENUE",
+    "lat": 40.69345884243222,
+    "lng": -73.79546092994839,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 4.635
+  },
+  {
+    "name": "Percy E. Sutton Playground",
+    "address": "Harlem River Dr., W. 151 St. To W. 154 St.",
+    "lat": 40.82658770025495,
+    "lng": -73.93493797877284,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.635
+  },
+  {
+    "name": "Golconda Playground",
+    "address": "233 GOLD STREET",
+    "lat": 40.69785481185098,
+    "lng": -73.98230211946226,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.5
+  },
+  {
+    "name": "Walter Gladwin Park",
+    "address": "530 EAST TREMONT AVENUE",
+    "lat": 40.84612686239603,
+    "lng": -73.89454261512812,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 15
+  },
+  {
+    "name": "Bathgate Playground",
+    "address": "2130 WASHINGTON AVENUE",
+    "lat": 40.852927235997555,
+    "lng": -73.8940669268311,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 2.5
+  },
+  {
+    "name": "Bryant Park",
+    "address": "1060 6 Av",
+    "lat": 40.753420956654814,
+    "lng": -73.98302992086975,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 9.603
+  },
+  {
+    "name": "Ewen Park",
+    "address": "3036 JOHNSON AVENUE",
+    "lat": 40.88232245024355,
+    "lng": -73.90949616626074,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 7.84
+  },
+  {
+    "name": "Washington Park",
+    "address": "1 4 AVENUE",
+    "lat": 40.67292880171155,
+    "lng": -73.98495186914774,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.03
+  },
+  {
+    "name": "Beach 9 Playground",
+    "address": "9-01 SEAGIRT BOULEVARD",
+    "lat": 40.595517221760076,
+    "lng": -73.74516521792543,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 4.863
+  },
+  {
+    "name": "Maple Street Community Garden",
+    "address": "237 MAPLE STREET",
+    "lat": 40.660911760921955,
+    "lng": -73.95276017144705,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.377
+  },
+  {
+    "name": "University Woods",
+    "address": "2100 CEDAR AVENUE",
+    "lat": 40.85916084231752,
+    "lng": -73.91508145816337,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 3.306
+  },
+  {
+    "name": "Hinton Park",
+    "address": "34-02 114 STREET",
+    "lat": 40.75612422296927,
+    "lng": -73.85491092121865,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.735
+  },
+  {
+    "name": "Lawrence Virgilio Playground",
+    "address": "52-01 39 DRIVE",
+    "lat": 40.74734958203655,
+    "lng": -73.91019750171235,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.009
+  },
+  {
+    "name": "Prospect Plaza Park",
+    "address": "1768 PARK PLACE",
+    "lat": 40.671190167875544,
+    "lng": -73.91846707598377,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.657
+  },
+  {
+    "name": "Cooper Park",
+    "address": "350 MASPETH AVENUE",
+    "lat": 40.71599957237204,
+    "lng": -73.93720369723198,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 6.401
+  },
+  {
+    "name": "Broad Channel Park",
+    "address": "16-26 CROSS BAY BOULEVARD",
+    "lat": 40.6009408894099,
+    "lng": -73.81984180830041,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.55
+  },
+  {
+    "name": "Playground 103 CIII",
+    "address": "457 East 102 Street",
+    "lat": 40.78725872386666,
+    "lng": -73.93890231614208,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.052
+  },
+  {
+    "name": "The Big Park",
+    "address": "110 CONTINENTAL PLACE",
+    "lat": 40.630880378535444,
+    "lng": -74.16433028762532,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 3.014
+  },
+  {
+    "name": "Betty Carter Park",
+    "address": "624-640 FULTON STREET",
+    "lat": 40.68713398241317,
+    "lng": -73.97715759398169,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.231
+  },
+  {
+    "name": "Corona Golf Playground",
+    "address": "109-02 46 AVENUE",
+    "lat": 40.74767277919581,
+    "lng": -73.85433086790664,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.722
+  },
+  {
+    "name": "Osborn Playground",
+    "address": "1461 LINDEN BOULEVARD",
+    "lat": 40.65572616468096,
+    "lng": -73.90572860655669,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.9
+  },
+  {
+    "name": "Pratt Playground",
+    "address": "233 WILLOUGHBY AVENUE",
+    "lat": 40.692590354864805,
+    "lng": -73.96244390749605,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.918
+  },
+  {
+    "name": "Blake Hobbs Playground",
+    "address": "1851 3 AVENUE",
+    "lat": 40.78883574537709,
+    "lng": -73.94413314621906,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1
+  },
+  {
+    "name": "Washington Square Park",
+    "address": "3 WASHINGTON SQUARE N",
+    "lat": 40.73060862921092,
+    "lng": -73.99743515182007,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 9.749
+  },
+  {
+    "name": "Ranaqua Playground",
+    "address": "452 EAST 136 STREET",
+    "lat": 40.80673089001142,
+    "lng": -73.9221398915609,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.972
+  },
+  {
+    "name": "McDonald Playground",
+    "address": "2099 MC DONALD AVENUE",
+    "lat": 40.600493709608685,
+    "lng": -73.97191292064382,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.485
+  },
+  {
+    "name": "Herman Dolgon Playground",
+    "address": "3595 NOSTRAND AVENUE",
+    "lat": 40.59789741451694,
+    "lng": -73.93998115491075,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.894
+  },
+  {
+    "name": "Tilden Playground",
+    "address": "4802 TILDEN AVENUE",
+    "lat": 40.647500753270606,
+    "lng": -73.93147070280232,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.19
+  },
+  {
+    "name": "Nicholas Naquan Heyward Jr. Park",
+    "address": "160 WYCKOFF STREET",
+    "lat": 40.68450964407333,
+    "lng": -73.98778958302067,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.041
+  },
+  {
+    "name": "Seward Park",
+    "address": "57 ESSEX STREET",
+    "lat": 40.71461527382301,
+    "lng": -73.98896851468551,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 3.361
+  },
+  {
+    "name": "Cottages Hill New Brighton Park",
+    "address": "Arnold St. to Prospect Ave. bet. Harvard Ave and Clyde Pl.",
+    "lat": 40.639353966004236,
+    "lng": -74.08921451913349,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 2.057
+  },
+  {
+    "name": "Mellett Playground",
+    "address": "1301 AVENUE V",
+    "lat": 40.59706349356179,
+    "lng": -73.95743813416652,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.056
+  },
+  {
+    "name": "Hamilton Metz Field",
+    "address": "608 LEFFERTS AVENUE",
+    "lat": 40.66251744202739,
+    "lng": -73.94095916534425,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.112
+  },
+  {
+    "name": "Police Officer Nicholas Demutiis Park",
+    "address": "101-05 101 STREET",
+    "lat": 40.68177960588457,
+    "lng": -73.83924432741635,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.151
+  },
+  {
+    "name": "Rappaport Playground",
+    "address": "5202 FT HAMILTON PARKWAY",
+    "lat": 40.63703997305513,
+    "lng": -74.00065510246581,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.148
+  },
+  {
+    "name": "Playground One Thirty Four CXXXIV",
+    "address": "E. 133 St. and Bruckner Blvd. bet. St Ann's Pl. and Cypress Ave.",
+    "lat": 40.80312102594122,
+    "lng": -73.91734517041105,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.95
+  },
+  {
+    "name": "Captain William Harry Thompson Playground",
+    "address": "E. 174 St. bet. Bronx River Ave. and E. 173 St.",
+    "lat": 40.83436157281278,
+    "lng": -73.8776511238157,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1
+  },
+  {
+    "name": "Melrose Commons Park",
+    "address": "924 MELROSE AVENUE",
+    "lat": 40.82491249380872,
+    "lng": -73.91271070620897,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.381
+  },
+  {
+    "name": "Hoover - Manton Playgrounds",
+    "address": "Manton St. bet. 83 Ave., 134 St. and Main St.",
+    "lat": 40.71201034812305,
+    "lng": -73.82219749879958,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.2
+  },
+  {
+    "name": "Cypress Hills Playground",
+    "address": "Euclid Ave. bet. Dumont Ave. and Blake Ave.",
+    "lat": 40.67033380811033,
+    "lng": -73.87149337266985,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 4.947
+  },
+  {
+    "name": "Harris Brothers Park",
+    "address": "Foste Rd., Carlton Ave., Drumgoole Rd. W.",
+    "lat": 40.53307188090306,
+    "lng": -74.20190605579806,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 2.288
+  },
+  {
+    "name": "Battery Park City",
+    "address": "bet. Hudson River and South End Ave. S/o Liberty St.",
+    "lat": 40.71188678544705,
+    "lng": -74.01710293184894,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.556
+  },
+  {
+    "name": "Owl's Head Park",
+    "address": "Shore Rd., 68 St., Colonial Rd.",
+    "lat": 40.640835896227706,
+    "lng": -74.03244892069131,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 24.218
+  },
+  {
+    "name": "Cuyler Gore Park",
+    "address": "Carlton Ave., Fulton St., Green Ave.",
+    "lat": 40.685733183468344,
+    "lng": -73.97183380615853,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.158
+  },
+  {
+    "name": "Detective Joseph Mayrose Park",
+    "address": "N/B Prospect Exwy., 17 St., bet. 6 Ave. and 7 Ave.",
+    "lat": 40.66188888043403,
+    "lng": -73.98791923018747,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.314
+  },
+  {
+    "name": "Jennifer's Playground",
+    "address": "250 REGIS DRIVE",
+    "lat": 40.62003521643829,
+    "lng": -74.16303273067598,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 1.6
+  },
+  {
+    "name": "Gorman Playground",
+    "address": "84-11 30 AVENUE",
+    "lat": 40.762229782479096,
+    "lng": -73.88413299157023,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.755
+  },
+  {
+    "name": "West Farms Rapids",
+    "address": "1089 EAST TREMONT Av",
+    "lat": 40.84091741266712,
+    "lng": -73.8779246140688,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.016
+  },
+  {
+    "name": "Lopez Playground",
+    "address": "Palma Dr. bet. Targee St. and Oder Ave.",
+    "lat": 40.61124652020299,
+    "lng": -74.08516384595917,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 1.115
+  },
+  {
+    "name": "Frank D. O'Connor Playground",
+    "address": "78-08 BROADWAY",
+    "lat": 40.74447463422351,
+    "lng": -73.88700418413727,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.537
+  },
+  {
+    "name": "Jack Breininger Park",
+    "address": "239-12 BRADDOCK AVENUE",
+    "lat": 40.72578105587139,
+    "lng": -73.72923350108583,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 3.4
+  },
+  {
+    "name": "Fulton Park",
+    "address": "70 CHAUNCEY STREET",
+    "lat": 40.67976642055979,
+    "lng": -73.93350378493425,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.987
+  },
+  {
+    "name": "Long Island Mews",
+    "address": "51 Ave., 51 Rd., 72 Pl.",
+    "lat": 40.7360836240311,
+    "lng": -73.89002971325672,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.323
+  },
+  {
+    "name": "Watson Gleason Playground",
+    "address": "Gleason Ave., Watson Ave. bet. Noble Ave., and Rosedale Ave.",
+    "lat": 40.82857941089083,
+    "lng": -73.86897137198926,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 3.301
+  },
+  {
+    "name": "WNYC Transmitter Park",
+    "address": "2 KENT STREET",
+    "lat": 40.72987914861486,
+    "lng": -73.96130246175792,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 6.611
+  },
+  {
+    "name": "Frank Golden Park",
+    "address": "14-40 136 STREET",
+    "lat": 40.78485865246674,
+    "lng": -73.8337602514334,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 11.422
+  },
+  {
+    "name": "Woodtree Playground",
+    "address": "20 Ave. bet. 37 St. and 38 St.",
+    "lat": 40.77766453647143,
+    "lng": -73.9023289190774,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.033
+  },
+  {
+    "name": "Raymond O’Connor Park",
+    "lat": 40.771276218670785,
+    "lng": -73.77875386409208,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.4
+  },
+  {
+    "name": "Sherman Creek",
+    "address": "3703 HARLEM RIVER DRIVE",
+    "lat": 40.85807653851859,
+    "lng": -73.92161702608004,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 15.383
+  },
+  {
+    "name": "Hunter's Point South Park",
+    "address": "52-10 CENTER BLVD",
+    "lat": 40.74046076083861,
+    "lng": -73.96088151824748,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 22.809
+  },
+  {
+    "name": "Bowne Park",
+    "address": "155-01 32 AVENUE",
+    "lat": 40.77070084346252,
+    "lng": -73.8068568094191,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 11.788
+  },
+  {
+    "name": "Liotti Ikefugi Playground",
+    "address": "Winter Ave., bet. Bismark Ave. and Westervelt Ave.",
+    "lat": 40.63869040796089,
+    "lng": -74.08388002802383,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 0.408
+  },
+  {
+    "name": "Von Briesen Park",
+    "address": "Tompkins Ave., Bay St. bet. School Rd., North Rd.",
+    "lat": 40.60586092082036,
+    "lng": -74.0633156399083,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 13.938
+  },
+  {
+    "name": "Hero Park",
+    "address": "Victory Blvd., Louis St., Howard Ave.",
+    "lat": 40.63015559158655,
+    "lng": -74.08837514711759,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 3.024
+  },
+  {
+    "name": "Gravesend Park",
+    "address": "5521 18 AVENUE",
+    "lat": 40.623502549713606,
+    "lng": -73.98350540979727,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 6.379
+  },
+  {
+    "name": "Brust Park",
+    "address": "Manhattan College Pkwy, Dash Pl, Greysto",
+    "lat": 40.88987210784397,
+    "lng": -73.90409751972005,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.79
+  },
+  {
+    "name": "Henry Hudson Park",
+    "address": "Palisade Av, Kappock St,  Independence A",
+    "lat": 40.880766583510045,
+    "lng": -73.92038601684239,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 8.972
+  },
+  {
+    "name": "Stuyvesant Square",
+    "address": "297 2 AVENUE",
+    "lat": 40.733806511510636,
+    "lng": -73.98426435070161,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 3.928
+  },
+  {
+    "name": "Murray Playground",
+    "address": "11-01 45 ROAD",
+    "lat": 40.74724492518802,
+    "lng": -73.94861269320386,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.524
+  },
+  {
+    "name": "Manuel Plaza",
+    "address": "35 East 4 Street",
+    "lat": 40.72768548834828,
+    "lng": -73.99205750197656,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.224
+  },
+  {
+    "name": "Dr. Ronald McNair Park",
+    "address": "Eastern Pkwy., Washington Ave., Classon Ave.",
+    "lat": 40.67066633533461,
+    "lng": -73.96202666562587,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.361
+  },
+  {
+    "name": "Maria Hernandez Park",
+    "address": "64 IRVING AVENUE",
+    "lat": 40.70324019473759,
+    "lng": -73.92359250043185,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 6.873
+  },
+  {
+    "name": "Ralph Demarco Park",
+    "address": "Shore Blvd. bet. Ditmars Blvd. and 20 Ave.",
+    "lat": 40.78406608681793,
+    "lng": -73.91773037790298,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.82
+  },
+  {
+    "name": "Holcombe Rucker Park",
+    "address": "2930 FRED DOUGLASS BLVD",
+    "lat": 40.82996853685449,
+    "lng": -73.9358421233579,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 3.05
+  },
+  {
+    "name": "Cherry Tree Park",
+    "address": "1785 3 AVENUE",
+    "lat": 40.78716262730904,
+    "lng": -73.94717678451816,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.95
+  },
+  {
+    "name": "Sakura Park",
+    "address": "Riverside Dr., Claremont Ave. To W. 122 St.",
+    "lat": 40.81306678361815,
+    "lng": -73.96207278860207,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 2.067
+  },
+  {
+    "name": "Railroad Playground",
+    "address": "9101 DITMAS AVENUE",
+    "lat": 40.649715832615314,
+    "lng": -73.9145450901387,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.3
+  },
+  {
+    "name": "Utopia Playground",
+    "address": "73 Ave., Jewel Ave. bet. Utopia Pkwy. and 179 St.",
+    "lat": 40.73076102616438,
+    "lng": -73.79289294927665,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.98
+  },
+  {
+    "name": "Newtown Playground",
+    "address": "92-02 56 AVENUE",
+    "lat": 40.736263612567654,
+    "lng": -73.86945187369587,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.703
+  },
+  {
+    "name": "Hoyt Playground",
+    "address": "24-57 29 STREET",
+    "lat": 40.77167493144783,
+    "lng": -73.91696002112863,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.2
+  },
+  {
+    "name": "Devoe Park",
+    "address": "101 WEST FORDHAM ROAD",
+    "lat": 40.86340519467981,
+    "lng": -73.90650290982953,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 5.44
+  },
+  {
+    "name": "Blueberry Park",
+    "address": "Arden Ave. at Blueberry Lane",
+    "lat": 40.52870129993361,
+    "lng": -74.15994483392824,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 0.724
+  },
+  {
+    "name": "Bobbie Lewis Jr. Playground",
+    "address": "Harbor Rd. at Richmond Terr.",
+    "lat": 40.63660847151444,
+    "lng": -74.16046833256662,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 0.271
+  },
+  {
+    "name": "John J Carty Park",
+    "address": "9941 FT HAMILTON PARKWAY",
+    "lat": 40.61350213781884,
+    "lng": -74.02966395314745,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 8.565
+  },
+  {
+    "name": "City Hall Park",
+    "address": "52 CHAMBERS STREET",
+    "lat": 40.712171343406034,
+    "lng": -74.00681218742442,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 8.8
+  },
+  {
+    "name": "Reiff Playground",
+    "address": "59-25 FRESH POND ROAD",
+    "lat": 40.71864609984016,
+    "lng": -73.90171614702687,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.529
+  },
+  {
+    "name": "Van Dyke Playground",
+    "address": "603 MOTHER GASTON BLVD",
+    "lat": 40.66437463818655,
+    "lng": -73.90390740651961,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.398
+  },
+  {
+    "name": "Milestone Park",
+    "address": "8101 18 AVENUE",
+    "lat": 40.60950802933146,
+    "lng": -73.99938836340843,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.476
+  },
+  {
+    "name": "William F Moore Park",
+    "address": "108 St., Corona Ave. bet. 51 Ave. and 52 Ave.",
+    "lat": 40.74370375823161,
+    "lng": -73.85542602863782,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.196
+  },
+  {
+    "name": "Estella Diggs Park",
+    "address": "3436 3 AVENUE",
+    "lat": 40.82893166584341,
+    "lng": -73.90613930930058,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.919
+  },
+  {
+    "name": "Seaside Wildlife Nature Park",
+    "address": "Nelson Ave., Tennyson Dr. and Bulkhead Line",
+    "lat": 40.540699777736506,
+    "lng": -74.14272666438346,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 20.907
+  },
+  {
+    "name": "O'Neill Triangle",
+    "address": "Elton Av bet. E 161 St and E 162 St",
+    "lat": 40.823608852953164,
+    "lng": -73.91135836869202,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.636
+  },
+  {
+    "name": "Fiorello La Guardia Park",
+    "address": "535 LA GUARDIA PLACE",
+    "lat": 40.72859082854842,
+    "lng": -73.99821641469852,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.545
+  },
+  {
+    "name": "Schmul Park",
+    "address": "150 MELVIN AVENUE",
+    "lat": 40.588266043530716,
+    "lng": -74.1852302815796,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 7.395
+  },
+  {
+    "name": "John E. White Park",
+    "address": "High St., Lyman Ave., Bay St. and Summer St.",
+    "lat": 40.60757745906577,
+    "lng": -74.06321802621035,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 0.918
+  },
+  {
+    "name": "Veterans Park",
+    "address": "Heberton Ave., Park Ave., Bennett St., Vreeland St.",
+    "lat": 40.63711105240575,
+    "lng": -74.13181687945699,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 1.324
+  },
+  {
+    "name": "Harlem Art Park",
+    "address": "E. 120 St. and Sylvan Pl.",
+    "lat": 40.80103921613626,
+    "lng": -73.9387510624334,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.347
+  },
+  {
+    "name": "McKinley Park",
+    "address": "7614 FORT HAMILTON PARKWAY",
+    "lat": 40.62628118696122,
+    "lng": -74.01684221304733,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 8.25
+  },
+  {
+    "name": "Vidalia Park",
+    "address": "E. 180 St. bet. Daly Ave. and Vyse Ave.",
+    "lat": 40.84363306207713,
+    "lng": -73.88151554834533,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 2.136
+  },
+  {
+    "name": "Park",
+    "address": "592 - 598 BEACH 43 STREET",
+    "lat": 40.60145714628898,
+    "lng": -73.775165146599,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.2395329
+  },
+  {
+    "name": "Park",
+    "address": "Vandalia Ave., Schroeders Ave., bet. Walker St. and Ashford St.",
+    "lat": 40.654407886395084,
+    "lng": -73.8754882759091,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.351
+  },
+  {
+    "name": "Livonia Park",
+    "address": "393 POWELL STREET",
+    "lat": 40.66389506072842,
+    "lng": -73.9019119569962,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.918
+  },
+  {
+    "name": "The Battery",
+    "address": "10 BATTERY PARK",
+    "lat": 40.701988202569815,
+    "lng": -74.01414577791807,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 21.88
+  },
+  {
+    "name": "Hermon A. MacNeil Park",
+    "lat": 40.79330210384482,
+    "lng": -73.85240061538107,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 28.87
+  },
+  {
+    "name": "Greenwood Playground",
+    "address": "83 EAST 5 STREET",
+    "lat": 40.65116234999193,
+    "lng": -73.976653130721,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.39
+  },
+  {
+    "name": "Yolanda García Park",
+    "address": "820 MELROSE AVENUE",
+    "lat": 40.82308248473646,
+    "lng": -73.9136186004059,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.075
+  },
+  {
+    "name": "Peters Field",
+    "address": "Liberty Ave. bet. 183 St. and 183 Pl.",
+    "lat": 40.70615473269701,
+    "lng": -73.77503540531782,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 2.872
+  },
+  {
+    "name": "Bushwick Inlet Park",
+    "address": "86 KENT AVENUE",
+    "lat": 40.72440055951683,
+    "lng": -73.96061435356303,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 35.533
+  },
+  {
+    "name": "Barretto Point Park",
+    "address": "1121 VIELE AVENUE",
+    "lat": 40.80501317942157,
+    "lng": -73.8883154186265,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 12.224
+  },
+  {
+    "name": "Marlboro Playground",
+    "address": "W. 11 St. at Ave. W",
+    "lat": 40.59116907016564,
+    "lng": -73.98073551864556,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.072
+  },
+  {
+    "name": "Captain Tilly Park",
+    "address": "165-01 HIGHLAND AVENUE",
+    "lat": 40.712424082775065,
+    "lng": -73.79815863142866,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 9.16
+  },
+  {
+    "name": "Carl Schurz Park",
+    "address": "97 EAST END AVENUE",
+    "lat": 40.775986521789314,
+    "lng": -73.94275466875715,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 14.938
+  },
+  {
+    "name": "Dr. Thomasina Bushby Park",
+    "address": "1801 DAVIDSON AVENUE",
+    "lat": 40.84960931172468,
+    "lng": -73.91246445017492,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.258
+  },
+  {
+    "name": "Greenpoint Landing",
+    "address": "Commercial St. bet. Franklin St. and Clay St., and Dupont St. and Eagle St.",
+    "lat": 40.736394214357595,
+    "lng": -73.9601344387364,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.486
+  },
+  {
+    "name": "Mapes Pool",
+    "address": "767 EAST 179 STREET",
+    "lat": 40.84656070140013,
+    "lng": -73.88626176318428,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.68
+  },
+  {
+    "name": "Cedar Playground",
+    "address": "W 179 St bet. Cedar Av and Sedgwick Av",
+    "lat": 40.85542158353258,
+    "lng": -73.91692717655827,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 1.8
+  },
+  {
+    "name": "Park",
+    "address": "Elizabeth St., Mott St. bet. Prince St. and Spring St.",
+    "lat": 40.72221901752165,
+    "lng": -73.99474469153493,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.493
+  },
+  {
+    "name": "Cpl Fischer Park",
+    "address": "1340 NELSON AVENUE",
+    "lat": 40.84041306744486,
+    "lng": -73.92278501213055,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.44
+  },
+  {
+    "name": "Barretto Park",
+    "address": "634 BARRETTO STREET",
+    "lat": 40.81284906780394,
+    "lng": -73.88863026490884,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.12
+  },
+  {
+    "name": "Alexander's Alley",
+    "address": "344 EAST 141 STREET",
+    "lat": 40.8115362722853,
+    "lng": -73.92321920051549,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.11
+  },
+  {
+    "name": "South Oxford Park",
+    "address": "187 SOUTH OXFORD STREET",
+    "lat": 40.68362554984574,
+    "lng": -73.97246371564222,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.187
+  },
+  {
+    "name": "Korean War Veterans Plaza",
+    "address": "287 FULTON STREET",
+    "lat": 40.695772351528504,
+    "lng": -73.99052012050088,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.195
+  },
+  {
+    "name": "Starlight Park",
+    "address": "1041 EAST 172 STREET",
+    "lat": 40.83199461824061,
+    "lng": -73.88309223656671,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 17.256
+  },
+  {
+    "name": "Grant Park",
+    "address": "250-265 EAST 170 STREET",
+    "lat": 40.836980622761175,
+    "lng": -73.91294840038285,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 4.72
+  },
+  {
+    "name": "Eae J Mitchell Park",
+    "address": "995 EAST 174 STREET",
+    "lat": 40.836469356835664,
+    "lng": -73.88434613517764,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.183
+  },
+  {
+    "name": "Rev Lena Irons Unity Park",
+    "address": "1216 WASHINGTON AVENUE",
+    "lat": 40.83102069620707,
+    "lng": -73.90656301429469,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.342
+  },
+  {
+    "name": "Fox Park",
+    "address": "724 FOX STREET",
+    "lat": 40.81483302878062,
+    "lng": -73.89838393630659,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.94
+  },
+  {
+    "name": "Haffen Park",
+    "address": "1750 BURKE AVENUE",
+    "lat": 40.873609936164385,
+    "lng": -73.83885680442367,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 9.238
+  },
+  {
+    "name": "Tompkins Square Park",
+    "address": "144 AVENUE A",
+    "lat": 40.7261981000373,
+    "lng": -73.98162110518723,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 10.502
+  },
+  {
+    "name": "Robert L. Clinkscales Playground and Community Garden",
+    "address": "218-234 WEST 146 STREET",
+    "lat": 40.82273903968495,
+    "lng": -73.94008962299621,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.436
+  },
+  {
+    "name": "Mount Prospect Park",
+    "address": "Eastern Pkwy., Flatbush Ave. bet. Underhill Ave. and Washington Ave.",
+    "lat": 40.67193941805578,
+    "lng": -73.96675129622882,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 7.79
+  },
+  {
+    "name": "Charlton-Thompson Garden",
+    "address": "596 EAST 164 STREET",
+    "lat": 40.82472326323192,
+    "lng": -73.907047066987,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.488
+  },
+  {
+    "name": "Rainey Park",
+    "address": "Vernon Blvd. bet. 33 Rd. and 34 Ave.",
+    "lat": 40.76664400453852,
+    "lng": -73.94069147519453,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 8.09
+  },
+  {
+    "name": "Brookfield Park",
+    "address": "Arthur Kill Rd. bet. Richmond Ave. and New Vale Ave.",
+    "lat": 40.56863019070839,
+    "lng": -74.15965224164701,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 258.72
+  },
+  {
+    "name": "Leif Ericson Park",
+    "address": "67 St., 66 St. bet. 4 Ave. and Ft. Hamilton Pkwy.",
+    "lat": 40.63529064983931,
+    "lng": -74.01910599782457,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 16.8
+  },
+  {
+    "name": "Joseph Rodman Drake Park & Enslaved African Burial Ground",
+    "address": "Oak Pt. Ave.  bet. Hunts Pt. Ave. and Longfellow Ave.",
+    "lat": 40.81023132435189,
+    "lng": -73.88250401184976,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 2.49
+  },
+  {
+    "name": "Rappaport Playground",
+    "address": "5202 FT HAMILTON PARKWAY",
+    "lat": 40.63703997305513,
+    "lng": -74.00065510246581,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.148
+  },
+  {
+    "name": "Police Officer John G. Scarangella Park",
+    "address": "W. 13 St., Stillwell Ave. bet. Ave. U and Ave. V",
+    "lat": 40.59448367890133,
+    "lng": -73.98423009231321,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.214
+  },
+  {
+    "name": "London Planetree Playground",
+    "address": "88-02 ATLANTIC AVENUE",
+    "lat": 40.68622638422522,
+    "lng": -73.85336196125073,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.837
+  },
+  {
+    "name": "Harris Park",
+    "address": "3034 GOULDEN AVENUE",
+    "lat": 40.87641042390018,
+    "lng": -73.891497302573,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 15.32
+  },
+  {
+    "name": "Joan Of Arc Park",
+    "address": "Riverside Dr., W. 91 St. To W. 95 St.",
+    "lat": 40.794287264492745,
+    "lng": -73.97644143586395,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.578
+  },
+  {
+    "name": "Railroad Park",
+    "address": "Coutlandt Av bet. E 161 St and E 162 St",
+    "lat": 40.825142074941326,
+    "lng": -73.9152688649951,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.732
+  },
+  {
+    "name": "Grand Ferry Park",
+    "address": "1 GRAND STREET",
+    "lat": 40.71659022866783,
+    "lng": -73.96711200773105,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.7
+  },
+  {
+    "name": "Socrates Sculpture Park",
+    "address": "31-30 VERNON BOULEVARD",
+    "lat": 40.7691389097614,
+    "lng": -73.93636050179104,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 6.28
+  },
+  {
+    "name": "Rock Garden Park",
+    "address": "Longfellow Av bet. E 173 St and E 174 St",
+    "lat": 40.83531403370888,
+    "lng": -73.88519925018515,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.977
+  },
+  {
+    "name": "Sutton Place Park",
+    "address": "E. River bet. E. 56 St. and E. 57 St.",
+    "lat": 40.75672705696664,
+    "lng": -73.96026621093827,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.268
+  },
+  {
+    "name": "Crowley Playground",
+    "address": "Queens Midtown Exwy., 57 Ave. bet. 84 St. and 82 St.",
+    "lat": 40.729815887700845,
+    "lng": -73.87904191647635,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.633
+  },
+  {
+    "name": "Ruppert Park",
+    "address": "Second Ave. bet. E. 90 St. and E. 91 St.",
+    "lat": 40.780880254373244,
+    "lng": -73.95010063509605,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.997
+  },
+  {
+    "name": "East River Esplanade",
+    "address": "FDR Dr. bet. E. 36 St. and E. 41 St.",
+    "lat": 40.7454488964899,
+    "lng": -73.97001825629289,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.735
+  },
+  {
+    "name": "Amersfort Park",
+    "address": "54-42 43 STREET",
+    "lat": 40.628447996829095,
+    "lng": -73.93891728471519,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 3.557
+  },
+  {
+    "name": "De Matti Park",
+    "address": "Tompkins Ave., bet. Chestnut St. and Shaughnessy La.",
+    "lat": 40.61434966424345,
+    "lng": -74.07426535992222,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 2.335
+  },
+  {
+    "name": "Irving Square Park",
+    "address": "Wilson Ave., Knickerbocker Ave., bet. Halsey St. and Weirfield St.",
+    "lat": 40.692540364060605,
+    "lng": -73.90899450698922,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.76
+  },
+  {
+    "name": "John Paul Jones Park",
+    "address": "101 St., Shore Pkwy. bet. 4 Ave. and Ft. Hamilton Pkwy.",
+    "lat": 40.610882869614166,
+    "lng": -74.03429234488763,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 5.317
+  },
+  {
+    "name": "Joseph C. Sauer Park",
+    "address": "532 EAST 12 STREET",
+    "lat": 40.728095193255506,
+    "lng": -73.97970336952203,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.403
+  },
+  {
+    "name": "Laurelton Playground",
+    "address": "Brookville Blvd. bet. 136 Ave. 137 Ave.",
+    "lat": 40.670087720759724,
+    "lng": -73.73642067308235,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.785
+  },
+  {
+    "name": "Ciccarone Park",
+    "address": "E 188 St bet. Arthur Av and Hughes Av",
+    "lat": 40.85598601866979,
+    "lng": -73.88661219911617,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 0.553
+  },
+  {
+    "name": "Heritage Park",
+    "address": "Richmond Ter. at Tompkins Ct., Kill Van Kull",
+    "lat": 40.64114313111066,
+    "lng": -74.12158547444761,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 9.934
+  },
+  {
+    "name": "Goodhue Park",
+    "address": "Brighton Ave. bet. Lafayette Ave. and N. Randall Ave.",
+    "lat": 40.6358100744009,
+    "lng": -74.09540245304241,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 26.532
+  },
+  {
+    "name": "Tompkinsville Park",
+    "address": "Bay St., Victory Blvd.",
+    "lat": 40.63738848963783,
+    "lng": -74.07637372809879,
+    "borough": "R",
+    "type": "Neighborhood Park",
+    "acres": 0.424
+  },
+  {
+    "name": "Butterfly Gardens",
+    "address": "7 Ave. bet. 18 St. and 17 St.",
+    "lat": 40.66021630569521,
+    "lng": -73.98658412086515,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 0.442
+  },
+  {
+    "name": "Beach 17 Playground",
+    "address": "9-01 SEAGIRT BOULEVARD",
+    "lat": 40.5948480530516,
+    "lng": -73.74893936366321,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 13.75
+  },
+  {
+    "name": "MacDonald Park",
+    "address": "Queens Blvd. bet. Yellowstone Blvd. and 70 Rd.",
+    "lat": 40.72215478883951,
+    "lng": -73.84663069861612,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 1.415
+  },
+  {
+    "name": "Beach 30th Street Playground",
+    "address": "102 BEACH 32 STREET",
+    "lat": 40.59271714147737,
+    "lng": -73.7622381473266,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 7.122
+  },
+  {
+    "name": "Canal Park",
+    "address": "Canal St. bet. West St. and Washington St.",
+    "lat": 40.72540941388271,
+    "lng": -74.0105375024882,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.669
+  },
+  {
+    "name": "Jerome Park",
+    "address": "Goulden Av bet. W 205 St and Sedgwick Av",
+    "lat": 40.87929216481342,
+    "lng": -73.89143374409622,
+    "borough": "X",
+    "type": "Neighborhood Park",
+    "acres": 4.359
+  },
+  {
+    "name": "Amelia Gorman Park",
+    "address": "Broadway To Wadsworth Terr, W 189 St To W 190 St",
+    "lat": 40.85569896639764,
+    "lng": -73.93227814784622,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1.89
+  },
+  {
+    "name": "Hillside Dog Park",
+    "address": "4 VINE STREET",
+    "lat": 40.701236043000016,
+    "lng": -73.99424322997362,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 2.06
+  },
+  {
+    "name": "Hallets Cove Playground",
+    "address": "Vernon Blvd., Main Ave. to Astoria Blvd., 1 St.",
+    "lat": 40.77286231189668,
+    "lng": -73.93580917271477,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 5.84399754
+  },
+  {
+    "name": "Martin Luther King, Jr. Playground",
+    "address": "62 LENOX AVENUE",
+    "lat": 40.800159314467166,
+    "lng": -73.95049187530067,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 1
+  },
+  {
+    "name": "Washington Market Park",
+    "address": "304 GREENWICH STREET",
+    "lat": 40.71726883542525,
+    "lng": -74.01167410284289,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 2.15
+  },
+  {
+    "name": "Nameoke Park",
+    "address": "20-06 NAMEOKE AVENUE",
+    "lat": 40.60721061798975,
+    "lng": -73.75083686429406,
+    "borough": "Q",
+    "type": "Neighborhood Park",
+    "acres": 0.318
+  },
+  {
+    "name": "Carroll Park",
+    "address": "375 COURT STREET",
+    "lat": 40.68105968925588,
+    "lng": -73.99523855379053,
+    "borough": "B",
+    "type": "Neighborhood Park",
+    "acres": 1.874
+  },
+  {
+    "name": "First Park",
+    "address": "2 2 AVENUE",
+    "lat": 40.723688106952146,
+    "lng": -73.99011705501908,
+    "borough": "M",
+    "type": "Neighborhood Park",
+    "acres": 0.763
+  },
+  {
+    "name": "Lemon Creek Park",
+    "address": "91 TRENTON COURT",
+    "lat": 40.51402763498842,
+    "lng": -74.19966978775405,
+    "borough": "R",
+    "type": "Waterfront Facility",
+    "acres": 104.545
+  },
+  {
+    "name": "Pier 107 CVII",
+    "address": "500-501 E. 107 Street",
+    "lat": 40.789045421346465,
+    "lng": -73.9365410864422,
+    "borough": "M",
+    "type": "Waterfront Facility",
+    "acres": 0.356
+  },
+  {
+    "name": "Tiffany Street Pier",
+    "address": "Tiffany St. at Viele Ave.",
+    "lat": 40.805602499929826,
+    "lng": -73.8905791999397,
+    "borough": "X",
+    "type": "Waterfront Facility",
+    "acres": 4.231
+  },
+  {
+    "name": "Beach Channel Park",
+    "address": "Beach Channel Dr. bet. B. 117 St. and B. 124 St.",
+    "lat": 40.582104633691365,
+    "lng": -73.84248374122888,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 12.624
+  },
+  {
+    "name": "Franklin D. Roosevelt Boardwalk and Beach",
+    "address": "280 FR CAPODANNO BLVD",
+    "lat": 40.57899825722813,
+    "lng": -74.0777245938176,
+    "borough": "R",
+    "type": "Waterfront Facility",
+    "acres": 644.35
+  },
+  {
+    "name": "East River Esplanade",
+    "lat": 40.78671238451307,
+    "lng": -73.93927207667546,
+    "borough": "M",
+    "type": "Waterfront Facility",
+    "acres": 8.595
+  },
+  {
+    "name": "Pier 42",
+    "address": "42 SOUTH STREET",
+    "lat": 40.7102164679317,
+    "lng": -73.98286583723967,
+    "borough": "M",
+    "type": "Waterfront Facility",
+    "acres": 7.782
+  },
+  {
+    "name": "Rockaway Beach Boardwalk",
+    "address": "Shore Front Pkwy. bet. Beach 109 St. and B. 73 St.",
+    "lat": 40.584116709934996,
+    "lng": -73.8136866688592,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 376.2
+  },
+  {
+    "name": "West Harlem Piers",
+    "address": "Henry Hudson Pkwy. bet. St Clair Pl. and W. 135 St.",
+    "lat": 40.81909679226846,
+    "lng": -73.9619331693766,
+    "borough": "M",
+    "type": "Waterfront Facility",
+    "acres": 4.712
+  },
+  {
+    "name": "East River Walk",
+    "address": "FDR Drive, E 63 St. To E 81 St.",
+    "lat": 40.76648598517475,
+    "lng": -73.9507559502871,
+    "borough": "M",
+    "type": "Waterfront Facility",
+    "acres": 3.089
+  },
+  {
+    "name": "Catherine Scott Promenade",
+    "address": "City Island Ave., City Island Bridge",
+    "lat": 40.85530502455999,
+    "lng": -73.7916182122703,
+    "borough": "X",
+    "type": "Waterfront Facility",
+    "acres": 0.53
+  },
+  {
+    "name": "Stapleton Esplanade",
+    "address": "Front St. bet. Wave St. and Canal St.",
+    "lat": 40.62827772097093,
+    "lng": -74.07302471061413,
+    "borough": "R",
+    "type": "Waterfront Facility",
+    "acres": 4.605
+  },
+  {
+    "name": "North 5th Street Pier and Park",
+    "address": "Kent Ave. bet. N. 4 St. and N. 7 St.",
+    "lat": 40.72025358382456,
+    "lng": -73.96460418202348,
+    "borough": "B",
+    "type": "Waterfront Facility",
+    "acres": 3.083
+  },
+  {
+    "name": "Rockaway Beach and Boardwalk",
+    "address": "Rockaway Boardwalk bet. Crest Rd. and B. 17 St.",
+    "lat": 40.592693341263754,
+    "lng": -73.75451533770713,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 3.809
+  },
+  {
+    "name": "American Veterans Memorial Pier",
+    "address": "Bay Ridge Ave., Shore Rd., Upper Bay",
+    "lat": 40.63954514399818,
+    "lng": -74.03744562241468,
+    "borough": "B",
+    "type": "Waterfront Facility",
+    "acres": 3.169
+  },
+  {
+    "name": "Sheepshead Bay Piers",
+    "address": "Emmons Ave. bet. Ocean Ave. and E. 26 St.",
+    "lat": 40.58347762795773,
+    "lng": -73.94496214926116,
+    "borough": "B",
+    "type": "Waterfront Facility",
+    "acres": 1.22
+  },
+  {
+    "name": "Rockaway Beach and Boardwalk",
+    "address": "Lands underwater bet. B. 2 St. and B. 73 St.",
+    "lat": 40.59067972463845,
+    "lng": -73.77256250567837,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 498.154
+  },
+  {
+    "name": "Rockaway Beach",
+    "address": "Ocean Promenade, bet. Beach 126 St. and Beach 110 St.",
+    "lat": 40.57747709879809,
+    "lng": -73.8360059705428,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 31.5
+  },
+  {
+    "name": "Rockaway Beach",
+    "address": "Atlantic Ocean bet. B. 149 St. and B. 126 St.",
+    "lat": 40.57059591092746,
+    "lng": -73.84952796810306,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 166.71
+  },
+  {
+    "name": "Coney Island Beach & Boardwalk",
+    "address": "Corbin Pl. to W. 37 St., Boardwalk",
+    "lat": 40.572915963134776,
+    "lng": -73.97922131113852,
+    "borough": "B",
+    "type": "Waterfront Facility",
+    "acres": 399.473
+  },
+  {
+    "name": "Bay Breeze Park",
+    "address": "88-02 BEACH CHANNEL DRIVE",
+    "lat": 40.590701012153716,
+    "lng": -73.81418439679332,
+    "borough": "Q",
+    "type": "Waterfront Facility",
+    "acres": 4.796
+  }
+]

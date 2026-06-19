@@ -1,1 +1,1272 @@
-[]
+[
+  {
+    "name": "175th Street Greenmarket",
+    "lat": 40.845948,
+    "lng": -73.937811,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday",
+    "hoursOperation": "8 a.m. - 4p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "4th Ave Sunset Park Greenmarket",
+    "lat": 40.647975,
+    "lng": -74.003744,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "57th Street Greenmarket",
+    "lat": 40.769117,
+    "lng": -73.988559,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "79th Street Greenmarket",
+    "lat": 40.782295,
+    "lng": -73.975244,
+    "borough": "Manhattan",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 4 p.m",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "7th Ave Sunset Park Greenmarket",
+    "lat": 40.645841,
+    "lng": -74.002402,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "82nd Street Greenmarket",
+    "lat": 40.774292,
+    "lng": -73.951262,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "97th Street Greenmarket",
+    "lat": 40.794003,
+    "lng": -73.96807,
+    "borough": "Manhattan",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Abingdon Square Park Greenmarket",
+    "lat": 40.737553,
+    "lng": -74.005687,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Bartel-Pritchard Square Greenmarket",
+    "lat": 40.661354,
+    "lng": -73.96968,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday & Sunday (starting 5/5)",
+    "hoursOperation": "8 a.m. - 2 p.m. (W); 9 a.m. - 2 p.m. (SU)",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bay Ridge Greenmarket",
+    "lat": 40.61781,
+    "lng": -74.03338,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bed-Stuy Farmstand",
+    "lat": 40.681376,
+    "lng": -73.933948,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bensonhurst Greenmarket",
+    "lat": 40.609588,
+    "lng": -73.999677,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bissel Gardens Farmers Market",
+    "lat": 40.90152,
+    "lng": -73.846937,
+    "borough": "Bronx",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m.- 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Black Radish Farmstand",
+    "lat": 40.651172,
+    "lng": -73.889936,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "noon - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Boro Park Greenmarket",
+    "lat": 40.633285,
+    "lng": -73.990548,
+    "borough": "Brooklyn",
+    "daysOperation": "Thursday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bowling Green Greenmarket",
+    "lat": 40.704549,
+    "lng": -74.01429,
+    "borough": "Manhattan",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bro Sis Green Youth Market",
+    "lat": 40.82394,
+    "lng": -73.948552,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10:30 a.m. - 6 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bronx Borough Hall Greenmarket",
+    "lat": 40.827335,
+    "lng": -73.922911,
+    "borough": "Bronx",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Bronx Park East (BxPE) Farmers Market",
+    "lat": 40.851713,
+    "lng": -73.867786,
+    "borough": "Bronx",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "BronxWorks Farm Stand",
+    "lat": 40.832759,
+    "lng": -73.919296,
+    "borough": "Bronx",
+    "daysOperation": "Thursday",
+    "hoursOperation": "10 a.m.-2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Brooklyn Borough Hall Greenmarket",
+    "lat": 40.693722,
+    "lng": -73.990455,
+    "borough": "Brooklyn",
+    "daysOperation": "Tusday & Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Brownsville Pitkin Farmstand",
+    "lat": 40.669234,
+    "lng": -73.913698,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Carroll Gardens Greenmarket",
+    "lat": 40.680761,
+    "lng": -73.99552,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Children's Aid Go!Healthy Food Box + Farmstand - CS211",
+    "lat": 40.843546,
+    "lng": -73.889755,
+    "borough": "Bronx",
+    "daysOperation": "Thursday",
+    "hoursOperation": "1:30 p.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Children's Aid Go!Healthy Food Box + Farmstand - Goodhue Center",
+    "lat": 40.638936,
+    "lng": -74.097966,
+    "borough": "Staten Island",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "1:30 p.m. - 4:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Children's Aid Go!Healthy Food Box + Farmstand - Milbank Center",
+    "lat": 40.802317,
+    "lng": -73.946351,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "2:30 p.m. - 5:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Children's Aid Go!Healthy Food Box + Farmstand - PS 152",
+    "lat": 40.860412,
+    "lng": -73.927936,
+    "borough": "Manhattan",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "2 p.m - 5 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "City Hall Greenmarket",
+    "lat": 40.713696,
+    "lng": -74.00672,
+    "borough": "Manhattan",
+    "daysOperation": "Tuesdays",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Columbia Greenmarket",
+    "lat": 40.807145,
+    "lng": -73.964265,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday & Sunday",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Corona Greenmarket",
+    "lat": 40.749869,
+    "lng": -73.862726,
+    "borough": "Queens",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Cortelyou Greenmarket",
+    "lat": 40.64051,
+    "lng": -73.966021,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Crown Heights Farmstand",
+    "lat": 40.666472,
+    "lng": -73.950807,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday",
+    "hoursOperation": "9:30 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Cypress Hills Farmstand",
+    "lat": 40.682391,
+    "lng": -73.913554,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Dag Hammarskjold Greenmarket",
+    "lat": 40.752122,
+    "lng": -73.968154,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Domino Park Greenmarket",
+    "lat": 40.715404,
+    "lng": -73.967423,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Down to Earth Chelsea Farmers Market",
+    "lat": 40.745944,
+    "lng": -74.000004,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Down to Earth Cunningham Park Farmers Market",
+    "lat": 40.730929,
+    "lng": -73.774773,
+    "borough": "Queens",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Down to Earth McGolrick Park Farmers Market",
+    "lat": 40.724305,
+    "lng": -73.944271,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Down to Earth Morningside Park Farmers Market",
+    "lat": 40.801263,
+    "lng": -73.959582,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Down to Earth Park Slope Farmers Market",
+    "lat": 40.672424,
+    "lng": -73.984257,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "East New York Farm Stand",
+    "lat": 40.675404,
+    "lng": -73.871914,
+    "borough": "Brooklyn",
+    "daysOperation": "Thursday",
+    "hoursOperation": "1-5 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "East New York Farmers Market",
+    "lat": 40.665296,
+    "lng": -73.886557,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Eastchester Farmstand",
+    "lat": 40.88372,
+    "lng": -73.842046,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Edgemere Farm Market",
+    "lat": 40.595255,
+    "lng": -73.776524,
+    "borough": "Queens",
+    "daysOperation": "Friday & Saturday",
+    "hoursOperation": "3 p.m. - 6 p.m. (Friday); 10 a.m. - 1 p.m. (Saturday)",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Elmhurst Hospital Greenmarket",
+    "lat": 40.745794,
+    "lng": -73.885489,
+    "borough": "Queens",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Far Rock Farm Stand",
+    "lat": 40.595572,
+    "lng": -73.777001,
+    "borough": "Queens",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Flushing Greenmarket",
+    "lat": 40.757731,
+    "lng": -73.824852,
+    "borough": "Queens",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Forest Hills Greenmarket",
+    "lat": 40.722054,
+    "lng": -73.847155,
+    "borough": "Queens",
+    "daysOperation": "Sunday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Forest Park Farmstand",
+    "lat": 40.701192,
+    "lng": -73.841597,
+    "borough": "Queens",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Fort Greene Greenmarket",
+    "lat": 40.691457,
+    "lng": -73.973421,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fort Washington Greenmarket",
+    "lat": 40.842296,
+    "lng": -73.942027,
+    "borough": "Manhattan",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Fresh Vibes Market at Brookdale Hospital",
+    "lat": 40.654163,
+    "lng": -73.911584,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday (1st and 3rd of each month)",
+    "hoursOperation": "11 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fresh Vibes Market at Emblem Health Crown Heights",
+    "lat": 40.669826,
+    "lng": -73.949958,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday (3rd Wednesday of each month)",
+    "hoursOperation": "11 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fresh Vibes Market at Emblem Health East New York",
+    "lat": 40.6753,
+    "lng": -73.896728,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday (2nd of each month)",
+    "hoursOperation": "11 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fresh Vibes Market at Medgar Evers College",
+    "lat": 40.666269,
+    "lng": -73.956676,
+    "borough": "Brooklyn",
+    "daysOperation": "Monday (1st and 3rd)",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Fresh Vibes Market at the Bureau of Brooklyn Neighborhood Health",
+    "lat": 40.685654,
+    "lng": -73.941462,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday (2nd and 4th)",
+    "hoursOperation": "11 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fresh Vibes Market at the Local Development Corportation of Crown Heights, Inc.",
+    "lat": 40.670929,
+    "lng": -73.942062,
+    "borough": "Brooklyn",
+    "daysOperation": "Tuesday (1st of each month)",
+    "hoursOperation": "11 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Fulton Stall Market (indoor farmers market)",
+    "lat": 40.705865,
+    "lng": -74.003769,
+    "borough": "Manhattan",
+    "daysOperation": "Mon-Sat",
+    "hoursOperation": "11:30 a.m. - 5 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Gouverneur Health Farmstand",
+    "lat": 40.712905,
+    "lng": -73.986928,
+    "borough": "Manhattan",
+    "daysOperation": "Friday",
+    "hoursOperation": "8:30 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Grand Army Plaza Greenmarket",
+    "lat": 40.672525,
+    "lng": -73.969799,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Grass Roots Farmers' Market",
+    "lat": 40.823647,
+    "lng": -73.943844,
+    "borough": "Manhattan",
+    "daysOperation": "Tuesday & Saturday",
+    "hoursOperation": "9 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Greenmarket at Rockefeller Center",
+    "lat": 40.759204,
+    "lng": -73.978335,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 5 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harlem Health Market",
+    "lat": 40.8089152,
+    "lng": -73.9475966,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Coney Island Hospital Farmers Market",
+    "lat": 40.5867,
+    "lng": -73.96615,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Co-op City Farm Stand",
+    "lat": 40.8702,
+    "lng": -73.830963,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday & Saturdays",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home East Harlem Farmers Market",
+    "lat": 40.7903,
+    "lng": -73.945635,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Hunts Point Farm Stand",
+    "lat": 40.81894,
+    "lng": -73.893492,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Jacobi Hospital Farmers Market",
+    "lat": 40.8574,
+    "lng": -73.847079,
+    "borough": "Bronx",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Metropolitan Hospital Farmers Market",
+    "lat": 40.784943,
+    "lng": -73.946589,
+    "borough": "Manhattan",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Harvest Home Mt. Eden Malls Farmers Market",
+    "lat": 40.8429,
+    "lng": -73.909558,
+    "borough": "Bronx",
+    "daysOperation": "Tuesday & Thursday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Heritage Farm Stand (Compost Demonstration Site)",
+    "lat": 40.645075,
+    "lng": -74.104753,
+    "borough": "Staten Island",
+    "daysOperation": "Thursday & Saturday",
+    "hoursOperation": "3:30 p.m. - 6 p.m. (Thursday); 9 a.m. - 12 p.m. (Saturday)",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Inwood Greenmarket",
+    "lat": 40.869001,
+    "lng": -73.920896,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Isabahlia Farmers Market at ISO Student Farm",
+    "lat": 40.667554,
+    "lng": -73.910207,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday & Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Isabahlia Farmers Market at Powell Street Garden",
+    "lat": 40.663532,
+    "lng": -73.902236,
+    "borough": "Brooklyn",
+    "daysOperation": "Friday & Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Jackson Heights Greenmarket",
+    "lat": 40.753607,
+    "lng": -73.887739,
+    "borough": "Queens",
+    "daysOperation": "Sunday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "JBOLC Garden Community Farmers Market",
+    "lat": 40.882178,
+    "lng": -73.88691,
+    "borough": "Bronx",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "La Familia Verde Farmers Market",
+    "lat": 40.846448,
+    "lng": -73.893563,
+    "borough": "Bronx",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "La Familia Verde Farmers Market Highbridge Farmers Market",
+    "lat": 40.843627,
+    "lng": -73.922243,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "La Familia Verde Southern Boulevard Farmers Market",
+    "lat": 40.824955,
+    "lng": -73.891918,
+    "borough": "Bronx",
+    "daysOperation": "Thursday",
+    "hoursOperation": "10 a.m. - 1 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Lenox Hill Farmstand",
+    "lat": 40.766925,
+    "lng": -73.95795,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday",
+    "hoursOperation": "11 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Lincoln Hospital Greenmarket",
+    "lat": 40.818013,
+    "lng": -73.925185,
+    "borough": "Bronx",
+    "daysOperation": "Tuesdays & Fridays",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Lower East Side Farmstand",
+    "lat": 40.71521,
+    "lng": -73.984258,
+    "borough": "Manhattan",
+    "daysOperation": "Friday",
+    "hoursOperation": "9 a.m. - 1 :30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "McCarren Park Greenmarket",
+    "lat": 40.719219,
+    "lng": -73.952479,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Morning Glory Market at the New York Botanical Gardens",
+    "lat": 40.865684,
+    "lng": -73.883312,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Morris Heights Farmstand",
+    "lat": 40.854925,
+    "lng": -73.911078,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "9:30 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Morrisania Farmstand",
+    "lat": 40.83118,
+    "lng": -73.900545,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Mott Haven Farm Stand",
+    "lat": 40.807883,
+    "lng": -73.917885,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "9 a.m. - 1 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Mount Sinai Greenmarket",
+    "lat": 40.789386,
+    "lng": -73.952595,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "New Roots Farm Stand",
+    "lat": 40.821447,
+    "lng": -73.925492,
+    "borough": "Bronx",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Norwood Farmstand",
+    "lat": 40.88222,
+    "lng": -73.880458,
+    "borough": "Bronx",
+    "daysOperation": "Thursday",
+    "hoursOperation": "9:30 a.m. - 2:30 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Parkchester Greenmarket",
+    "lat": 40.833279,
+    "lng": -73.862833,
+    "borough": "Bronx",
+    "daysOperation": "Friday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Perez Farm Stand",
+    "lat": 40.70236,
+    "lng": -73.818531,
+    "borough": "Queens",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "10 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Poe Park Greenmarket",
+    "lat": 40.86431,
+    "lng": -73.895379,
+    "borough": "Bronx",
+    "daysOperation": "Tuesday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Project EATS & St. Barnabas Hospital Farm Stand",
+    "lat": 40.853237,
+    "lng": -73.891742,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "11 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Project EATS Brownsville Farm Stand",
+    "lat": 40.664477,
+    "lng": -73.910384,
+    "borough": "Brooklyn",
+    "daysOperation": "Thursday",
+    "hoursOperation": "11 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Project EATS Farm Stand at Essex Crossing",
+    "lat": 40.719322,
+    "lng": -73.987817,
+    "borough": "Manhattan",
+    "daysOperation": "TBD",
+    "hoursOperation": "11 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Project EATS Farm Stand at The Crossing",
+    "lat": 40.786236,
+    "lng": -73.942511,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "11 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "PS 11 Farm Market",
+    "lat": 40.744349,
+    "lng": -74.000253,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "8 a.m. - 10 a.m.",
+    "acceptsEbt": false,
+    "openYearRound": false
+  },
+  {
+    "name": "PS 178 Farmers Market",
+    "lat": 40.675024,
+    "lng": -73.915778,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "noon - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "PS 57 Farmstand",
+    "lat": 40.797577,
+    "lng": -73.94128,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Queens County Farm Museum Farm Stand",
+    "lat": 40.748163,
+    "lng": -73.719431,
+    "borough": "Queens",
+    "daysOperation": "Wednesday - Sunday",
+    "hoursOperation": "10 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Queens Farm - Queens Borough Hall",
+    "lat": 40.713318,
+    "lng": -73.82858,
+    "borough": "Queens",
+    "daysOperation": "Thursday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Queens Farm @ Jamaica Hospital",
+    "lat": 40.70236,
+    "lng": -73.818531,
+    "borough": "Queens",
+    "daysOperation": "Friday",
+    "hoursOperation": "10 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Red Hook Farm Stand",
+    "lat": 40.672524,
+    "lng": -74.00871,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Ridgewood Farmstand",
+    "lat": 40.700403,
+    "lng": -73.90668,
+    "borough": "Queens",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9:30 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "RiseBoro Farmers Markets at Hope Ballfield",
+    "lat": 40.69768,
+    "lng": -73.916366,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "RiseBoro Farmers Markets at Irving Square Park",
+    "lat": 40.693761,
+    "lng": -73.909497,
+    "borough": "Brooklyn",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "RiseBoro Farmers Markets at Maria Hernandez",
+    "lat": 40.702811,
+    "lng": -73.92539,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Riverdale Neighborhood House Youth Market",
+    "lat": 40.903039,
+    "lng": -73.90375,
+    "borough": "Bronx",
+    "daysOperation": "Thursday",
+    "hoursOperation": "1 p.m. - 6 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Riverdale Y Sunday Market",
+    "lat": 40.891762,
+    "lng": -73.912208,
+    "borough": "Bronx",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Ruppert Park Greenmarket",
+    "lat": 40.780294,
+    "lng": -73.949521,
+    "borough": "Manhattan",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Saratoga Farm Stand",
+    "lat": 40.678562,
+    "lng": -0.000079704,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "10 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "St. George Greenmarket",
+    "lat": 40.641586,
+    "lng": -74.0779,
+    "borough": "Staten Island",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 1 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Staten Island Mall Greenmarket",
+    "lat": 40.583804,
+    "lng": -74.161245,
+    "borough": "Staten Island",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Stuyvesant Town Greenmarket",
+    "lat": 40.731498,
+    "lng": -73.97818,
+    "borough": "Manhattan",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9:30 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Sunnyside Greenmarket",
+    "lat": 40.74701,
+    "lng": -73.92173,
+    "borough": "Queens",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Tompkins Square Greenmarket",
+    "lat": 40.726054,
+    "lng": -73.983534,
+    "borough": "Manhattan",
+    "daysOperation": "Sunday",
+    "hoursOperation": "9 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Tribeca Greenmarket",
+    "lat": 40.716303,
+    "lng": -74.010966,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "8 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Tucker Square Greenmarket",
+    "lat": 40.773709,
+    "lng": -73.98196,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday & Saturday",
+    "hoursOperation": "8 a.m. - 4 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Two Bridges Youth Market",
+    "lat": 40.711958,
+    "lng": -73.997825,
+    "borough": "Manhattan",
+    "daysOperation": "Sunday",
+    "hoursOperation": "10:30 a.m. - 3:00 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Union Square Greenmarket",
+    "lat": 40.737133,
+    "lng": -73.990329,
+    "borough": "Manhattan",
+    "daysOperation": "Monday, Wednesday, Friday & Saturday",
+    "hoursOperation": "8 a.m. - 6 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": true
+  },
+  {
+    "name": "Uptown Good Food Farm Stand & CSA",
+    "lat": 40.81172,
+    "lng": -73.951795,
+    "borough": "Manhattan",
+    "daysOperation": "Thursday",
+    "hoursOperation": "4 p.m. - 7 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Uptown Good Food Farmers Market",
+    "lat": 40.818521,
+    "lng": -73.947392,
+    "borough": "Manhattan",
+    "daysOperation": "Saturday",
+    "hoursOperation": "9 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Uptown Grand Central Farmstand",
+    "lat": 40.805396,
+    "lng": -73.939818,
+    "borough": "Manhattan",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "1:30 p.m. - 7 p.m",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Van Cortlandt Park Alliance Farm Stand",
+    "lat": 40.884532,
+    "lng": -73.892172,
+    "borough": "Bronx",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "2 p.m. - 7 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Woodhull Hospital Farmstand",
+    "lat": 40.701022,
+    "lng": -73.942202,
+    "borough": "Brooklyn",
+    "daysOperation": "Wednesday",
+    "hoursOperation": "9 a.m. - 2 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  },
+  {
+    "name": "Wyckoff House Museum Farmstand",
+    "lat": 40.64497,
+    "lng": -73.920914,
+    "borough": "Brooklyn",
+    "daysOperation": "Saturday",
+    "hoursOperation": "11 a.m. - 3 p.m.",
+    "acceptsEbt": true,
+    "openYearRound": false
+  }
+]
