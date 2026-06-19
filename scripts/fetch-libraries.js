@@ -11,18 +11,30 @@ const path = require("path");
 
 function fetchGet(url) {
   return new Promise((resolve, reject) => {
-    const mod = url.startsWith("https") ? https : http;
+    const parsed = new URL(url);
+    const mod = parsed.protocol === "https:" ? https : http;
+    const options = {
+      hostname: parsed.hostname,
+      port: parsed.port,
+      path: parsed.pathname + parsed.search,
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "User-Agent": "WithinReach/1.0",
+      },
+    };
     mod
-      .get(url, (res) => {
+      .request(options, (res) => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
-          return reject(new Error(`HTTP ${res.statusCode}`));
+          return reject(new Error(`HTTP ${res.statusCode} from ${parsed.hostname}`));
         }
         const chunks = [];
         res.on("data", (chunk) => chunks.push(chunk));
         res.on("end", () => resolve(Buffer.concat(chunks).toString()));
         res.on("error", reject);
       })
-      .on("error", reject);
+      .on("error", reject)
+      .end();
   });
 }
 
@@ -127,9 +139,9 @@ async function main() {
   console.log("Fetching NYC library data from three sources...");
 
   const [nypl, queens, brooklyn] = await Promise.all([
-    fetchNYPL(),
-    fetchQueens(),
-    fetchBrooklyn(),
+    fetchNYPL().catch((e) => { console.error("  NYPL failed:", e.message); return []; }),
+    fetchQueens().catch((e) => { console.error("  Queens failed:", e.message); return []; }),
+    fetchBrooklyn().catch((e) => { console.error("  Brooklyn failed:", e.message); return []; }),
   ]);
 
   console.log(
