@@ -58,7 +58,7 @@ export default function MethodologyPage() {
       <nav className="border-b border-gray-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-4">
           <Link href="/" className="font-semibold text-gray-900">
-            Within Reach
+            Live Lightly
           </Link>
           <Link
             href="/map"
@@ -83,18 +83,17 @@ export default function MethodologyPage() {
         <Section title="The big picture">
           <div className="bg-white border border-gray-200 rounded-lg p-5 text-sm text-gray-600 space-y-3">
             <p>
-              Within Reach produces a score from <strong>0 to 100</strong> that
-              measures how well a neighborhood has been served by low-carbon
-              infrastructure investment. It is not a lifestyle rating or a
-              judgment of how people live — it&apos;s a measure of what the city
-              has built (or hasn&apos;t) in your area.
+              Live Lightly produces a score from <strong>0 to 100</strong> that
+              reflects how well your neighborhood supports planet-friendly daily
+              life. It measures the infrastructure around you — not how you
+              live, but what your city has built to make living lightly
+              possible.
             </p>
             <p>
               The score is split across <strong>five categories</strong>, each
-              weighted by its impact on enabling car-free, climate-friendly
-              daily life. Higher weights go to the things that matter most:
-              reliable transit, safe cycling infrastructure, and walkable access
-              to essentials.
+              weighted by its impact on making it easy to get around without a
+              car, eat well, reduce waste, and take care of everyday needs
+              close to home.
             </p>
             <p>
               We also layer in <strong>equity context</strong> — income,
@@ -112,7 +111,7 @@ export default function MethodologyPage() {
               name="Transit"
               weight={30}
               color="#4a6fa5"
-              description="Access to reliable public transportation — the backbone of low-carbon mobility."
+              description="Reliable public transit is the foundation of planet-friendly mobility — it determines whether going car-free is a real option."
               items={[
                 "Subway stations within 0.5 miles (up to 15 pts, scaled by count and headway frequency)",
                 "Bus stops within 0.25 miles (up to 8 pts)",
@@ -124,7 +123,7 @@ export default function MethodologyPage() {
               name="Active Mobility"
               weight={20}
               color="#57a773"
-              description="Safe infrastructure for biking and walking — not just painted lines, but real protection."
+              description="Safe infrastructure for biking and walking — not just painted lines, but real protection that makes two wheels feel like a first choice."
               items={[
                 "Protected bike lanes within 0.25 miles (up to 8 pts)",
                 "Painted bike lanes if no protected lanes (up to 4 pts)",
@@ -136,7 +135,7 @@ export default function MethodologyPage() {
               name="Daily Needs"
               weight={20}
               color="#e08b4a"
-              description="Can you get groceries, fill a prescription, and do laundry without a car?"
+              description="Can you get groceries, fill a prescription, and do laundry without driving? These are the basics of walkable daily life."
               items={[
                 "Grocery stores within 0.75 miles (up to 6 pts)",
                 "Pharmacies within 0.75 miles (up to 5 pts)",
@@ -148,7 +147,7 @@ export default function MethodologyPage() {
               name="Circular Economy"
               weight={15}
               color="#2a9d8f"
-              description="Infrastructure for reuse, repair, and waste diversion — keeping things out of landfills."
+              description="Places that help you reuse, repair, and divert waste — keeping things out of landfills and in circulation."
               items={[
                 "Thrift and secondhand stores within 0.5 miles (up to 5 pts)",
                 "Composting drop-off sites within 0.5 miles (up to 5 pts)",
@@ -159,7 +158,7 @@ export default function MethodologyPage() {
               name="Local Food"
               weight={15}
               color="#c46a3f"
-              description="Community-driven food systems that shorten supply chains and build resilience."
+              description="Community-driven food systems that shorten supply chains, build resilience, and connect you to what grows nearby."
               items={[
                 "Community gardens within 0.5 miles (up to 6 pts)",
                 "Food co-ops within 0.5 miles (up to 5 pts)",
@@ -191,20 +190,19 @@ export default function MethodologyPage() {
                   <td className="px-4 py-2.5 font-bold text-emerald-700">
                     75–100
                   </td>
-                  <td className="px-4 py-2.5">Excellent access</td>
+                  <td className="px-4 py-2.5">Excellent</td>
                   <td className="px-4 py-2.5">
-                    Strong investment across most categories. Car-free living is
-                    genuinely convenient here.
+                    Your neighborhood makes it easy to live lightly.
                   </td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="px-4 py-2.5 font-bold text-yellow-600">
                     50–74
                   </td>
-                  <td className="px-4 py-2.5">Moderate access</td>
+                  <td className="px-4 py-2.5">Moderate</td>
                   <td className="px-4 py-2.5">
-                    Good transit and some walkable amenities, but notable gaps in
-                    one or more categories.
+                    Good foundation with room to grow — a few key additions
+                    would make a big difference.
                   </td>
                 </tr>
                 <tr className="border-b border-gray-100">
@@ -213,16 +211,16 @@ export default function MethodologyPage() {
                   </td>
                   <td className="px-4 py-2.5">Limited</td>
                   <td className="px-4 py-2.5">
-                    Some infrastructure exists but significant gaps make
-                    car-free living difficult day-to-day.
+                    Living lightly here takes effort. Some infrastructure
+                    exists, but significant gaps remain.
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2.5 font-bold text-red-600">0–24</td>
                   <td className="px-4 py-2.5">Severely underserved</td>
                   <td className="px-4 py-2.5">
-                    Very little low-carbon infrastructure. Residents depend
-                    heavily on cars by necessity, not choice.
+                    Very little planet-friendly infrastructure. Residents need
+                    more investment, not more willpower.
                   </td>
                 </tr>
               </tbody>

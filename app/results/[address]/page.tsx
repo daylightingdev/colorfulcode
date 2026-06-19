@@ -8,9 +8,9 @@ import { CATEGORY_META, type ScoreResult } from "@/lib/mock-data";
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
 function getScoreLabel(score: number) {
-  if (score >= 75) return { text: "Excellent access", color: "text-emerald-700" };
-  if (score >= 50) return { text: "Moderate access", color: "text-yellow-600" };
-  if (score >= 25) return { text: "Limited access", color: "text-orange-600" };
+  if (score >= 75) return { text: "Excellent", color: "text-emerald-700" };
+  if (score >= 50) return { text: "Moderate", color: "text-yellow-600" };
+  if (score >= 25) return { text: "Limited", color: "text-orange-600" };
   return { text: "Severely underserved", color: "text-red-600" };
 }
 
@@ -69,22 +69,137 @@ const LAYER_LABELS: Record<string, string> = {
   repairCafes: "Repair Cafes",
 };
 
-function ScoreHeader({ result }: { result: ScoreResult }) {
+// --- Amenity Summary ---
+
+const AMENITY_SUMMARY_CATEGORIES = [
+  {
+    key: "transit",
+    label: "Transit",
+    color: "#4a6fa5",
+    amenityKeys: ["transitStops"],
+    description: (counts: Record<string, number>) => {
+      const total = counts.transitStops || 0;
+      if (total === 0) return "No transit stops within walking distance.";
+      return `${total} transit stop${total > 1 ? "s" : ""} within walking distance.`;
+    },
+  },
+  {
+    key: "activeMobility",
+    label: "Active Mobility",
+    color: "#57a773",
+    amenityKeys: ["bikeShares"],
+    description: (counts: Record<string, number>) => {
+      const docks = counts.bikeShares || 0;
+      if (docks === 0) return "No bike share docks nearby.";
+      return `${docks} bike share dock${docks > 1 ? "s" : ""} nearby.`;
+    },
+  },
+  {
+    key: "dailyNeeds",
+    label: "Daily Needs",
+    color: "#e08b4a",
+    amenityKeys: ["groceries", "pharmacies", "clinics", "laundromats"],
+    description: (counts: Record<string, number>) => {
+      const parts: string[] = [];
+      if (counts.groceries) parts.push(`${counts.groceries} grocer${counts.groceries > 1 ? "ies" : "y"}`);
+      if (counts.pharmacies) parts.push(`${counts.pharmacies} pharmac${counts.pharmacies > 1 ? "ies" : "y"}`);
+      if (counts.clinics) parts.push(`${counts.clinics} clinic${counts.clinics > 1 ? "s" : ""}`);
+      if (counts.laundromats) parts.push(`${counts.laundromats} laundromat${counts.laundromats > 1 ? "s" : ""}`);
+      if (parts.length === 0) return "No daily-needs amenities found nearby.";
+      return parts.join(", ") + " within walking distance.";
+    },
+  },
+  {
+    key: "circularEconomy",
+    label: "Circular Economy",
+    color: "#2a9d8f",
+    amenityKeys: ["thriftStores", "compostSites", "refillShops"],
+    description: (counts: Record<string, number>) => {
+      const parts: string[] = [];
+      if (counts.thriftStores) parts.push(`${counts.thriftStores} thrift store${counts.thriftStores > 1 ? "s" : ""}`);
+      if (counts.compostSites) parts.push(`${counts.compostSites} compost site${counts.compostSites > 1 ? "s" : ""}`);
+      if (counts.refillShops) parts.push(`${counts.refillShops} refill shop${counts.refillShops > 1 ? "s" : ""}`);
+      if (parts.length === 0) return "No reuse or composting options found nearby.";
+      return parts.join(", ") + " nearby.";
+    },
+  },
+  {
+    key: "localFood",
+    label: "Local Food",
+    color: "#c46a3f",
+    amenityKeys: ["communityGardens", "coops", "csaPickups"],
+    description: (counts: Record<string, number>) => {
+      const parts: string[] = [];
+      if (counts.communityGardens) parts.push(`${counts.communityGardens} community garden${counts.communityGardens > 1 ? "s" : ""}`);
+      if (counts.coops) parts.push(`${counts.coops} food co-op${counts.coops > 1 ? "s" : ""}`);
+      if (counts.csaPickups) parts.push(`${counts.csaPickups} CSA pickup${counts.csaPickups > 1 ? "s" : ""}`);
+      if (parts.length === 0) return "No local food infrastructure found nearby.";
+      return parts.join(", ") + " nearby.";
+    },
+  },
+];
+
+function AmenitySummary({ amenities }: { amenities: ScoreResult["amenities"] }) {
+  const counts: Record<string, number> = {};
+  for (const [key, value] of Object.entries(amenities)) {
+    if (Array.isArray(value)) counts[key] = value.length;
+  }
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 className="text-lg font-semibold mb-1">What&apos;s nearby</h2>
+      <p className="text-sm text-gray-500 mb-4">
+        Places that make it easier to live lightly, within walking distance.
+      </p>
+      <div className="space-y-3">
+        {AMENITY_SUMMARY_CATEGORIES.map((cat) => {
+          const total = cat.amenityKeys.reduce((sum, k) => sum + (counts[k] || 0), 0);
+          return (
+            <div key={cat.key} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
+              <div
+                className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
+                style={{ backgroundColor: cat.color }}
+              />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-900">{cat.label}</span>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
+                    style={{ backgroundColor: total > 0 ? cat.color : "#9ca3af" }}
+                  >
+                    {total}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500 mt-0.5">{cat.description(counts)}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// --- Score Section ---
+
+function ScoreSection({ result }: { result: ScoreResult }) {
   const label = getScoreLabel(result.score);
   return (
-    <div className="text-center py-10">
-      <p className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
-        Within Reach
-      </p>
-      <div
-        className="text-8xl font-bold mb-3"
-        style={{ color: getScoreColor(result.score) }}
-      >
-        {result.score}
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="text-center">
+        <p className="text-sm text-gray-500 mb-1 uppercase tracking-wide">
+          Neighborhood Score
+        </p>
+        <div
+          className="text-7xl font-bold mb-2"
+          style={{ color: getScoreColor(result.score) }}
+        >
+          {result.score}
+        </div>
+        <p className={`text-lg font-medium ${label.color}`}>{label.text}</p>
+        <p className="text-gray-500 text-sm mt-1">{result.address}</p>
+        <ScoreNarrative result={result} />
       </div>
-      <p className={`text-xl font-medium ${label.color}`}>{label.text}</p>
-      <p className="text-gray-500 mt-1">{result.address}</p>
-      <ScoreNarrative result={result} />
     </div>
   );
 }
@@ -93,13 +208,12 @@ function ScoreNarrative({ result }: { result: ScoreResult }) {
   const parts: string[] = [];
   const a = result.amenities;
 
-  // What's good
-  const transitCount = a?.transitStops?.length || 0;
   const subways = a?.transitStops?.filter((s: { type?: string }) => s.type === "subway") || [];
+  const transitCount = a?.transitStops?.length || 0;
   if (subways.length > 0) {
-    parts.push(`${subways.length} subway station${subways.length > 1 ? "s" : ""} nearby`);
+    parts.push(`${subways.length} subway station${subways.length > 1 ? "s" : ""}`);
   } else if (transitCount > 0) {
-    parts.push(`${transitCount} transit stop${transitCount > 1 ? "s" : ""} within walking distance`);
+    parts.push(`${transitCount} transit stop${transitCount > 1 ? "s" : ""}`);
   }
 
   const bikeShares = a?.bikeShares?.length || 0;
@@ -114,35 +228,30 @@ function ScoreNarrative({ result }: { result: ScoreResult }) {
   const compost = a?.compostSites?.length || 0;
   if (compost > 0) parts.push(`a composting drop-off`);
 
-  const pharmacies = a?.pharmacies?.length || 0;
-  if (pharmacies > 0) parts.push(`${pharmacies > 1 ? "pharmacies" : "a pharmacy"}`);
-
-  const clinics = a?.clinics?.length || 0;
-  if (clinics > 0) parts.push(`${clinics > 1 ? "health clinics" : "a health clinic"}`);
-
   if (parts.length === 0) {
     return (
-      <p className="text-gray-500 mt-6 max-w-lg mx-auto text-sm leading-relaxed">
-        This area has limited climate-friendly infrastructure right now — but
-        that can change. Every neighborhood deserves access to sustainable
-        options, and knowing the gaps is the first step.
+      <p className="text-gray-500 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
+        This area has limited planet-friendly infrastructure right now. Every
+        neighborhood deserves access to sustainable options, and knowing the
+        gaps is the first step toward change.
       </p>
     );
   }
 
-  // Build a friendly sentence
   const listed = parts.length <= 2
     ? parts.join(" and ")
     : parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
 
   return (
-    <p className="text-gray-600 mt-6 max-w-lg mx-auto text-sm leading-relaxed">
-      Your neighborhood has {listed} — that&apos;s a solid foundation
-      for low-carbon living. The score above reflects both what&apos;s already
-      here and where there&apos;s room to grow.
+    <p className="text-gray-600 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
+      Your neighborhood has {listed} within walking distance — a foundation
+      for living lightly. The score reflects both what&apos;s already here
+      and where there&apos;s room to grow.
     </p>
   );
 }
+
+// --- Category Breakdown ---
 
 function CategoryBreakdown({ breakdown }: { breakdown: ScoreResult["breakdown"] }) {
   return (
@@ -174,6 +283,52 @@ function CategoryBreakdown({ breakdown }: { breakdown: ScoreResult["breakdown"] 
     </div>
   );
 }
+
+// --- Reference Neighborhood ---
+
+function ReferenceNeighborhood({
+  result,
+}: {
+  result: ScoreResult;
+}) {
+  if (!result.referenceNeighborhood || !result.borough) return null;
+
+  const ref = result.referenceNeighborhood;
+  const diff = ref.score - result.score;
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 className="text-lg font-semibold mb-1">How you compare</h2>
+      <p className="text-sm text-gray-500 mb-4">
+        The highest-scoring neighborhood in {result.borough}.
+      </p>
+      <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-lg">
+        <div className="flex-1">
+          <p className="text-sm text-gray-500">Your neighborhood</p>
+          <p className="text-3xl font-bold" style={{ color: getScoreColor(result.score) }}>
+            {result.score}
+          </p>
+        </div>
+        <div className="text-gray-300 text-2xl">vs</div>
+        <div className="flex-1 text-right">
+          <p className="text-sm text-gray-500">{ref.name}</p>
+          <p className="text-3xl font-bold" style={{ color: getScoreColor(ref.score) }}>
+            {ref.score}
+          </p>
+        </div>
+      </div>
+      {diff > 0 && (
+        <p className="text-sm text-gray-500 mt-3">
+          {ref.name} scores {diff} point{diff !== 1 ? "s" : ""} higher — see the{" "}
+          <Link href="/map" className="text-emerald-600 underline">gap map</Link> to
+          explore what makes the difference.
+        </p>
+      )}
+    </div>
+  );
+}
+
+// --- Amenity Map ---
 
 function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | null }) {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -227,8 +382,8 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         }
       }
 
-      // Draw 0.5mi radius circle for gaps
-      const radiusKm = 0.8047; // 0.5 miles
+      // Draw 0.5mi radius circle
+      const radiusKm = 0.8047;
       const points = 64;
       const coords: [number, number][] = [];
       for (let i = 0; i <= points; i++) {
@@ -260,7 +415,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         },
       });
 
-      // Label at top of radius circle
       const labelLat = result.lat + (radiusKm / 111.32);
       m.addSource("radius-label", {
         type: "geojson",
@@ -287,7 +441,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         },
       });
 
-      // --- Additional layer markers ---
+      // Additional layer markers
       if (layers) {
         const addLayerMarkers = (
           items: any[],
@@ -307,7 +461,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           }
         };
 
-        // Farmers Markets
         addLayerMarkers(
           layers.farmersMarkets || [],
           "farmersMarkets",
@@ -324,7 +477,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           }
         );
 
-        // Community Gardens (GreenThumb)
         addLayerMarkers(layers.gardens || [], "gardens", (item) => {
           let html = `<strong>${item.name || "Community Garden"}</strong>`;
           if (item.address) html += `<br/>${item.address}`;
@@ -333,7 +485,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           return html;
         });
 
-        // Parks
         addLayerMarkers(layers.parks || [], "parks", (item) => {
           let html = `<strong>${item.name || "Park"}</strong>`;
           if (item.type) html += `<br/>Type: ${item.type}`;
@@ -343,7 +494,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           return html;
         });
 
-        // Libraries
         addLayerMarkers(layers.libraries || [], "libraries", (item) => {
           let html = `<strong>${item.name || "Library"}</strong>`;
           if (item.system) html += `<br/>${item.system}`;
@@ -353,7 +503,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           return html;
         });
 
-        // DonateNYC
         addLayerMarkers(layers.donateNyc || [], "donateNyc", (item) => {
           let html = `<strong>${item.name || "Donation Center"}</strong>`;
           if (item.categories) html += `<br/>Accepts: ${item.categories}`;
@@ -363,7 +512,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           return html;
         });
 
-        // Repair Cafes
         addLayerMarkers(layers.repairCafes || [], "repairCafes", (item) => {
           let html = `<strong>${item.name || "Repair Cafe"}</strong>`;
           if (item.address) html += `<br/>${item.address}`;
@@ -377,7 +525,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
     return () => m.remove();
   }, [result, layers]);
 
-  // Toggle layer visibility
   useEffect(() => {
     if (!map.current) return;
     const markers = map.current.getContainer().querySelectorAll(".mapboxgl-marker");
@@ -401,7 +548,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div className="p-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold mb-3">Nearby Infrastructure</h2>
+        <h2 className="text-lg font-semibold mb-3">Your neighborhood map</h2>
         <div className="flex flex-wrap gap-2">
           {Object.entries(AMENITY_LABELS).map(([key, label]) => (
             <button
@@ -461,15 +608,17 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
   );
 }
 
+// --- Equity Panel ---
+
 function EquityPanel({ equity }: { equity: ScoreResult["equity"] }) {
   const incomePct = Math.round(
     (equity.median_income / equity.nyc_median_income) * 100
   );
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">Equity Context</h2>
+      <h2 className="text-lg font-semibold mb-1">Equity context</h2>
       <p className="text-sm text-gray-500 mb-4">
-        What this score means in context.
+        Who lives here matters. Scores mean different things in different communities.
       </p>
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="p-4 bg-gray-50 rounded-lg">
@@ -501,12 +650,14 @@ function EquityPanel({ equity }: { equity: ScoreResult["equity"] }) {
   );
 }
 
+// --- Gap List ---
+
 function GapList({ gaps }: { gaps: string[] }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">Local Gaps</h2>
+      <h2 className="text-lg font-semibold mb-1">What&apos;s missing</h2>
       <p className="text-sm text-gray-500 mb-4">
-        What&apos;s missing and where the city could invest.
+        Infrastructure gaps that keep this neighborhood from scoring higher.
       </p>
       {gaps.length === 0 ? (
         <p className="text-gray-400">No major gaps identified.</p>
@@ -542,6 +693,8 @@ function GapList({ gaps }: { gaps: string[] }) {
   );
 }
 
+// --- Policy Section ---
+
 interface Initiative {
   title: string;
   description: string;
@@ -560,8 +713,8 @@ const INITIATIVES: Initiative[] = [
   {
     title: "Curbside Composting — Citywide Rollout",
     description:
-      "DSNY's curbside composting program is expanding borough by borough. All five boroughs are expected to have curbside food scrap collection by late 2025.",
-    timeline: "Citywide by late 2025",
+      "DSNY's curbside composting program is expanding borough by borough. All five boroughs now have curbside food scrap collection.",
+    timeline: "Citywide",
     matchesGap: (g) => /compost/i.test(g),
   },
   {
@@ -610,9 +763,9 @@ function PolicySection({ gaps }: { gaps: string[] }) {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">What&apos;s Being Done</h2>
+      <h2 className="text-lg font-semibold mb-1">What&apos;s being done</h2>
       <p className="text-sm text-gray-500 mb-4">
-        Current city initiatives working to close these gaps.
+        City initiatives working to close these gaps.
       </p>
       <div className="space-y-4">
         {relevant.map((init, i) => (
@@ -635,6 +788,8 @@ function PolicySection({ gaps }: { gaps: string[] }) {
     </div>
   );
 }
+
+// --- Main Page ---
 
 export default function ResultsPage({
   params,
@@ -662,7 +817,6 @@ export default function ResultsPage({
       })
       .then(async (data) => {
         setResult(data);
-        // Fetch additional layers using the geocoded lat/lng
         try {
           const layersRes = await fetch(`/api/layers?lat=${data.lat}&lng=${data.lng}`);
           if (layersRes.ok) {
@@ -670,7 +824,7 @@ export default function ResultsPage({
             setLayers(layersData);
           }
         } catch {
-          // Layers are optional — don't block the page if they fail
+          // Layers are optional
         }
       })
       .catch((err) => setError(err.message))
@@ -682,7 +836,7 @@ export default function ResultsPage({
       <nav className="border-b border-gray-200 bg-white">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
           <Link href="/" className="font-semibold text-gray-900">
-            Within Reach
+            Live Lightly
           </Link>
           <Link href="/map" className="text-sm text-gray-500 hover:text-gray-900">
             Gap Map
@@ -697,7 +851,7 @@ export default function ResultsPage({
         {loading && (
           <div className="text-center py-20">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" />
-            <p className="mt-4 text-gray-500">Calculating score...</p>
+            <p className="mt-4 text-gray-500">Mapping your neighborhood...</p>
           </div>
         )}
         {error && (
@@ -710,9 +864,11 @@ export default function ResultsPage({
         )}
         {result && (
           <>
-            <ScoreHeader result={result} />
-            <CategoryBreakdown breakdown={result.breakdown} />
             <AmenityMap result={result} layers={layers} />
+            <AmenitySummary amenities={result.amenities} />
+            <ScoreSection result={result} />
+            <CategoryBreakdown breakdown={result.breakdown} />
+            <ReferenceNeighborhood result={result} />
             {result.equity && <EquityPanel equity={result.equity} />}
             <GapList gaps={result.gaps} />
             <PolicySection gaps={result.gaps} />

@@ -95,18 +95,16 @@ export default function Home() {
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="max-w-2xl w-full text-center">
           <h1
-            className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
-            title="A tool to understand how easy it is to live a climate-friendly lifestyle in your neighborhood — and what's missing"
+            className="text-4xl sm:text-5xl font-bold tracking-tight mb-2"
           >
-            Within Reach
+            Live Lightly
           </h1>
-          <p className="text-lg text-gray-600 mb-2">
-            See how well your neighborhood has been served by climate
-            infrastructure investment.
+          <p className="text-lg text-emerald-600 font-medium mb-2">
+            Your Planet-Friendly Neighborhood Map
           </p>
-          <p className="text-sm text-gray-500 mb-10">
-            Not a lifestyle score. A measure of whether cities are keeping their
-            climate commitments — equitably.
+          <p className="text-base text-gray-600 mb-10">
+            Find the places near you that make it easier to walk, bike,
+            compost, repair, and shop locally.
           </p>
 
           <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
@@ -147,7 +145,7 @@ export default function Home() {
                 type="submit"
                 className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors"
               >
-                Score
+                Explore
               </button>
             </div>
           </form>
@@ -160,12 +158,12 @@ export default function Home() {
           <div className="grid sm:grid-cols-3 gap-8 text-sm text-gray-600">
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                We map the infrastructure
+                We map what matters
               </h3>
               <p>
-                Transit stops, bike lanes, grocery stores, composting sites, EV
-                chargers, and more — all the low-carbon infrastructure near your
-                address.
+                Transit, bike lanes, farmers markets, composting, thrift stores,
+                and more — everything nearby that helps you live a little more
+                lightly.
               </p>
             </div>
             <div>
@@ -173,9 +171,9 @@ export default function Home() {
                 We score the access
               </h3>
               <p>
-                Six categories weighted by impact: transit, active mobility,
-                daily needs, circular economy, local food, and clean energy.
-                Total score 0–100.
+                Five categories weighted by how much they matter for
+                planet-friendly daily life: transit, active mobility, daily
+                needs, circular economy, and local food.
               </p>
             </div>
             <div>
@@ -183,17 +181,17 @@ export default function Home() {
                 We show the gaps
               </h3>
               <p>
-                What&apos;s missing in your area and where the city should invest
-                next. View the{" "}
+                What&apos;s missing in your neighborhood — and what the city is
+                doing about it. View the{" "}
                 <Link href="/map" className="text-emerald-600 underline">
                   citywide gap map
                 </Link>{" "}
-                to see the full picture.
+                to see the bigger picture.
               </p>
             </div>
           </div>
           <p className="mt-8 text-sm text-gray-500">
-            Want to understand how scores are calculated?{" "}
+            Curious how it all works?{" "}
             <Link href="/methodology" className="text-emerald-600 underline">
               Read our methodology
             </Link>

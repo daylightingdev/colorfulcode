@@ -20,6 +20,7 @@ import bikeLanes from "@/data/bike-lanes.json";
 import bikeshareDocks from "@/data/bikeshare-docks.json";
 import communityGardens from "@/data/community-gardens.json";
 import compostingSites from "@/data/composting-sites.json";
+import tractScores from "@/data/tract-scores.json";
 
 const TRANSIT_STOPS: TransitStop[] = [
   ...(gtfsStops as TransitStop[]),
@@ -29,6 +30,55 @@ const BIKE_LANES: BikeLaneSegment[] = bikeLanes as BikeLaneSegment[];
 const BIKE_SHARES: Place[] = bikeshareDocks as Place[];
 const COMMUNITY_GARDENS: Place[] = communityGardens as Place[];
 const COMPOST_SITES: Place[] = compostingSites as Place[];
+
+const FIPS_TO_BOROUGH: Record<string, string> = {
+  "36047": "Brooklyn",
+  "36061": "Manhattan",
+  "36081": "Queens",
+  "36005": "Bronx",
+  "36085": "Staten Island",
+};
+
+const TRACT_NEIGHBORHOODS: Record<string, string> = {
+  "36047028500": "Prospect Heights",
+  "36061005200": "Chelsea",
+  "36081014300": "Jackson Heights",
+  "36005039800": "Wakefield",
+  "36005003800": "Morrisania",
+  "36085014200": "St. George",
+  "36085016200": "Tompkinsville",
+};
+
+function getBoroughFromTract(tract: string): string | null {
+  const county = tract.substring(0, 5);
+  return FIPS_TO_BOROUGH[county] || null;
+}
+
+function getBoroughFromAddress(address: string): string | null {
+  const boroughs = ["Brooklyn", "Manhattan", "Queens", "Bronx", "Staten Island"];
+  for (const b of boroughs) {
+    if (address.includes(b)) return b;
+  }
+  return null;
+}
+
+function getReferenceNeighborhood(borough: string): { name: string; score: number; tract: string } | null {
+  const countyCode = Object.entries(FIPS_TO_BOROUGH).find(([, b]) => b === borough)?.[0];
+  if (!countyCode) return null;
+
+  const scores = tractScores as Record<string, { score: number; lat: number; lng: number }>;
+  let best: { tract: string; score: number } | null = null;
+
+  for (const [tract, data] of Object.entries(scores)) {
+    if (tract.startsWith(countyCode) && (!best || data.score > best.score)) {
+      best = { tract, score: data.score };
+    }
+  }
+
+  if (!best) return null;
+  const name = TRACT_NEIGHBORHOODS[best.tract] || borough;
+  return { name, score: best.score, tract: best.tract };
+}
 
 // --- Geocode helper with 30-minute cache ---
 
@@ -126,17 +176,27 @@ export async function POST(request: Request) {
     const tract = identifyTract(lat, lng);
     const equity = tract ? getEquityData(tract) : null;
 
-    // Step 6: Return
+    // Step 6: Borough and reference neighborhood
+    const borough =
+      (tract ? getBoroughFromTract(tract) : null) ||
+      getBoroughFromAddress(geo.address);
+    const referenceNeighborhood = borough
+      ? getReferenceNeighborhood(borough)
+      : null;
+
+    // Step 7: Return
     return NextResponse.json({
       address: geo.address,
       lat: geo.lat,
       lng: geo.lng,
       tract,
+      borough,
       score: scoreResult.total,
       breakdown: scoreResult.breakdown,
       amenities,
       equity,
       gaps: scoreResult.gaps,
+      referenceNeighborhood,
     });
   } catch (error) {
     console.error("Score API error:", error);

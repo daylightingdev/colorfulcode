@@ -3,9 +3,9 @@ import "./globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 export const metadata: Metadata = {
-  title: "Within Reach",
+  title: "Live Lightly",
   description:
-    "A tool to understand how easy it is to live a climate-friendly lifestyle in your neighborhood — and what's missing.",
+    "A planet-friendly neighborhood map for New Yorkers. Discover what makes it easy to live lightly where you are — and what's missing.",
 };
 
 export default function RootLayout({

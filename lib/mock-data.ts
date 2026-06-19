@@ -3,7 +3,13 @@ export interface ScoreResult {
   lat: number;
   lng: number;
   tract: string;
+  borough?: string;
   score: number;
+  referenceNeighborhood?: {
+    name: string;
+    score: number;
+    tract: string;
+  };
   breakdown: {
     transit: number;
     activeMobility: number;
