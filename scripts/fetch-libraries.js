@@ -117,13 +117,9 @@ async function fetchQueens() {
 
 async function fetchBrooklyn() {
   console.log("  Fetching Brooklyn library branches via Overpass...");
-  const body =
-    'data=[out:json];area["name"="Brooklyn"]["admin_level"="6"]->.a;node["amenity"="library"](area.a);out body;';
-  const raw = await fetchPost(
-    "https://overpass-api.de/api/interpreter",
-    body,
-    "application/x-www-form-urlencoded"
-  );
+  const query = '[out:json];area["name"="Brooklyn"]["admin_level"="6"]->.a;node["amenity"="library"](area.a);out body;';
+  const url = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(query);
+  const raw = await fetchGet(url);
   const json = JSON.parse(raw);
 
   return (json.elements || []).map((node) => ({
