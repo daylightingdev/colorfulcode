@@ -8,8 +8,7 @@ export const WEIGHTS = {
   activeMobility: { max: 20 },
   dailyNeeds: { max: 20 },
   circularEconomy: { max: 15 },
-  localFood: { max: 10 },
-  cleanEnergy: { max: 5 },
+  localFood: { max: 15 },
 };
 
 // --- Types ---
@@ -60,8 +59,6 @@ export interface AmenityResults {
   communityGardens: Place[];
   coops: Place[];
   csaPickups: Place[];
-  evCharging: Place[];
-  waterStations: Place[];
 }
 
 export interface ScoreBreakdown {
@@ -70,7 +67,6 @@ export interface ScoreBreakdown {
   dailyNeeds: number;
   circularEconomy: number;
   localFood: number;
-  cleanEnergy: number;
 }
 
 export interface ScoreResult {
@@ -325,10 +321,10 @@ function scoreCircularEconomy(
 }
 
 /**
- * Local Food: max 10 points
- * - Community gardens within 0.5mi: up to 4 pts
- * - Food co-ops within 0.5mi: up to 3 pts
- * - CSA pickup sites within 0.5mi: up to 3 pts
+ * Local Food: max 15 points
+ * - Community gardens within 0.5mi: up to 6 pts
+ * - Food co-ops within 0.5mi: up to 5 pts
+ * - CSA pickup sites within 0.5mi: up to 4 pts
  */
 function scoreLocalFood(
   communityGardens: Place[],
@@ -341,21 +337,21 @@ function scoreLocalFood(
   if (communityGardens.length === 0) {
     gaps.push("No community garden within 0.5 miles");
   } else {
-    gardenScore = Math.min(communityGardens.length * 2, 4);
+    gardenScore = Math.min(communityGardens.length * 2, 6);
   }
 
   let coopScore = 0;
   if (coops.length === 0) {
     gaps.push("No food co-op within 0.5 miles");
   } else {
-    coopScore = Math.min(coops.length * 2, 3);
+    coopScore = Math.min(coops.length * 2, 5);
   }
 
   let csaScore = 0;
   if (csaPickups.length === 0) {
     // Not a gap — CSAs are seasonal and uncommon
   } else {
-    csaScore = Math.min(csaPickups.length * 2, 3);
+    csaScore = Math.min(csaPickups.length * 2, 4);
   }
 
   return {
@@ -363,41 +359,6 @@ function scoreLocalFood(
       gardenScore + coopScore + csaScore,
       0,
       WEIGHTS.localFood.max
-    ),
-    gaps,
-  };
-}
-
-/**
- * Clean Energy: max 5 points
- * - EV charging stations within 0.5mi: up to 3 pts
- * - Public water refill stations within 0.25mi: up to 2 pts
- */
-function scoreCleanEnergy(
-  evCharging: Place[],
-  waterStations: Place[]
-): { score: number; gaps: string[] } {
-  const gaps: string[] = [];
-
-  let evScore = 0;
-  if (evCharging.length === 0) {
-    gaps.push("No EV charging station within 0.5 miles");
-  } else {
-    evScore = Math.min(evCharging.length * 1.5, 3);
-  }
-
-  let waterScore = 0;
-  if (waterStations.length === 0) {
-    gaps.push("No public water refill station nearby");
-  } else {
-    waterScore = Math.min(waterStations.length, 2);
-  }
-
-  return {
-    score: clamp(
-      Math.round(evScore + waterScore),
-      0,
-      WEIGHTS.cleanEnergy.max
     ),
     gaps,
   };
@@ -427,18 +388,13 @@ export function calculateScore(amenities: AmenityResults): ScoreResult {
     amenities.coops,
     amenities.csaPickups
   );
-  const cleanEnergy = scoreCleanEnergy(
-    amenities.evCharging,
-    amenities.waterStations
-  );
 
   const total =
     transit.score +
     activeMobility.score +
     dailyNeeds.score +
     circularEconomy.score +
-    localFood.score +
-    cleanEnergy.score;
+    localFood.score;
 
   const allGaps = [
     ...transit.gaps,
@@ -446,7 +402,6 @@ export function calculateScore(amenities: AmenityResults): ScoreResult {
     ...dailyNeeds.gaps,
     ...circularEconomy.gaps,
     ...localFood.gaps,
-    ...cleanEnergy.gaps,
   ];
 
   return {
@@ -457,7 +412,6 @@ export function calculateScore(amenities: AmenityResults): ScoreResult {
       dailyNeeds: dailyNeeds.score,
       circularEconomy: circularEconomy.score,
       localFood: localFood.score,
-      cleanEnergy: cleanEnergy.score,
     },
     gaps: allGaps,
   };

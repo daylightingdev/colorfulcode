@@ -90,7 +90,7 @@ export default function MethodologyPage() {
               has built (or hasn&apos;t) in your area.
             </p>
             <p>
-              The score is split across <strong>six categories</strong>, each
+              The score is split across <strong>five categories</strong>, each
               weighted by its impact on enabling car-free, climate-friendly
               daily life. Higher weights go to the things that matter most:
               reliable transit, safe cycling infrastructure, and walkable access
@@ -157,23 +157,13 @@ export default function MethodologyPage() {
             />
             <CategoryCard
               name="Local Food"
-              weight={10}
+              weight={15}
               color="#c46a3f"
               description="Community-driven food systems that shorten supply chains and build resilience."
               items={[
-                "Community gardens within 0.5 miles (up to 4 pts)",
-                "Food co-ops within 0.5 miles (up to 3 pts)",
-                "CSA pickup sites within 0.5 miles (up to 3 pts)",
-              ]}
-            />
-            <CategoryCard
-              name="Clean Energy"
-              weight={5}
-              color="#5ba4cf"
-              description="Emerging infrastructure for electrification and reduced resource consumption."
-              items={[
-                "EV charging stations within 0.75 miles (up to 3 pts)",
-                "Public water refill stations within 0.25 miles (up to 2 pts)",
+                "Community gardens within 0.5 miles (up to 6 pts)",
+                "Food co-ops within 0.5 miles (up to 5 pts)",
+                "CSA pickup sites within 0.5 miles (up to 4 pts)",
               ]}
             />
           </div>
@@ -276,7 +266,7 @@ export default function MethodologyPage() {
               },
               {
                 name: "Google Places API",
-                what: "Grocery stores, pharmacies, clinics, laundromats, thrift stores, EV chargers",
+                what: "Grocery stores, pharmacies, clinics, laundromats, thrift stores",
                 url: "https://developers.google.com/maps/documentation/places/web-service",
                 refresh: "Real-time per request",
               },

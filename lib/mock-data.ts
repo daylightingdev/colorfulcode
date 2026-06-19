@@ -10,7 +10,6 @@ export interface ScoreResult {
     dailyNeeds: number;
     circularEconomy: number;
     localFood: number;
-    cleanEnergy: number;
   };
   amenities: {
     transitStops: Amenity[];
@@ -26,8 +25,6 @@ export interface ScoreResult {
     communityGardens: Amenity[];
     coops: Amenity[];
     csaPickups: Amenity[];
-    evCharging: Amenity[];
-    waterStations: Amenity[];
   };
   equity: {
     median_income: number;
@@ -60,8 +57,7 @@ export const CATEGORY_META: Record<
   activeMobility: { label: "Active Mobility", max: 20, color: "#57a773" },
   dailyNeeds: { label: "Daily Needs", max: 20, color: "#e08b4a" },
   circularEconomy: { label: "Circular Economy", max: 15, color: "#2a9d8f" },
-  localFood: { label: "Local Food", max: 10, color: "#c46a3f" },
-  cleanEnergy: { label: "Clean Energy", max: 5, color: "#5ba4cf" },
+  localFood: { label: "Local Food", max: 15, color: "#c46a3f" },
 };
 
 export const MOCK_RESULT: ScoreResult = {
@@ -76,7 +72,6 @@ export const MOCK_RESULT: ScoreResult = {
     dailyNeeds: 11,
     circularEconomy: 3,
     localFood: 5,
-    cleanEnergy: 2,
   },
   amenities: {
     transitStops: [
@@ -119,10 +114,6 @@ export const MOCK_RESULT: ScoreResult = {
     csaPickups: [
       { name: "Crown Heights CSA", lat: 40.6730, lng: -73.9500, distance: 0.3 },
     ],
-    evCharging: [
-      { name: "ChargePoint - Pacific St", lat: 40.6810, lng: -73.9700, distance: 0.7 },
-    ],
-    waterStations: [],
   },
   equity: {
     median_income: 38400,
@@ -137,7 +128,6 @@ export const MOCK_RESULT: ScoreResult = {
     "No refill/zero-waste shop within 1 mile",
     "No food co-op within 0.5 miles",
     "Only one health clinic within 1 mile",
-    "No public water refill station nearby",
   ],
 };
 

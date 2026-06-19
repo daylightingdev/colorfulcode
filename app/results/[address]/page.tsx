@@ -35,8 +35,6 @@ const AMENITY_COLORS: Record<string, string> = {
   communityGardens: "#c46a3f",
   coops: "#d4845f",
   csaPickups: "#dea07f",
-  evCharging: "#5ba4cf",
-  waterStations: "#7bbde0",
 };
 
 const AMENITY_LABELS: Record<string, string> = {
@@ -51,8 +49,6 @@ const AMENITY_LABELS: Record<string, string> = {
   communityGardens: "Community Gardens",
   coops: "Food Co-ops",
   csaPickups: "CSA Pickups",
-  evCharging: "EV Charging",
-  waterStations: "Water Stations",
 };
 
 const LAYER_COLORS: Record<string, string> = {
@@ -200,6 +196,13 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
     map.current = m;
 
     m.on("load", () => {
+      const gmapsLink = (item: { name?: string; address?: string; lat: number; lng: number }) => {
+        const query = item.name && item.address
+          ? `${item.name}, ${item.address}`
+          : item.name || item.address || `${item.lat},${item.lng}`;
+        return `<br/><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}" target="_blank" rel="noopener noreferrer" style="color:#1a73e8;font-size:12px;">View on Google Maps</a>`;
+      };
+
       // Address marker
       new mapboxgl.Marker({ color: "#000" })
         .setLngLat([result.lng, result.lat])
@@ -216,7 +219,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
             .setLngLat([item.lng, item.lat])
             .setPopup(
               new mapboxgl.Popup({ offset: 25 }).setHTML(
-                `<strong>${item.name}</strong><br/><span style="color:${color}">${AMENITY_LABELS[category] || category}</span>`
+                `<strong>${item.name}</strong><br/><span style="color:${color}">${AMENITY_LABELS[category] || category}</span>${gmapsLink(item)}`
               )
             )
             .addTo(m);
@@ -316,6 +319,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
             if (item.acceptsEBT)
               html += `<br/><span style="background:#059669;color:#fff;padding:1px 6px;border-radius:4px;font-size:11px;">Accepts EBT</span>`;
             html += `<br/><span style="color:${LAYER_COLORS.farmersMarkets}">Farmers Market</span>`;
+            html += gmapsLink(item);
             return html;
           }
         );
@@ -325,6 +329,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           let html = `<strong>${item.name || "Community Garden"}</strong>`;
           if (item.address) html += `<br/>${item.address}`;
           html += `<br/><span style="color:${LAYER_COLORS.gardens}">Community Garden</span>`;
+          html += gmapsLink(item);
           return html;
         });
 
@@ -334,6 +339,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           if (item.type) html += `<br/>Type: ${item.type}`;
           if (item.acres) html += `<br/>${item.acres} acres`;
           html += `<br/><span style="color:${LAYER_COLORS.parks}">Park</span>`;
+          html += gmapsLink(item);
           return html;
         });
 
@@ -343,6 +349,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           if (item.system) html += `<br/>${item.system}`;
           if (item.address) html += `<br/>${item.address}`;
           html += `<br/><span style="color:${LAYER_COLORS.libraries}">Library</span>`;
+          html += gmapsLink(item);
           return html;
         });
 
@@ -352,6 +359,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           if (item.categories) html += `<br/>Accepts: ${item.categories}`;
           if (item.hours) html += `<br/>${item.hours}`;
           html += `<br/><span style="color:${LAYER_COLORS.donateNyc}">Donation Center</span>`;
+          html += gmapsLink(item);
           return html;
         });
 
@@ -360,6 +368,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           let html = `<strong>${item.name || "Repair Cafe"}</strong>`;
           if (item.address) html += `<br/>${item.address}`;
           html += `<br/><span style="color:${LAYER_COLORS.repairCafes}">Repair Cafe</span>`;
+          html += gmapsLink(item);
           return html;
         });
       }
@@ -568,13 +577,6 @@ const INITIATIVES: Initiative[] = [
       "The Food Retail Expansion to Support Health (FRESH) program offers tax incentives and zoning flexibility to attract grocery stores to underserved neighborhoods.",
     timeline: "Ongoing",
     matchesGap: (g) => /grocery/i.test(g),
-  },
-  {
-    title: "NYC Clean Fleets & EV Infrastructure",
-    description:
-      "The city aims to install 10,000 curbside EV chargers by 2030 through partnerships with private operators and the PlugNYC program.",
-    timeline: "10,000 chargers by 2030",
-    matchesGap: (g) => /EV charging/i.test(g),
   },
   {
     title: "Community Health Center Expansion",

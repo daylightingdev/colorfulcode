@@ -113,12 +113,10 @@ export async function POST(request: Request) {
       laundromats: placesData.laundromats,
       thriftStores: placesData.thriftStores,
       compostSites: nearbyCompost,
-      refillShops: [],     // Rare category — hard to find via Places API types
+      refillShops: [],
       communityGardens: nearbyGardens,
-      coops: [],           // Not a standard Places type
-      csaPickups: [],      // Not a standard Places type
-      evCharging: placesData.evCharging,
-      waterStations: [],   // Not a standard Places type
+      coops: [],
+      csaPickups: [],
     };
 
     // Step 4: Score

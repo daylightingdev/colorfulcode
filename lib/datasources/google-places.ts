@@ -136,18 +136,6 @@ export async function getNearbyThriftStores(
   );
 }
 
-export async function getNearbyEVCharging(
-  lat: number,
-  lng: number
-): Promise<PlaceResult[]> {
-  return searchNearby(
-    lat,
-    lng,
-    ["electric_vehicle_charging_station"],
-    1200
-  );
-}
-
 /**
  * Fetch all Google Places categories in parallel
  */
@@ -160,17 +148,15 @@ export async function getAllPlacesData(
   clinics: PlaceResult[];
   laundromats: PlaceResult[];
   thriftStores: PlaceResult[];
-  evCharging: PlaceResult[];
 }> {
-  const [groceries, pharmacies, clinics, laundromats, thriftStores, evCharging] =
+  const [groceries, pharmacies, clinics, laundromats, thriftStores] =
     await Promise.all([
       getNearbyGroceries(lat, lng),
       getNearbyPharmacies(lat, lng),
       getNearbyClinics(lat, lng),
       getNearbyLaundromats(lat, lng),
       getNearbyThriftStores(lat, lng),
-      getNearbyEVCharging(lat, lng),
     ]);
 
-  return { groceries, pharmacies, clinics, laundromats, thriftStores, evCharging };
+  return { groceries, pharmacies, clinics, laundromats, thriftStores };
 }
