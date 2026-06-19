@@ -1,1 +1,1101 @@
-[]
+[
+  {
+    "name": "Harry Belafonte 115th Street Library",
+    "address": "203 West 115th Street",
+    "lat": 40.8028,
+    "lng": -73.9532,
+    "system": "NYPL"
+  },
+  {
+    "name": "125th Street Library",
+    "address": "224 East 125th Street",
+    "lat": 40.8034,
+    "lng": -73.9354,
+    "system": "NYPL"
+  },
+  {
+    "name": "53rd Street Library",
+    "address": "18 West 53rd Street",
+    "lat": 40.7608,
+    "lng": -73.9773,
+    "system": "NYPL"
+  },
+  {
+    "name": "58th Street Library",
+    "address": "127 East 58th Street",
+    "lat": 40.7619,
+    "lng": -73.9691,
+    "system": "NYPL"
+  },
+  {
+    "name": "67th Street Library",
+    "address": "328 East 67th Street",
+    "lat": 40.7652,
+    "lng": -73.9601,
+    "system": "NYPL"
+  },
+  {
+    "name": "96th Street Library",
+    "address": "112 East 96th Street",
+    "lat": 40.7863,
+    "lng": -73.9522,
+    "system": "NYPL"
+  },
+  {
+    "name": "Aguilar Library",
+    "address": "174 East 110th Street",
+    "lat": 40.7943,
+    "lng": -73.9436,
+    "system": "NYPL"
+  },
+  {
+    "name": "Allerton Library",
+    "address": "2740 Barnes Avenue",
+    "lat": 40.866,
+    "lng": -73.8632,
+    "system": "NYPL"
+  },
+  {
+    "name": "Battery Park City Library",
+    "address": "175 North End Avenue",
+    "lat": 40.7155,
+    "lng": -74.0157,
+    "system": "NYPL"
+  },
+  {
+    "name": "Baychester Library",
+    "address": "2049 Asch Loop North",
+    "lat": 40.8711,
+    "lng": -73.8305,
+    "system": "NYPL"
+  },
+  {
+    "name": "Belmont Library and Enrico Fermi Cultural Center",
+    "address": "610 East 186th Street",
+    "lat": 40.8544,
+    "lng": -73.8877,
+    "system": "NYPL"
+  },
+  {
+    "name": "Bloomingdale Library",
+    "address": "150 West 100th Street",
+    "lat": 40.796,
+    "lng": -73.9671,
+    "system": "NYPL"
+  },
+  {
+    "name": "Bronx Library Center",
+    "address": "310 East Kingsbridge Road",
+    "lat": 40.8634,
+    "lng": -73.8944,
+    "system": "NYPL"
+  },
+  {
+    "name": "Castle Hill Library",
+    "address": "947 Castle Hill Avenue",
+    "lat": 40.8264,
+    "lng": -73.8499,
+    "system": "NYPL"
+  },
+  {
+    "name": "Terence Cardinal Cooke-Cathedral Library",
+    "address": "560 Lexington Avenue",
+    "lat": 40.7568,
+    "lng": -73.9725,
+    "system": "NYPL"
+  },
+  {
+    "name": "Charleston Library",
+    "address": "225 Bricktown Way",
+    "lat": 40.52957,
+    "lng": -74.23043,
+    "system": "NYPL"
+  },
+  {
+    "name": "Chatham Square Library",
+    "address": "33 East Broadway",
+    "lat": 40.7134,
+    "lng": -73.9965,
+    "system": "NYPL"
+  },
+  {
+    "name": "City Island Library",
+    "address": "320 City Island Avenue",
+    "lat": 40.8477,
+    "lng": -73.7865,
+    "system": "NYPL"
+  },
+  {
+    "name": "Clason's Point Library",
+    "address": "1215 Morrison Avenue",
+    "lat": 40.8299,
+    "lng": -73.8748,
+    "system": "NYPL"
+  },
+  {
+    "name": "Columbus Library ",
+    "address": "742 10th Avenue",
+    "lat": 40.765,
+    "lng": -73.9914,
+    "system": "NYPL"
+  },
+  {
+    "name": "Countee Cullen Library",
+    "address": "104 West 136th Street",
+    "lat": 40.8148,
+    "lng": -73.9408,
+    "system": "NYPL"
+  },
+  {
+    "name": "Dongan Hills Library",
+    "address": "1617 Richmond Road",
+    "lat": 40.5906,
+    "lng": -74.101,
+    "system": "NYPL"
+  },
+  {
+    "name": "Eastchester Library",
+    "address": "1385 East Gun Hill Road",
+    "lat": 40.8702,
+    "lng": -73.8454,
+    "system": "NYPL"
+  },
+  {
+    "name": "Edenwald Library",
+    "address": "1255 East 233rd Street",
+    "lat": 40.8888,
+    "lng": -73.8409,
+    "system": "NYPL"
+  },
+  {
+    "name": "Epiphany Library",
+    "address": "228 East 23rd Street",
+    "lat": 40.7385,
+    "lng": -73.9827,
+    "system": "NYPL"
+  },
+  {
+    "name": "Fort Washington Library",
+    "address": "535 West 179th Street",
+    "lat": 40.8478,
+    "lng": -73.9337,
+    "system": "NYPL"
+  },
+  {
+    "name": "Francis Martin Library",
+    "address": "2150 University Avenue",
+    "lat": 40.8574,
+    "lng": -73.9095,
+    "system": "NYPL"
+  },
+  {
+    "name": "George Bruce Library",
+    "address": "518 West 125th Street",
+    "lat": 40.8139,
+    "lng": -73.957,
+    "system": "NYPL"
+  },
+  {
+    "name": "Grand Concourse Library",
+    "address": "155 East 173rd Street",
+    "lat": 40.8439,
+    "lng": -73.9101,
+    "system": "NYPL"
+  },
+  {
+    "name": "Great Kills Library",
+    "address": "56 Giffords Lane",
+    "lat": 40.5524,
+    "lng": -74.151,
+    "system": "NYPL"
+  },
+  {
+    "name": "Hamilton Fish Park Library",
+    "address": "415 East Houston Street",
+    "lat": 40.7199,
+    "lng": -73.9791,
+    "system": "NYPL"
+  },
+  {
+    "name": "Hamilton Grange Library",
+    "address": "503 West 145th Street",
+    "lat": 40.8255,
+    "lng": -73.9477,
+    "system": "NYPL"
+  },
+  {
+    "name": "Harlem Library",
+    "address": "9 West 124th Street",
+    "lat": 40.8061,
+    "lng": -73.9431,
+    "system": "NYPL"
+  },
+  {
+    "name": "Andrew Heiskell Braille and Talking Book Library",
+    "address": "40 West 20th Street",
+    "lat": 40.7404,
+    "lng": -73.993,
+    "system": "NYPL"
+  },
+  {
+    "name": "High Bridge Library",
+    "address": "78 West 168th Street",
+    "lat": 40.838,
+    "lng": -73.9235,
+    "system": "NYPL"
+  },
+  {
+    "name": "Hudson Park Library",
+    "address": "66 Leroy Street",
+    "lat": 40.73,
+    "lng": -74.0053,
+    "system": "NYPL"
+  },
+  {
+    "name": "Huguenot Park Library",
+    "address": "830 Huguenot Avenue",
+    "lat": 40.5345,
+    "lng": -74.1933,
+    "system": "NYPL"
+  },
+  {
+    "name": "Hunts Point Library",
+    "address": "877 Southern Boulevard",
+    "lat": 40.8187,
+    "lng": -73.8939,
+    "system": "NYPL"
+  },
+  {
+    "name": "Inwood Library–Joseph and Sheila Rosenblatt Building",
+    "address": "4790 Broadway",
+    "lat": 40.866,
+    "lng": -73.9259,
+    "system": "NYPL"
+  },
+  {
+    "name": "Jefferson Market Library",
+    "address": "425 Avenue of the Americas",
+    "lat": 40.7347,
+    "lng": -73.999,
+    "system": "NYPL"
+  },
+  {
+    "name": "Jerome Park Library",
+    "address": "118 Eames Place",
+    "lat": 40.8691,
+    "lng": -73.9012,
+    "system": "NYPL"
+  },
+  {
+    "name": "Kingsbridge Library",
+    "address": "291 West 231st Street",
+    "lat": 40.8805,
+    "lng": -73.908,
+    "system": "NYPL"
+  },
+  {
+    "name": "Kips Bay Library",
+    "address": "446 Third Avenue",
+    "lat": 40.7438,
+    "lng": -73.9797,
+    "system": "NYPL"
+  },
+  {
+    "name": "The New York Public Library for the Performing Arts",
+    "address": "40 Lincoln Center Plaza (entrance at 111 Amsterdam between 64th and 65th)",
+    "lat": 40.7731553,
+    "lng": -73.9849449,
+    "system": "NYPL"
+  },
+  {
+    "name": "Macomb's Bridge Library",
+    "address": "2633 Adam Clayton Powell, Jr. Blvd.",
+    "lat": 40.825,
+    "lng": -73.938,
+    "system": "NYPL"
+  },
+  {
+    "name": "Mariners Harbor Library",
+    "address": "206 South Ave",
+    "lat": 40.6348,
+    "lng": -74.1665,
+    "system": "NYPL"
+  },
+  {
+    "name": "Melrose Library",
+    "address": "910 Morris Avenue",
+    "lat": 40.8267,
+    "lng": -73.9177,
+    "system": "NYPL"
+  },
+  {
+    "name": "Morningside Heights Library",
+    "address": "2900 Broadway",
+    "lat": 40.8062,
+    "lng": -73.965,
+    "system": "NYPL"
+  },
+  {
+    "name": "Morris Park Library",
+    "address": "985 Morris Park Avenue",
+    "lat": 40.8467,
+    "lng": -73.8558,
+    "system": "NYPL"
+  },
+  {
+    "name": "Morrisania Library",
+    "address": "610 East 169th Street",
+    "lat": 40.8316,
+    "lng": -73.9013,
+    "system": "NYPL"
+  },
+  {
+    "name": "Mosholu Library",
+    "address": "285 East 205th Street",
+    "lat": 40.8744,
+    "lng": -73.8784,
+    "system": "NYPL"
+  },
+  {
+    "name": "Mott Haven Library",
+    "address": "321 East 140th Street",
+    "lat": 40.8116,
+    "lng": -73.9243,
+    "system": "NYPL"
+  },
+  {
+    "name": "Muhlenberg Library",
+    "address": "209 West 23rd Street",
+    "lat": 40.7444,
+    "lng": -73.9961,
+    "system": "NYPL"
+  },
+  {
+    "name": "Mulberry Street Library",
+    "address": "10 Jersey Street",
+    "lat": 40.7242,
+    "lng": -73.9956,
+    "system": "NYPL"
+  },
+  {
+    "name": "New Amsterdam Library",
+    "address": "9 Murray Street",
+    "lat": 40.7134,
+    "lng": -74.0078,
+    "system": "NYPL"
+  },
+  {
+    "name": "New Dorp Library",
+    "address": "309 New Dorp Lane",
+    "lat": 40.572,
+    "lng": -74.1123,
+    "system": "NYPL"
+  },
+  {
+    "name": "Ottendorfer Library",
+    "address": "135 Second Avenue",
+    "lat": 40.7288,
+    "lng": -73.9877,
+    "system": "NYPL"
+  },
+  {
+    "name": "Parkchester Library",
+    "address": "1985 Westchester Avenue",
+    "lat": 40.8336,
+    "lng": -73.8593,
+    "system": "NYPL"
+  },
+  {
+    "name": "Pelham Bay Library",
+    "address": "3060 Middletown Road",
+    "lat": 40.8444,
+    "lng": -73.828,
+    "system": "NYPL"
+  },
+  {
+    "name": "Pelham Parkway-Van Nest Library",
+    "address": "2147 Barnes Avenue",
+    "lat": 40.8551,
+    "lng": -73.8637,
+    "system": "NYPL"
+  },
+  {
+    "name": "Port Richmond Library",
+    "address": "75 Bennett Street",
+    "lat": 40.638,
+    "lng": -74.1322,
+    "system": "NYPL"
+  },
+  {
+    "name": "Richmondtown Library",
+    "address": "200 Clarke Avenue",
+    "lat": 40.5668,
+    "lng": -74.1381,
+    "system": "NYPL"
+  },
+  {
+    "name": "Riverdale Library",
+    "address": "5540 Mosholu Avenue",
+    "lat": 40.9029,
+    "lng": -73.9037,
+    "system": "NYPL"
+  },
+  {
+    "name": "Riverside Library",
+    "address": "127 Amsterdam Avenue",
+    "lat": 40.7743,
+    "lng": -73.9844,
+    "system": "NYPL"
+  },
+  {
+    "name": "Roosevelt Island Library",
+    "address": "504 Main Street",
+    "lat": 40.7609,
+    "lng": -73.9506,
+    "system": "NYPL"
+  },
+  {
+    "name": "Schomburg Center for Research in Black Culture",
+    "address": "515 Malcolm X Boulevard (135th St and Malcolm X Blvd)",
+    "lat": 40.8144,
+    "lng": -73.941,
+    "system": "NYPL"
+  },
+  {
+    "name": "Stephen A. Schwarzman Building",
+    "address": "Fifth Avenue and 42nd Street",
+    "lat": 40.7534887,
+    "lng": -73.9808774,
+    "system": "NYPL"
+  },
+  {
+    "name": "Sedgwick Library",
+    "address": "1701 Dr. Martin Luther King, Jr. Blvd.",
+    "lat": 40.849567768538,
+    "lng": -73.917396354593,
+    "system": "NYPL"
+  },
+  {
+    "name": "Seward Park Library",
+    "address": "192 East Broadway",
+    "lat": 40.7144,
+    "lng": -73.9884,
+    "system": "NYPL"
+  },
+  {
+    "name": "Stavros Niarchos Foundation Library (SNFL)",
+    "address": "455 Fifth Avenue",
+    "lat": 40.752,
+    "lng": -73.9818,
+    "system": "NYPL"
+  },
+  {
+    "name": "Soundview Library",
+    "address": "660 Soundview Avenue",
+    "lat": 40.8182,
+    "lng": -73.8625,
+    "system": "NYPL"
+  },
+  {
+    "name": "South Beach Library",
+    "address": "41 Father Capodanno Boulevard",
+    "lat": 40.5959,
+    "lng": -74.0631,
+    "system": "NYPL"
+  },
+  {
+    "name": "Spuyten Duyvil Library",
+    "address": "650 W. 235th St.",
+    "lat": 40.8863,
+    "lng": -73.9144,
+    "system": "NYPL"
+  },
+  {
+    "name": "St. Agnes Library",
+    "address": "444 Amsterdam Avenue (between West 81st and West 82nd Streets) ",
+    "lat": 40.7848,
+    "lng": -73.9773,
+    "system": "NYPL"
+  },
+  {
+    "name": "St. George Library Center",
+    "address": "5 Central Avenue",
+    "lat": 40.6419,
+    "lng": -74.0768,
+    "system": "NYPL"
+  },
+  {
+    "name": "Stapleton Library",
+    "address": "132 Canal St. ",
+    "lat": 40.6263,
+    "lng": -74.0779,
+    "system": "NYPL"
+  },
+  {
+    "name": "Throg's Neck Library",
+    "address": "3025 Cross Bronx Expressway",
+    "lat": 40.8219,
+    "lng": -73.8188,
+    "system": "NYPL"
+  },
+  {
+    "name": "Todt Hill-Westerleigh Library",
+    "address": "2550 Victory Boulevard",
+    "lat": 40.6098,
+    "lng": -74.148,
+    "system": "NYPL"
+  },
+  {
+    "name": "Tompkins Square Library",
+    "address": "331 East 10th Street",
+    "lat": 40.7273,
+    "lng": -73.9806,
+    "system": "NYPL"
+  },
+  {
+    "name": "Tottenville Library",
+    "address": "7430 Amboy Road",
+    "lat": 40.5098,
+    "lng": -74.244,
+    "system": "NYPL"
+  },
+  {
+    "name": "Tremont Library",
+    "address": "1866 Washington Avenue",
+    "lat": 40.8461,
+    "lng": -73.8984,
+    "system": "NYPL"
+  },
+  {
+    "name": "Van Cortlandt Library, Arline Schwarzman Building",
+    "address": "3882 Cannon Place",
+    "lat": 40.8836,
+    "lng": -73.8945,
+    "system": "NYPL"
+  },
+  {
+    "name": "Wakefield Library",
+    "address": "4100 Lowerre Place",
+    "lat": 40.8912,
+    "lng": -73.8596,
+    "system": "NYPL"
+  },
+  {
+    "name": "Washington Heights Library",
+    "address": "1000 St. Nicholas Avenue",
+    "lat": 40.8346,
+    "lng": -73.9399,
+    "system": "NYPL"
+  },
+  {
+    "name": "Webster Library",
+    "address": "1465 York Avenue",
+    "lat": 40.7707,
+    "lng": -73.9512,
+    "system": "NYPL"
+  },
+  {
+    "name": "West Farms Library",
+    "address": "2085 Honeywell Avenue",
+    "lat": 40.8448,
+    "lng": -73.8828,
+    "system": "NYPL"
+  },
+  {
+    "name": "West New Brighton Library",
+    "address": "976 Castleton Avenue",
+    "lat": 40.6346,
+    "lng": -74.1152,
+    "system": "NYPL"
+  },
+  {
+    "name": "Westchester Square Library",
+    "address": "2521 Glebe Avenue",
+    "lat": 40.8407,
+    "lng": -73.8469,
+    "system": "NYPL"
+  },
+  {
+    "name": "Woodlawn Heights Library",
+    "address": "4355 Katonah Avenue",
+    "lat": 40.9005,
+    "lng": -73.8679,
+    "system": "NYPL"
+  },
+  {
+    "name": "Woodstock Library",
+    "address": "761 East 160th Street",
+    "lat": 40.8205,
+    "lng": -73.9046,
+    "system": "NYPL"
+  },
+  {
+    "name": "Yorkville Library",
+    "address": "222 East 79th Street",
+    "lat": 40.774,
+    "lng": -73.9569,
+    "system": "NYPL"
+  },
+  {
+    "name": "Arverne",
+    "address": "312 Beach 54 Street",
+    "lat": 40.59,
+    "lng": -73.78,
+    "system": "Queens"
+  },
+  {
+    "name": "Bayside",
+    "address": "214-20 Northern Boulevard",
+    "lat": 40.76,
+    "lng": -73.77,
+    "system": "Queens"
+  },
+  {
+    "name": "Cambria Heights",
+    "address": "218-13 Linden Boulevard",
+    "lat": 40.7,
+    "lng": -73.74,
+    "system": "Queens"
+  },
+  {
+    "name": "South Hollis",
+    "address": "204-01 Hollis Avenue",
+    "lat": 40.71,
+    "lng": -73.75,
+    "system": "Queens"
+  },
+  {
+    "name": "Ozone Park",
+    "address": "92-24 Rockaway Boulevard",
+    "lat": 40.68,
+    "lng": -73.85,
+    "system": "Queens"
+  },
+  {
+    "name": "Glendale",
+    "address": "78-60 73 Place",
+    "lat": 40.7,
+    "lng": -73.88,
+    "system": "Queens"
+  },
+  {
+    "name": "McGoldrick",
+    "address": "155-06 Roosevelt Avenue",
+    "lat": 40.76,
+    "lng": -73.81,
+    "system": "Queens"
+  },
+  {
+    "name": "Hillcrest",
+    "address": "187-05 Union Turnpike",
+    "lat": 40.73,
+    "lng": -73.78,
+    "system": "Queens"
+  },
+  {
+    "name": "Ridgewood",
+    "address": "20-12 Madison Street",
+    "lat": 40.71,
+    "lng": -73.9,
+    "system": "Queens"
+  },
+  {
+    "name": "Douglaston",
+    "address": "249-01 Northern Boulevard",
+    "lat": 40.77,
+    "lng": -73.74,
+    "system": "Queens"
+  },
+  {
+    "name": "Flushing",
+    "address": "41-17 Main Street",
+    "lat": 40.76,
+    "lng": -73.83,
+    "system": "Queens"
+  },
+  {
+    "name": "Queens Village",
+    "address": "94-11 217 Street",
+    "lat": 40.72,
+    "lng": -73.74,
+    "system": "Queens"
+  },
+  {
+    "name": "South Jamaica",
+    "address": "108-41 Guy R. Brewer Boulevard",
+    "lat": 40.7,
+    "lng": -73.79,
+    "system": "Queens"
+  },
+  {
+    "name": "Jackson Heights",
+    "address": "35-51 81 Street",
+    "lat": 40.75,
+    "lng": -73.89,
+    "system": "Queens"
+  },
+  {
+    "name": "Sunnyside",
+    "address": "43-06 Greenpoint Avenue",
+    "lat": 40.74,
+    "lng": -73.92,
+    "system": "Queens"
+  },
+  {
+    "name": "Astoria",
+    "address": "14-01 Astoria Boulevard",
+    "lat": 40.77,
+    "lng": -73.93,
+    "system": "Queens"
+  },
+  {
+    "name": "Bellerose",
+    "address": "250-06 Hillside Avenue",
+    "lat": 40.74,
+    "lng": -73.72,
+    "system": "Queens"
+  },
+  {
+    "name": "Steinway",
+    "address": "21-45 31 Street",
+    "lat": 40.78,
+    "lng": -73.91,
+    "system": "Queens"
+  },
+  {
+    "name": "Hunters Point",
+    "address": "47-40 Center Boulevard",
+    "lat": 40.74,
+    "lng": -73.96,
+    "system": "Queens"
+  },
+  {
+    "name": "Middle Village",
+    "address": "72-31 Metropolitan Avenue",
+    "lat": 40.71,
+    "lng": -73.88,
+    "system": "Queens"
+  },
+  {
+    "name": "Forest Hills",
+    "address": "108-19 71 Avenue",
+    "lat": 40.72,
+    "lng": -73.84,
+    "system": "Queens"
+  },
+  {
+    "name": "Lefferts",
+    "address": "103-34 Lefferts Boulevard",
+    "lat": 40.69,
+    "lng": -73.82,
+    "system": "Queens"
+  },
+  {
+    "name": "Woodside",
+    "address": "54-22 Skillman Avenue",
+    "lat": 40.75,
+    "lng": -73.91,
+    "system": "Queens"
+  },
+  {
+    "name": "Broadway",
+    "address": "40-20 Broadway",
+    "lat": 40.76,
+    "lng": -73.92,
+    "system": "Queens"
+  },
+  {
+    "name": "Rochdale Village",
+    "address": "169-09 137 Avenue",
+    "lat": 40.67,
+    "lng": -73.77,
+    "system": "Queens"
+  },
+  {
+    "name": "Court Square",
+    "address": "22-44 Jackson Avenue",
+    "lat": 40.75,
+    "lng": -73.94,
+    "system": "Queens"
+  },
+  {
+    "name": "North Hills",
+    "address": "57-04 Marathon Parkway",
+    "lat": 40.76,
+    "lng": -73.73,
+    "system": "Queens"
+  },
+  {
+    "name": "Auburndale",
+    "address": "25-55 Francis Lewis Boulevard",
+    "lat": 40.77,
+    "lng": -73.8,
+    "system": "Queens"
+  },
+  {
+    "name": "Laurelton",
+    "address": "134-26 225 Street",
+    "lat": 40.68,
+    "lng": -73.75,
+    "system": "Queens"
+  },
+  {
+    "name": "Lefrak City",
+    "address": "98-30 57 Avenue",
+    "lat": 40.74,
+    "lng": -73.86,
+    "system": "Queens"
+  },
+  {
+    "name": "Poppenhusen",
+    "address": "121-23 14 Avenue",
+    "lat": 40.79,
+    "lng": -73.85,
+    "system": "Queens"
+  },
+  {
+    "name": "Woodhaven",
+    "address": "85-41 Forest Parkway",
+    "lat": 40.69,
+    "lng": -73.86,
+    "system": "Queens"
+  },
+  {
+    "name": "Elmhurst",
+    "address": "86-07 Broadway",
+    "lat": 40.74,
+    "lng": -73.88,
+    "system": "Queens"
+  },
+  {
+    "name": "Fresh Meadows",
+    "address": "193-20 Horace Harding Expressway",
+    "lat": 40.74,
+    "lng": -73.78,
+    "system": "Queens"
+  },
+  {
+    "name": "Pomonok",
+    "address": "158-21 Jewel Avenue",
+    "lat": 40.73,
+    "lng": -73.81,
+    "system": "Queens"
+  },
+  {
+    "name": "St. Albans",
+    "address": "191-05 Linden Boulevard",
+    "lat": 40.69,
+    "lng": -73.76,
+    "system": "Queens"
+  },
+  {
+    "name": "Howard Beach",
+    "address": "92-06 156 Avenue",
+    "lat": 40.66,
+    "lng": -73.84,
+    "system": "Queens"
+  },
+  {
+    "name": "Corona",
+    "address": "38-23 104 Street",
+    "lat": 40.75,
+    "lng": -73.86,
+    "system": "Queens"
+  },
+  {
+    "name": "Rosedale",
+    "address": "144-20 243 Street",
+    "lat": 40.66,
+    "lng": -73.74,
+    "system": "Queens"
+  },
+  {
+    "name": "Ravenswood",
+    "address": "35-32 21 Street",
+    "lat": 40.76,
+    "lng": -73.94,
+    "system": "Queens"
+  },
+  {
+    "name": "Briarwood",
+    "address": "85-12 Main Street",
+    "lat": 40.71,
+    "lng": -73.82,
+    "system": "Queens"
+  },
+  {
+    "name": "Mitchell-Linden",
+    "address": "31-32 Union Street",
+    "lat": 40.77,
+    "lng": -73.83,
+    "system": "Queens"
+  },
+  {
+    "name": "Baisley Park",
+    "address": "117-11 Sutphin Boulevard",
+    "lat": 40.68,
+    "lng": -73.79,
+    "system": "Queens"
+  },
+  {
+    "name": "Long Island City",
+    "address": "37-44 21 Street",
+    "lat": 40.76,
+    "lng": -73.94,
+    "system": "Queens"
+  },
+  {
+    "name": "Queensbridge",
+    "address": "10-43 41 Avenue",
+    "lat": 40.76,
+    "lng": -73.94,
+    "system": "Queens"
+  },
+  {
+    "name": "Windsor Park",
+    "address": "79-50 Bell Boulevard",
+    "lat": 40.73,
+    "lng": -73.76,
+    "system": "Queens"
+  },
+  {
+    "name": "Far Rockaway",
+    "address": "1637 Central Avenue",
+    "lat": 40.6,
+    "lng": -73.75,
+    "system": "Queens"
+  },
+  {
+    "name": "Rego Park",
+    "address": "91-41 63 Drive",
+    "lat": 40.73,
+    "lng": -73.86,
+    "system": "Queens"
+  },
+  {
+    "name": "East Flushing",
+    "address": "196-36 Northern Boulevard",
+    "lat": 40.76,
+    "lng": -73.78,
+    "system": "Queens"
+  },
+  {
+    "name": "Langston Hughes",
+    "address": "100-01 Northern Boulevard",
+    "lat": 40.76,
+    "lng": -73.87,
+    "system": "Queens"
+  },
+  {
+    "name": "Central Library",
+    "address": "89-11 Merrick Boulevard",
+    "lat": 40.71,
+    "lng": -73.8,
+    "system": "Queens"
+  },
+  {
+    "name": "Peninsula",
+    "address": "92-25 Rockaway Beach Boulevard",
+    "lat": 40.59,
+    "lng": -73.82,
+    "system": "Queens"
+  },
+  {
+    "name": "North Forest Park",
+    "address": "98-27 Metropolitan Avenue",
+    "lat": 40.71,
+    "lng": -73.85,
+    "system": "Queens"
+  },
+  {
+    "name": "Hollis",
+    "address": "202-05 Hillside Avenue",
+    "lat": 40.72,
+    "lng": -73.76,
+    "system": "Queens"
+  },
+  {
+    "name": "Seaside",
+    "address": "116-15 Rockaway Beach Boulevard",
+    "lat": 40.58,
+    "lng": -73.84,
+    "system": "Queens"
+  },
+  {
+    "name": "Glen Oaks",
+    "address": "256-04 Union Turnpike",
+    "lat": 40.75,
+    "lng": -73.72,
+    "system": "Queens"
+  },
+  {
+    "name": "Broad Channel",
+    "address": "16-26 Cross Bay Boulevard",
+    "lat": 40.6,
+    "lng": -73.82,
+    "system": "Queens"
+  },
+  {
+    "name": "South Ozone Park",
+    "address": "128-16 Rockaway Boulevard",
+    "lat": 40.68,
+    "lng": -73.81,
+    "system": "Queens"
+  },
+  {
+    "name": "Maspeth",
+    "address": "69-70 Grand Avenue",
+    "lat": 40.73,
+    "lng": -73.89,
+    "system": "Queens"
+  },
+  {
+    "name": "Kew Gardens Hills",
+    "address": "72-33 Vleigh Place",
+    "lat": 40.73,
+    "lng": -73.82,
+    "system": "Queens"
+  },
+  {
+    "name": "Richmond Hill",
+    "address": "118-14 Hillside Avenue",
+    "lat": 40.7,
+    "lng": -73.83,
+    "system": "Queens"
+  },
+  {
+    "name": "Far Rockaway Teen Library",
+    "address": "2002 Cornaga Avenue",
+    "lat": 40.6,
+    "lng": -73.75,
+    "system": "Queens"
+  },
+  {
+    "name": "Bay Terrace",
+    "address": "18-36 Bell Boulevard",
+    "lat": 40.78,
+    "lng": -73.78,
+    "system": "Queens"
+  },
+  {
+    "name": "Queensboro Hill",
+    "address": "60-05 Main Street",
+    "lat": 40.74,
+    "lng": -73.83,
+    "system": "Queens"
+  },
+  {
+    "name": "East Elmhurst",
+    "address": "95-06 Astoria Boulevard",
+    "lat": 40.76,
+    "lng": -73.87,
+    "system": "Queens"
+  },
+  {
+    "name": "Whitestone",
+    "address": "151-10 14 Road",
+    "lat": 40.79,
+    "lng": -73.81,
+    "system": "Queens"
+  }
+]
