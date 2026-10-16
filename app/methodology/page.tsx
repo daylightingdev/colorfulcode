@@ -80,6 +80,9 @@ export default function MethodologyPage() {
           <span className="text-tag uppercase tracking-wide text-teal font-bold">
             How We Score
           </span>
+          <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+            Suggest a Spot
+          </Link>
         </div>
       </nav>
 

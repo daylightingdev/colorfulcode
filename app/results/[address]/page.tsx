@@ -900,6 +900,9 @@ export default function ResultsPage({
           <Link href="/methodology" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
             How We Score
           </Link>
+          <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+            Suggest a Spot
+          </Link>
         </div>
       </nav>
 

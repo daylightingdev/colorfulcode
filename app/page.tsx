@@ -223,12 +223,20 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="mt-8 text-tag text-faded">
-            Curious how it all works?{" "}
-            <Link href="/methodology" className="text-teal underline underline-offset-2">
-              Read our methodology
+          <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
+            <Link
+              href="/suggest"
+              className="inline-block border-2 border-ink px-4 py-2 font-display font-bold text-label uppercase tracking-wide hover:bg-ink hover:text-paper transition-colors"
+            >
+              Suggest a Spot
             </Link>
-          </p>
+            <p className="text-tag text-faded">
+              Curious how it all works?{" "}
+              <Link href="/methodology" className="text-teal underline underline-offset-2">
+                Read our methodology
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </main>

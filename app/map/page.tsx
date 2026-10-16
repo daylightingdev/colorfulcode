@@ -22,6 +22,7 @@ export default function GapMapPage() {
     id: string;
     score: number;
   } | null>(null);
+  const [showCommunity, setShowCommunity] = useState(true);
 
   useEffect(() => {
     if (!mapContainer.current || !MAPBOX_TOKEN) return;
@@ -103,10 +104,106 @@ export default function GapMapPage() {
             m.getCanvas().style.cursor = "";
           });
         });
+
+      fetch("/api/community-spots")
+        .then((res) => res.json())
+        .then((geojson) => {
+          if (!geojson.features) return;
+
+          m.addSource("community-spots", {
+            type: "geojson",
+            data: geojson,
+          });
+
+          m.addLayer({
+            id: "community-spots-layer",
+            type: "circle",
+            source: "community-spots",
+            paint: {
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                10, 4,
+                14, 8,
+              ],
+              "circle-color": "#0B6E6F",
+              "circle-stroke-width": 2,
+              "circle-stroke-color": "#F2EBD9",
+              "circle-opacity": 0.85,
+            },
+          });
+
+          m.addLayer({
+            id: "community-spots-top-pick",
+            type: "symbol",
+            source: "community-spots",
+            filter: ["==", ["get", "isTopPick"], true],
+            layout: {
+              "text-field": "★",
+              "text-size": 10,
+              "text-offset": [0, -1.2],
+              "text-allow-overlap": true,
+            },
+            paint: {
+              "text-color": "#E24B3A",
+            },
+          });
+
+          m.on("click", "community-spots-layer", (e) => {
+            if (!e.features || !e.features[0]) return;
+            const props = e.features[0].properties!;
+            const coords = (e.features[0].geometry as GeoJSON.Point).coordinates;
+
+            new mapboxgl.Popup({
+              className: "community-popup",
+              maxWidth: "240px",
+            })
+              .setLngLat(coords as [number, number])
+              .setHTML(
+                `<div style="font-family:var(--font-space-mono);font-size:0.6rem;">` +
+                  `<strong style="font-family:var(--font-syne);text-transform:uppercase;font-size:0.6rem;">${props.name}</strong>` +
+                  `<span style="display:inline-block;margin-left:4px;padding:0 4px;background:#0B6E6F;color:#F2EBD9;font-size:0.5rem;text-transform:uppercase;">Community</span>` +
+                  (props.isTopPick === "true" || props.isTopPick === true
+                    ? `<span style="display:inline-block;margin-left:2px;padding:0 4px;background:#E24B3A;color:#F2EBD9;font-size:0.5rem;text-transform:uppercase;">Top Pick</span>`
+                    : "") +
+                  `<p style="margin:4px 0 0;color:#9A9183;">${props.description || ""}</p>` +
+                  `</div>`
+              )
+              .addTo(m);
+          });
+
+          m.on("mouseenter", "community-spots-layer", () => {
+            m.getCanvas().style.cursor = "pointer";
+          });
+          m.on("mouseleave", "community-spots-layer", () => {
+            m.getCanvas().style.cursor = "";
+          });
+        })
+        .catch(() => {});
     });
 
     return () => m.remove();
   }, []);
+
+  useEffect(() => {
+    if (!map.current) return;
+    const m = map.current;
+    if (m.getLayer("community-spots-layer")) {
+      m.setLayoutProperty(
+        "community-spots-layer",
+        "visibility",
+        showCommunity ? "visible" : "none"
+      );
+    }
+    if (m.getLayer("community-spots-top-pick")) {
+      m.setLayoutProperty(
+        "community-spots-top-pick",
+        "visibility",
+        showCommunity ? "visible" : "none"
+      );
+    }
+  }, [showCommunity]);
 
   return (
     <main className="h-screen flex flex-col bg-paper">
@@ -120,6 +217,9 @@ export default function GapMapPage() {
           </span>
           <Link href="/methodology" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
             How We Score
+          </Link>
+          <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+            Suggest a Spot
           </Link>
         </div>
       </nav>
@@ -153,6 +253,24 @@ export default function GapMapPage() {
                 <span className="text-faded">{item.label}</span>
               </div>
             ))}
+          </div>
+
+          <div className="mt-2.5 pt-2 border-t border-dashed border-buff">
+            <label className="flex items-center gap-2 cursor-pointer text-tag">
+              <input
+                type="checkbox"
+                checked={showCommunity}
+                onChange={(e) => setShowCommunity(e.target.checked)}
+                className="w-3 h-3 accent-teal"
+              />
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="w-2.5 h-2.5 rounded-full border-2"
+                  style={{ backgroundColor: "#0B6E6F", borderColor: "#F2EBD9" }}
+                />
+                <span className="text-faded">Community suggested</span>
+              </div>
+            </label>
           </div>
         </div>
 
