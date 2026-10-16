@@ -220,18 +220,12 @@ export default function SuggestSpotPage() {
   if (formState === "success") {
     return (
       <main className="min-h-screen grain bg-paper">
-        <nav className="max-w-3xl mx-auto px-4">
-          <div className="flex items-center gap-3 py-2.5 border-b-2 border-ink">
-            <Link
-              href="/"
-              className="font-display font-extrabold text-[0.9rem] text-coral"
-            >
+        <nav className="border-b-2 border-ink bg-paper sticky top-0 z-50">
+          <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center gap-4">
+            <Link href="/" className="font-display font-extrabold text-[1rem] text-coral">
               LIVE LIGHTLY
             </Link>
-            <Link
-              href="/map"
-              className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors"
-            >
+            <Link href="/map" className="text-body-sm uppercase tracking-wide text-faded hover:text-ink transition-colors font-display font-bold">
               Gap Map
             </Link>
           </div>
@@ -275,21 +269,15 @@ export default function SuggestSpotPage() {
 
   return (
     <main className="min-h-screen grain bg-paper">
-      <nav className="max-w-3xl mx-auto px-4">
-        <div className="flex items-center gap-3 py-2.5 border-b-2 border-ink">
-          <Link
-            href="/"
-            className="font-display font-extrabold text-[0.9rem] text-coral"
-          >
+      <nav className="border-b-2 border-ink bg-paper sticky top-0 z-50">
+        <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center gap-4">
+          <Link href="/" className="font-display font-extrabold text-[1rem] text-coral">
             LIVE LIGHTLY
           </Link>
-          <Link
-            href="/map"
-            className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors"
-          >
+          <Link href="/map" className="text-body-sm uppercase tracking-wide text-faded hover:text-ink transition-colors font-display font-bold">
             Gap Map
           </Link>
-          <span className="text-tag uppercase tracking-wide text-teal font-bold">
+          <span className="text-body-sm uppercase tracking-wide text-teal font-display font-bold">
             Add to the Map
           </span>
         </div>

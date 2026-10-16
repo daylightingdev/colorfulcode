@@ -207,18 +207,23 @@ export default function GapMapPage() {
 
   return (
     <main className="h-screen flex flex-col bg-paper">
-      <nav className="border-b-2 border-ink bg-paper z-10">
-        <div className="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-3">
-          <Link href="/" className="font-display font-extrabold text-[0.9rem] text-coral">
-            LIVE LIGHTLY
-          </Link>
-          <span className="text-tag uppercase tracking-wide text-teal font-bold">
-            Citywide Gap Map
-          </span>
-          <Link href="/methodology" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
-            How We Score
-          </Link>
-          <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+      <nav className="border-b-2 border-ink bg-paper z-10 sticky top-0">
+        <div className="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="font-display font-extrabold text-[1rem] text-coral">
+              LIVE LIGHTLY
+            </Link>
+            <span className="text-body-sm uppercase tracking-wide text-teal font-display font-bold">
+              Citywide Gap Map
+            </span>
+            <Link href="/methodology" className="text-body-sm uppercase tracking-wide text-faded hover:text-ink transition-colors font-display font-bold hidden sm:inline">
+              How We Score
+            </Link>
+          </div>
+          <Link
+            href="/suggest"
+            className="border-2 border-ink px-3 py-1.5 text-body-sm uppercase tracking-wide font-display font-bold hover:bg-ink hover:text-paper transition-colors"
+          >
             Add to the Map
           </Link>
         </div>

@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 const CATEGORY_COLORS: Record<string, string> = {
-  transit: "var(--teal)",
-  activeMobility: "var(--overprint)",
-  dailyNeeds: "var(--coral)",
-  circularEconomy: "var(--teal)",
-  localFood: "var(--overprint)",
+  transit: "var(--cat-transit)",
+  activeMobility: "var(--cat-mobility)",
+  dailyNeeds: "var(--cat-daily)",
+  circularEconomy: "var(--cat-circular)",
+  localFood: "var(--cat-food)",
 };
 
 function Section({
@@ -69,18 +69,23 @@ function CategoryCard({
 export default function MethodologyPage() {
   return (
     <main className="min-h-screen grain bg-paper">
-      <nav className="max-w-3xl mx-auto px-4">
-        <div className="flex items-center gap-3 py-2.5 border-b-2 border-ink">
-          <Link href="/" className="font-display font-extrabold text-[0.9rem] text-coral">
-            LIVE LIGHTLY
-          </Link>
-          <Link href="/map" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
-            Gap Map
-          </Link>
-          <span className="text-tag uppercase tracking-wide text-teal font-bold">
-            How We Score
-          </span>
-          <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+      <nav className="border-b-2 border-ink bg-paper sticky top-0 z-50">
+        <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="font-display font-extrabold text-[1rem] text-coral">
+              LIVE LIGHTLY
+            </Link>
+            <Link href="/map" className="text-body-sm uppercase tracking-wide text-faded hover:text-ink transition-colors font-display font-bold">
+              Gap Map
+            </Link>
+            <span className="text-body-sm uppercase tracking-wide text-teal font-display font-bold">
+              How We Score
+            </span>
+          </div>
+          <Link
+            href="/suggest"
+            className="border-2 border-ink px-3 py-1.5 text-body-sm uppercase tracking-wide font-display font-bold hover:bg-ink hover:text-paper transition-colors"
+          >
             Add to the Map
           </Link>
         </div>
@@ -198,14 +203,14 @@ export default function MethodologyPage() {
               </thead>
               <tbody className="text-faded">
                 <tr className="border-b border-dashed border-buff">
-                  <td className="px-3 py-2 font-bold text-teal">75-100</td>
+                  <td className="px-3 py-2 font-bold" style={{ color: "var(--score-excellent)" }}>75-100</td>
                   <td className="px-3 py-2">Excellent</td>
                   <td className="px-3 py-2">
                     Your neighborhood makes it easy to live lightly.
                   </td>
                 </tr>
                 <tr className="border-b border-dashed border-buff">
-                  <td className="px-3 py-2 font-bold text-overprint">50-74</td>
+                  <td className="px-3 py-2 font-bold" style={{ color: "var(--score-high)" }}>50-74</td>
                   <td className="px-3 py-2">Moderate</td>
                   <td className="px-3 py-2">
                     Good foundation with room to grow. A few key additions
@@ -213,7 +218,7 @@ export default function MethodologyPage() {
                   </td>
                 </tr>
                 <tr className="border-b border-dashed border-buff">
-                  <td className="px-3 py-2 font-bold text-coral">25-49</td>
+                  <td className="px-3 py-2 font-bold" style={{ color: "var(--score-mid)" }}>25-49</td>
                   <td className="px-3 py-2">Limited</td>
                   <td className="px-3 py-2">
                     Living lightly here takes effort. Some infrastructure
@@ -221,7 +226,7 @@ export default function MethodologyPage() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-3 py-2 font-bold text-coral">0-24</td>
+                  <td className="px-3 py-2 font-bold" style={{ color: "var(--score-low)" }}>0-24</td>
                   <td className="px-3 py-2">Severely underserved</td>
                   <td className="px-3 py-2">
                     Very little planet-friendly infrastructure. Residents need

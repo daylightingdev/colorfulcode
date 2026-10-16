@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Space_Mono } from "next/font/google";
+import { Syne, Space_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -17,6 +17,13 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Live Lightly",
   description:
@@ -29,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${syne.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${syne.variable} ${spaceMono.variable} ${inter.variable}`}>
       <body className="bg-paper text-ink font-body antialiased">
         {children}
       </body>
