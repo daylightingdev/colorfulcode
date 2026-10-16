@@ -290,14 +290,14 @@ export default function SuggestSpotPage() {
             Gap Map
           </Link>
           <span className="text-tag uppercase tracking-wide text-teal font-bold">
-            Suggest a Spot
+            Add to the Map
           </span>
         </div>
       </nav>
 
       <div className="max-w-xl mx-auto px-4 py-8">
         <h1 className="font-display font-extrabold text-title-xl text-ink mb-1">
-          Suggest a Spot
+          Add to the Map
         </h1>
         <p className="text-body-sm text-faded mb-6">
           Know a place that helps people live more lightly? A bike shop, a

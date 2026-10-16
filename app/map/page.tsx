@@ -219,7 +219,7 @@ export default function GapMapPage() {
             How We Score
           </Link>
           <Link href="/suggest" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
-            Suggest a Spot
+            Add to the Map
           </Link>
         </div>
       </nav>

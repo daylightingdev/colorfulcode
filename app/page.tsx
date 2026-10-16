@@ -228,7 +228,7 @@ export default function Home() {
               href="/suggest"
               className="inline-block border-2 border-ink px-4 py-2 font-display font-bold text-label uppercase tracking-wide hover:bg-ink hover:text-paper transition-colors"
             >
-              Suggest a Spot
+              Add to the Map
             </Link>
             <p className="text-tag text-faded">
               Curious how it all works?{" "}
