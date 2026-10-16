@@ -7,12 +7,47 @@ type TractScores = Record<string, { score: number; lat: number; lng: number }>;
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
+function applyBrandBasemap(m: mapboxgl.Map) {
+  try {
+    const style = m.getStyle();
+    if (!style?.layers) return;
+
+    for (const layer of style.layers) {
+      try {
+        if (layer.id === "background") {
+          m.setPaintProperty(layer.id, "background-color", "#F2EBD9");
+          continue;
+        }
+        if (layer.type === "fill" && layer.id.includes("water")) {
+          m.setPaintProperty(layer.id, "fill-color", "#C8DCDD");
+          continue;
+        }
+        if (layer.type === "line" && layer.id.includes("waterway")) {
+          m.setPaintProperty(layer.id, "line-color", "#B8D0D1");
+          continue;
+        }
+        if (layer.type === "fill" && (layer.id.includes("park") || layer.id.includes("landuse"))) {
+          m.setPaintProperty(layer.id, "fill-color", "#E5DFCA");
+          continue;
+        }
+        if (layer.type === "fill" && layer.id.includes("building")) {
+          m.setPaintProperty(layer.id, "fill-color", "#E6DBC5");
+          continue;
+        }
+      } catch {
+        // Some properties may not be settable
+      }
+    }
+  } catch {
+    // Style may not be fully loaded
+  }
+}
+
 function scoreToColor(score: number): string {
-  if (score >= 75) return "#0B6E6F";
+  if (score >= 75) return "#1A6B4B";
   if (score >= 50) return "#2D8A8B";
-  if (score >= 35) return "#7A4A38";
-  if (score >= 20) return "#B5604E";
-  return "#E24B3A";
+  if (score >= 25) return "#B5604E";
+  return "#C0392B";
 }
 
 export default function GapMapPage() {
@@ -38,6 +73,8 @@ export default function GapMapPage() {
     map.current = m;
 
     m.on("load", () => {
+      applyBrandBasemap(m);
+
       fetch("/api/tract-scores")
         .then((res) => res.json())
         .then((tractScores: TractScores) => {
@@ -74,11 +111,10 @@ export default function GapMapPage() {
                 "interpolate",
                 ["linear"],
                 ["get", "score"],
-                0, "#E24B3A",
+                0, "#C0392B",
                 25, "#B5604E",
-                40, "#7A4A38",
-                60, "#2D8A8B",
-                80, "#0B6E6F",
+                50, "#2D8A8B",
+                75, "#1A6B4B",
               ],
               "circle-opacity": 0.6,
               "circle-stroke-width": 1,
@@ -127,7 +163,7 @@ export default function GapMapPage() {
                 10, 4,
                 14, 8,
               ],
-              "circle-color": "#0B6E6F",
+              "circle-color": "#3A7D44",
               "circle-stroke-width": 2,
               "circle-stroke-color": "#F2EBD9",
               "circle-opacity": 0.85,
@@ -147,6 +183,7 @@ export default function GapMapPage() {
             },
             paint: {
               "text-color": "#E24B3A",
+
             },
           });
 
@@ -161,13 +198,13 @@ export default function GapMapPage() {
             })
               .setLngLat(coords as [number, number])
               .setHTML(
-                `<div style="font-family:var(--font-space-mono);font-size:0.6rem;">` +
-                  `<strong style="font-family:var(--font-syne);text-transform:uppercase;font-size:0.6rem;">${props.name}</strong>` +
-                  `<span style="display:inline-block;margin-left:4px;padding:0 4px;background:#0B6E6F;color:#F2EBD9;font-size:0.5rem;text-transform:uppercase;">Community</span>` +
+                `<div style="font-family:var(--font-text);font-size:0.875rem;">` +
+                  `<strong style="font-family:var(--font-display);text-transform:uppercase;font-size:0.875rem;">${props.name}</strong>` +
+                  `<span style="display:inline-block;margin-left:4px;padding:0 4px;background:var(--cat-food);color:#F2EBD9;font-size:0.75rem;text-transform:uppercase;">Community</span>` +
                   (props.isTopPick === "true" || props.isTopPick === true
-                    ? `<span style="display:inline-block;margin-left:2px;padding:0 4px;background:#E24B3A;color:#F2EBD9;font-size:0.5rem;text-transform:uppercase;">Top Pick</span>`
+                    ? `<span style="display:inline-block;margin-left:2px;padding:0 4px;background:var(--coral);color:#F2EBD9;font-size:0.75rem;text-transform:uppercase;">Top Pick</span>`
                     : "") +
-                  `<p style="margin:4px 0 0;color:#9A9183;">${props.description || ""}</p>` +
+                  `<p style="margin:4px 0 0;color:#9A9183;font-size:0.875rem;">${props.description || ""}</p>` +
                   `</div>`
               )
               .addTo(m);
@@ -244,11 +281,10 @@ export default function GapMapPage() {
           </h3>
           <div className="space-y-1">
             {[
-              { label: "75-100 Excellent", color: "#0B6E6F" },
+              { label: "75-100 Excellent", color: "#1A6B4B" },
               { label: "50-74 Moderate", color: "#2D8A8B" },
-              { label: "35-49 Limited", color: "#7A4A38" },
-              { label: "20-34 Poor", color: "#B5604E" },
-              { label: "0-19 Severely underserved", color: "#E24B3A" },
+              { label: "25-49 Limited", color: "#B5604E" },
+              { label: "0-24 Severely underserved", color: "#C0392B" },
             ].map((item) => (
               <div key={item.label} className="flex items-center gap-2 text-tag">
                 <div
@@ -271,7 +307,7 @@ export default function GapMapPage() {
               <div className="flex items-center gap-1.5">
                 <div
                   className="w-2.5 h-2.5 rounded-full border-2"
-                  style={{ backgroundColor: "#0B6E6F", borderColor: "#F2EBD9" }}
+                  style={{ backgroundColor: "#3A7D44", borderColor: "#F2EBD9" }}
                 />
                 <span className="text-faded">Community suggested</span>
               </div>

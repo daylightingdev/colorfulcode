@@ -150,8 +150,8 @@
 
 /* Mapbox overrides */
 .mapboxgl-popup-content {
-  font-family: var(--font-body) !important;
-  font-size: 0.75rem !important;
+  font-family: var(--font-text) !important;
+  font-size: 0.875rem !important;
   color: var(--ink) !important;
   background: var(--paper) !important;
   border: 1px solid var(--ink) !important;
