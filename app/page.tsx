@@ -9,6 +9,47 @@ interface Prediction {
   place_id: string;
 }
 
+function MapIllustration() {
+  return (
+    <svg className="w-[72px] h-[52px] mx-auto mb-2 mt-3" viewBox="0 0 72 52" fill="none" aria-hidden="true">
+      <rect x="6" y="10" width="60" height="36" rx="2" stroke="var(--teal)" strokeWidth="1.2" strokeDasharray="3 2"/>
+      <path d="M6 28Q18 24 30 28Q42 32 54 28Q60 26 66 28" stroke="var(--teal)" strokeWidth="0.8" opacity="0.3"/>
+      <circle cx="24" cy="24" r="3.5" fill="var(--coral)" opacity="0.6"/>
+      <circle cx="42" cy="20" r="3" fill="var(--teal)" opacity="0.5"/>
+      <circle cx="52" cy="30" r="2.5" fill="var(--overprint)" opacity="0.5"/>
+      <circle cx="18" cy="34" r="2" fill="var(--teal)" opacity="0.4"/>
+      <circle cx="38" cy="36" r="2" fill="var(--coral)" opacity="0.4"/>
+      <path d="M30 14L30 10L33 12Z" fill="var(--coral)" opacity="0.8"/>
+      <line x1="30" y1="14" x2="30" y2="20" stroke="var(--coral)" strokeWidth="1.5" opacity="0.7"/>
+    </svg>
+  );
+}
+
+function GaugeIllustration() {
+  return (
+    <svg className="w-[72px] h-[52px] mx-auto mb-2 mt-3" viewBox="0 0 72 52" fill="none" aria-hidden="true">
+      <path d="M16 40A20 20 0 0156 40" stroke="var(--buff)" strokeWidth="6" strokeLinecap="round"/>
+      <path d="M16 40A20 20 0 0142 21" stroke="var(--teal)" strokeWidth="6" strokeLinecap="round"/>
+      <circle cx="36" cy="40" r="3.5" fill="var(--coral)"/>
+      <line x1="36" y1="40" x2="42" y2="24" stroke="var(--coral)" strokeWidth="2" strokeLinecap="round"/>
+      <text x="36" y="50" textAnchor="middle" fill="var(--ink)" fontFamily="var(--font-display)" fontWeight="800" fontSize="8">48</text>
+    </svg>
+  );
+}
+
+function GapsIllustration() {
+  return (
+    <svg className="w-[72px] h-[52px] mx-auto mb-2 mt-3" viewBox="0 0 72 52" fill="none" aria-hidden="true">
+      <line x1="8" y1="32" x2="26" y2="32" stroke="var(--teal)" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="46" y1="32" x2="64" y2="32" stroke="var(--teal)" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="28" y1="32" x2="44" y2="32" stroke="var(--coral)" strokeWidth="1.5" strokeDasharray="2 3" opacity="0.5"/>
+      <circle cx="36" cy="26" r="11" stroke="var(--coral)" strokeWidth="1.5"/>
+      <line x1="44" y1="34" x2="52" y2="42" stroke="var(--coral)" strokeWidth="2" strokeLinecap="round"/>
+      <text x="36" y="30" textAnchor="middle" fill="var(--coral)" fontFamily="var(--font-display)" fontWeight="800" fontSize="10">?</text>
+    </svg>
+  );
+}
+
 export default function Home() {
   const [address, setAddress] = useState("");
   const [predictions, setPredictions] = useState<Prediction[]>([]);
@@ -76,7 +117,6 @@ export default function Home() {
     }
   }
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (
@@ -91,25 +131,28 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="max-w-2xl w-full text-center">
+    <main className="min-h-screen grain bg-paper">
+      <div className="flex-1 flex items-center justify-center px-4 pt-12 sm:pt-20 pb-10">
+        <div className="max-w-2xl w-full">
           <h1
-            className="text-4xl sm:text-5xl font-bold tracking-tight mb-2"
+            className="font-display text-title-xl sm:text-[4.2rem] md:text-[5rem] leading-[0.88] misregister text-coral"
+            data-text="LIVE LIGHTLY"
           >
-            Live Lightly
+            LIVE LIGHTLY
           </h1>
-          <p className="text-lg text-emerald-600 font-medium mb-2">
+
+          <p className="text-tag uppercase text-teal mt-3 mb-2">
             Your Planet-Friendly Neighborhood Map
           </p>
-          <p className="text-base text-gray-600 mb-10">
+
+          <p className="text-body-sm text-faded max-w-[300px] mb-6">
             Find the places near you that make it easier to walk, bike,
             compost, repair, and shop locally.
           </p>
 
-          <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-            <div className="flex gap-3">
-              <div className="flex-1 relative" ref={wrapperRef}>
+          <form onSubmit={handleSubmit} className="max-w-[440px] mb-10">
+            <div className="flex" ref={wrapperRef}>
+              <div className="flex-1 relative">
                 <input
                   type="text"
                   value={address}
@@ -119,20 +162,20 @@ export default function Home() {
                   }}
                   onKeyDown={handleKeyDown}
                   placeholder="Enter a NYC address..."
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  className="w-full px-3 py-2.5 tape-border border-r-0 bg-transparent font-body text-[0.65rem] text-ink placeholder:text-faded focus:outline-none focus:ring-2 focus:ring-coral"
                   autoComplete="off"
                 />
                 {showDropdown && predictions.length > 0 && (
-                  <ul className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto text-left">
+                  <ul className="absolute z-50 left-0 right-0 mt-0 bg-paper border border-ink shadow-[3px_3px_0_var(--buff)] max-h-60 overflow-y-auto text-left">
                     {predictions.map((p, i) => (
                       <li
                         key={p.place_id}
                         onClick={() => selectPrediction(p.description)}
                         onMouseEnter={() => setActiveIndex(i)}
-                        className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                        className={`px-3 py-2 text-body-sm cursor-pointer transition-colors border-b border-dashed border-buff ${
                           i === activeIndex
-                            ? "bg-emerald-50 text-emerald-900"
-                            : "text-gray-700 hover:bg-gray-50"
+                            ? "bg-buff text-ink"
+                            : "text-faded hover:bg-buff/50"
                         }`}
                       >
                         {p.description}
@@ -143,56 +186,46 @@ export default function Home() {
               </div>
               <button
                 type="submit"
-                className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors"
+                className="px-4 py-2.5 bg-coral text-paper font-display font-bold text-[0.72rem] tracking-wider hover:brightness-110 transition-all"
               >
-                Explore
+                EXPLORE
               </button>
             </div>
           </form>
-        </div>
-      </div>
 
-      <div className="border-t border-gray-200 bg-white">
-        <div className="max-w-3xl mx-auto px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">How it works</h2>
-          <div className="grid sm:grid-cols-3 gap-8 text-sm text-gray-600">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+          <div className="flex gap-3 flex-wrap">
+            <div className="stamp flex-1 min-w-[140px] p-3" data-n="01">
+              <MapIllustration />
+              <h3 className="font-display text-label uppercase text-coral mb-1">
                 We map what matters
               </h3>
-              <p>
-                Transit, bike lanes, farmers markets, composting, thrift stores,
-                and more — everything nearby that helps you live a little more
-                lightly.
+              <p className="text-body-sm text-faded">
+                Transit, bike lanes, composting, thrift - everything nearby.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+            <div className="stamp flex-1 min-w-[140px] p-3" data-n="02">
+              <GaugeIllustration />
+              <h3 className="font-display text-label uppercase text-coral mb-1">
                 We score the access
               </h3>
-              <p>
-                Five categories weighted by how much they matter for
-                planet-friendly daily life: transit, active mobility, daily
-                needs, circular economy, and local food.
+              <p className="text-body-sm text-faded">
+                Five categories. One number. Zero judgment.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+            <div className="stamp flex-1 min-w-[140px] p-3" data-n="03">
+              <GapsIllustration />
+              <h3 className="font-display text-label uppercase text-coral mb-1">
                 We show the gaps
               </h3>
-              <p>
-                What&apos;s missing in your neighborhood — and what the city is
-                doing about it. View the{" "}
-                <Link href="/map" className="text-emerald-600 underline">
-                  citywide gap map
-                </Link>{" "}
-                to see the bigger picture.
+              <p className="text-body-sm text-faded">
+                What&apos;s missing, and what the city&apos;s doing about it.
               </p>
             </div>
           </div>
-          <p className="mt-8 text-sm text-gray-500">
+
+          <p className="mt-8 text-tag text-faded">
             Curious how it all works?{" "}
-            <Link href="/methodology" className="text-emerald-600 underline">
+            <Link href="/methodology" className="text-teal underline underline-offset-2">
               Read our methodology
             </Link>
           </p>

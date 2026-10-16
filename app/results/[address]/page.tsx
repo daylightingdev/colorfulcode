@@ -7,34 +7,27 @@ import { CATEGORY_META, type ScoreResult } from "@/lib/mock-data";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
-function getScoreLabel(score: number) {
-  if (score >= 75) return { text: "Excellent", color: "text-emerald-700" };
-  if (score >= 50) return { text: "Moderate", color: "text-yellow-600" };
-  if (score >= 25) return { text: "Limited", color: "text-orange-600" };
-  return { text: "Severely underserved", color: "text-red-600" };
-}
-
-function getScoreColor(score: number) {
-  if (score >= 75) return "#059669";
-  if (score >= 50) return "#f59e0b";
-  if (score >= 25) return "#f97316";
-  return "#ef4444";
+function getScoreLabel(score: number): string {
+  if (score >= 75) return "Excellent";
+  if (score >= 50) return "Moderate";
+  if (score >= 25) return "Limited";
+  return "Severely underserved";
 }
 
 const AMENITY_COLORS: Record<string, string> = {
-  transitStops: "#4a6fa5",
-  bikeLanes: "#57a773",
-  bikeShares: "#6dbe8b",
-  groceries: "#e08b4a",
-  pharmacies: "#e9a36a",
-  clinics: "#d47840",
-  laundromats: "#eba86e",
-  thriftStores: "#2a9d8f",
-  compostSites: "#3db8a9",
-  refillShops: "#5ec4b6",
-  communityGardens: "#c46a3f",
-  coops: "#d4845f",
-  csaPickups: "#dea07f",
+  transitStops: "#0B6E6F",
+  bikeLanes: "#7A4A38",
+  bikeShares: "#7A4A38",
+  groceries: "#E24B3A",
+  pharmacies: "#E24B3A",
+  clinics: "#E24B3A",
+  laundromats: "#E24B3A",
+  thriftStores: "#0B6E6F",
+  compostSites: "#0B6E6F",
+  refillShops: "#0B6E6F",
+  communityGardens: "#7A4A38",
+  coops: "#7A4A38",
+  csaPickups: "#7A4A38",
 };
 
 const AMENITY_LABELS: Record<string, string> = {
@@ -52,12 +45,12 @@ const AMENITY_LABELS: Record<string, string> = {
 };
 
 const LAYER_COLORS: Record<string, string> = {
-  farmersMarkets: "#8B5E3C",
-  gardens: "#2D6A4F",
-  parks: "#52B788",
-  libraries: "#7B2D8E",
-  donateNyc: "#E07B39",
-  repairCafes: "#D4A017",
+  farmersMarkets: "#7A4A38",
+  gardens: "#0B6E6F",
+  parks: "#0B6E6F",
+  libraries: "#7A4A38",
+  donateNyc: "#E24B3A",
+  repairCafes: "#E24B3A",
 };
 
 const LAYER_LABELS: Record<string, string> = {
@@ -69,13 +62,82 @@ const LAYER_LABELS: Record<string, string> = {
   repairCafes: "Repair Cafes",
 };
 
-// --- Amenity Summary ---
+const CATEGORY_FILL: Record<string, string> = {
+  transit: "var(--teal)",
+  activeMobility: "var(--overprint)",
+  dailyNeeds: "var(--coral)",
+  circularEconomy: "var(--teal)",
+  localFood: "var(--overprint)",
+};
+
+function TransitIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="flex-shrink-0">
+      <rect x="4" y="5" width="10" height="8" rx="1.5" stroke="var(--teal)" strokeWidth="1.2"/>
+      <circle cx="9" cy="9" r="2" fill="var(--teal)" opacity="0.4"/>
+      <line x1="6" y1="3.5" x2="6" y2="5" stroke="var(--teal)" strokeWidth="1.2" strokeLinecap="round"/>
+      <line x1="12" y1="3.5" x2="12" y2="5" stroke="var(--teal)" strokeWidth="1.2" strokeLinecap="round"/>
+      <line x1="4" y1="14" x2="14" y2="14" stroke="var(--teal)" strokeWidth="1" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function MobilityIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="flex-shrink-0">
+      <circle cx="5" cy="12.5" r="2.8" stroke="var(--overprint)" strokeWidth="1.1"/>
+      <circle cx="13" cy="12.5" r="2.8" stroke="var(--overprint)" strokeWidth="1.1"/>
+      <path d="M5 10L8 5L13 10" stroke="var(--overprint)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="8" y1="5" x2="8" y2="8" stroke="var(--overprint)" strokeWidth="1.1"/>
+    </svg>
+  );
+}
+
+function DailyNeedsIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="flex-shrink-0">
+      <path d="M5 6L5 14L13 14L13 6" stroke="var(--coral)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 6L9 3L15 6" stroke="var(--coral)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="7.5" y="10" width="3" height="4" stroke="var(--coral)" strokeWidth="0.8"/>
+    </svg>
+  );
+}
+
+function CircularIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="flex-shrink-0">
+      <path d="M9 3A6 6 0 0115 9" stroke="var(--teal)" strokeWidth="1.1" strokeLinecap="round"/>
+      <path d="M15 9A6 6 0 019 15" stroke="var(--teal)" strokeWidth="1.1" strokeLinecap="round"/>
+      <path d="M9 15A6 6 0 013 9" stroke="var(--teal)" strokeWidth="1.1" strokeLinecap="round"/>
+      <path d="M3 9A6 6 0 019 3" stroke="var(--teal)" strokeWidth="1.1" strokeLinecap="round"/>
+      <polygon points="13,4 15,2.5 13.5,5" fill="var(--teal)" opacity="0.6"/>
+    </svg>
+  );
+}
+
+function LocalFoodIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 18 18" fill="none" aria-hidden="true" className="flex-shrink-0">
+      <path d="M9 14.5L9 7" stroke="var(--overprint)" strokeWidth="1.1" strokeLinecap="round"/>
+      <path d="M9 7C9 4 5 2.5 5 5C5 7 9 7 9 7" fill="var(--teal)" opacity="0.25" stroke="var(--teal)" strokeWidth="0.9"/>
+      <path d="M9 9C9 6.5 13 5 13 7.5C13 9 9 9 9 9" fill="var(--coral)" opacity="0.2" stroke="var(--coral)" strokeWidth="0.9"/>
+      <line x1="7" y1="14.5" x2="11" y2="14.5" stroke="var(--overprint)" strokeWidth="1.1" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+const CATEGORY_ICONS: Record<string, (props: { size?: number }) => React.ReactElement> = {
+  transit: TransitIcon,
+  activeMobility: MobilityIcon,
+  dailyNeeds: DailyNeedsIcon,
+  circularEconomy: CircularIcon,
+  localFood: LocalFoodIcon,
+};
 
 const AMENITY_SUMMARY_CATEGORIES = [
   {
     key: "transit",
     label: "Transit",
-    color: "#4a6fa5",
     amenityKeys: ["transitStops"],
     description: (counts: Record<string, number>) => {
       const total = counts.transitStops || 0;
@@ -86,7 +148,6 @@ const AMENITY_SUMMARY_CATEGORIES = [
   {
     key: "activeMobility",
     label: "Active Mobility",
-    color: "#57a773",
     amenityKeys: ["bikeShares"],
     description: (counts: Record<string, number>) => {
       const docks = counts.bikeShares || 0;
@@ -97,7 +158,6 @@ const AMENITY_SUMMARY_CATEGORIES = [
   {
     key: "dailyNeeds",
     label: "Daily Needs",
-    color: "#e08b4a",
     amenityKeys: ["groceries", "pharmacies", "clinics", "laundromats"],
     description: (counts: Record<string, number>) => {
       const parts: string[] = [];
@@ -112,7 +172,6 @@ const AMENITY_SUMMARY_CATEGORIES = [
   {
     key: "circularEconomy",
     label: "Circular Economy",
-    color: "#2a9d8f",
     amenityKeys: ["thriftStores", "compostSites", "refillShops"],
     description: (counts: Record<string, number>) => {
       const parts: string[] = [];
@@ -126,7 +185,6 @@ const AMENITY_SUMMARY_CATEGORIES = [
   {
     key: "localFood",
     label: "Local Food",
-    color: "#c46a3f",
     amenityKeys: ["communityGardens", "coops", "csaPickups"],
     description: (counts: Record<string, number>) => {
       const parts: string[] = [];
@@ -146,60 +204,55 @@ function AmenitySummary({ amenities }: { amenities: ScoreResult["amenities"] }) 
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">What&apos;s nearby</h2>
-      <p className="text-sm text-gray-500 mb-4">
-        Places that make it easier to live lightly, within walking distance.
-      </p>
-      <div className="space-y-3">
-        {AMENITY_SUMMARY_CATEGORIES.map((cat) => {
-          const total = cat.amenityKeys.reduce((sum, k) => sum + (counts[k] || 0), 0);
-          return (
-            <div key={cat.key} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
-              <div
-                className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
-                style={{ backgroundColor: cat.color }}
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900">{cat.label}</span>
-                  <span
-                    className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                    style={{ backgroundColor: total > 0 ? cat.color : "#9ca3af" }}
-                  >
-                    {total}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500 mt-0.5">{cat.description(counts)}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <div>
+      <h2 className="font-display font-bold text-section uppercase border-b-2 border-ink pb-1 mb-1">
+        What&apos;s Nearby
+      </h2>
+      {AMENITY_SUMMARY_CATEGORIES.map((cat) => {
+        const total = cat.amenityKeys.reduce((sum, k) => sum + (counts[k] || 0), 0);
+        const Icon = CATEGORY_ICONS[cat.key];
+        return (
+          <div
+            key={cat.key}
+            className="flex items-center gap-2 py-1.5 border-b border-dashed border-buff"
+          >
+            {Icon && <Icon size={18} />}
+            <span className="flex-1 font-bold text-label uppercase tracking-wide">
+              {cat.label}
+            </span>
+            <span className="text-[0.55rem] text-faded hidden sm:inline">
+              {cat.description(counts)}
+            </span>
+            <span
+              className="font-display font-extrabold text-base min-w-[22px] text-right"
+              style={{ color: CATEGORY_FILL[cat.key] }}
+            >
+              {total}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-// --- Score Section ---
-
 function ScoreSection({ result }: { result: ScoreResult }) {
   const label = getScoreLabel(result.score);
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="text-center">
-        <p className="text-sm text-gray-500 mb-1 uppercase tracking-wide">
-          Neighborhood Score
-        </p>
-        <div
-          className="text-7xl font-bold mb-2"
-          style={{ color: getScoreColor(result.score) }}
-        >
-          {result.score}
-        </div>
-        <p className={`text-lg font-medium ${label.color}`}>{label.text}</p>
-        <p className="text-gray-500 text-sm mt-1">{result.address}</p>
-        <ScoreNarrative result={result} />
+    <div className="text-center py-2">
+      <span
+        className="font-display font-extrabold text-score-hero text-coral misregister"
+        data-text={result.score.toString()}
+      >
+        {result.score}
+      </span>
+      <div className="mt-1">
+        <span className="inline-block px-2 py-0.5 border-2 border-dashed border-teal text-tag uppercase tracking-[0.12em] text-teal">
+          {label}
+        </span>
       </div>
+      <p className="text-tag text-faded mt-1.5">{result.address}</p>
+      <ScoreNarrative result={result} />
     </div>
   );
 }
@@ -230,7 +283,7 @@ function ScoreNarrative({ result }: { result: ScoreResult }) {
 
   if (parts.length === 0) {
     return (
-      <p className="text-gray-500 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
+      <p className="text-body-sm text-faded mt-3 max-w-[400px] mx-auto leading-relaxed">
         This area has limited planet-friendly infrastructure right now. Every
         neighborhood deserves access to sustainable options, and knowing the
         gaps is the first step toward change.
@@ -243,37 +296,43 @@ function ScoreNarrative({ result }: { result: ScoreResult }) {
     : parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
 
   return (
-    <p className="text-gray-600 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
-      Your neighborhood has {listed} within walking distance — a foundation
+    <p className="text-body-sm text-faded mt-3 max-w-[400px] mx-auto leading-relaxed">
+      Your neighborhood has {listed} within walking distance, a foundation
       for living lightly. The score reflects both what&apos;s already here
       and where there&apos;s room to grow.
     </p>
   );
 }
 
-// --- Category Breakdown ---
-
 function CategoryBreakdown({ breakdown }: { breakdown: ScoreResult["breakdown"] }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-4">Category Breakdown</h2>
-      <div className="space-y-4">
+    <div>
+      <h2 className="font-display font-bold text-section uppercase border-b-2 border-ink pb-1 mb-2">
+        Category Breakdown
+      </h2>
+      <div className="space-y-2">
         {Object.entries(breakdown).map(([key, value]) => {
           const meta = CATEGORY_META[key];
           if (!meta) return null;
           const pct = (value / meta.max) * 100;
+          const Icon = CATEGORY_ICONS[key];
           return (
             <div key={key}>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="font-medium">{meta.label}</span>
-                <span className="text-gray-500">
+              <div className="flex justify-between items-center mb-0.5">
+                <div className="flex items-center gap-1.5">
+                  {Icon && <Icon size={15} />}
+                  <span className="font-display font-bold text-tag uppercase tracking-wide">
+                    {meta.label}
+                  </span>
+                </div>
+                <span className="text-[0.55rem] text-faded">
                   {value} / {meta.max}
                 </span>
               </div>
-              <div className="w-full bg-gray-100 rounded-full h-3">
+              <div className="score-bar">
                 <div
-                  className="h-3 rounded-full transition-all"
-                  style={{ width: `${pct}%`, backgroundColor: meta.color }}
+                  className="h-full"
+                  style={{ width: `${pct}%`, backgroundColor: CATEGORY_FILL[key] }}
                 />
               </div>
             </div>
@@ -284,51 +343,52 @@ function CategoryBreakdown({ breakdown }: { breakdown: ScoreResult["breakdown"] 
   );
 }
 
-// --- Reference Neighborhood ---
-
-function ReferenceNeighborhood({
-  result,
-}: {
-  result: ScoreResult;
-}) {
+function ReferenceNeighborhood({ result }: { result: ScoreResult }) {
   if (!result.referenceNeighborhood || !result.borough) return null;
 
   const ref = result.referenceNeighborhood;
   const diff = ref.score - result.score;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">How you compare</h2>
-      <p className="text-sm text-gray-500 mb-4">
-        The highest-scoring neighborhood in {result.borough}.
-      </p>
-      <div className="flex items-center gap-6 p-4 bg-gray-50 rounded-lg">
-        <div className="flex-1">
-          <p className="text-sm text-gray-500">Your neighborhood</p>
-          <p className="text-3xl font-bold" style={{ color: getScoreColor(result.score) }}>
+    <div className="border border-ink p-4 relative">
+      <span className="absolute -top-2 left-3 bg-paper px-1.5 font-display font-bold text-[0.5rem] tracking-[0.1em] uppercase text-faded">
+        How You Compare
+      </span>
+      <div className="flex items-center justify-center gap-3">
+        <div className="flex-1 text-center">
+          <div className="text-[0.52rem] font-bold uppercase tracking-wide text-faded mb-0.5">
+            Your Neighborhood
+          </div>
+          <div className="font-display font-extrabold text-[2.6rem] leading-none text-coral">
             {result.score}
-          </p>
+          </div>
         </div>
-        <div className="text-gray-300 text-2xl">vs</div>
-        <div className="flex-1 text-right">
-          <p className="text-sm text-gray-500">{ref.name}</p>
-          <p className="text-3xl font-bold" style={{ color: getScoreColor(ref.score) }}>
+        <span className="font-display font-extrabold text-[0.85rem] text-buff">VS</span>
+        <div className="flex-1 text-center">
+          <div className="text-[0.52rem] font-bold uppercase tracking-wide text-faded mb-0.5">
+            {ref.name}
+          </div>
+          <div className="font-display font-extrabold text-[2.6rem] leading-none text-teal">
             {ref.score}
-          </p>
+          </div>
         </div>
       </div>
+      <p className="text-center text-[0.55rem] text-faded mt-2">
+        Highest-scoring neighborhood in {result.borough}
+        {diff > 0 && `, ${diff} point${diff !== 1 ? "s" : ""} ahead`}
+      </p>
       {diff > 0 && (
-        <p className="text-sm text-gray-500 mt-3">
-          {ref.name} scores {diff} point{diff !== 1 ? "s" : ""} higher — see the{" "}
-          <Link href="/map" className="text-emerald-600 underline">gap map</Link> to
-          explore what makes the difference.
+        <p className="text-center text-[0.55rem] text-faded mt-1">
+          See the{" "}
+          <Link href="/map" className="text-teal underline underline-offset-2">
+            gap map
+          </Link>{" "}
+          to explore what makes the difference.
         </p>
       )}
     </div>
   );
 }
-
-// --- Amenity Map ---
 
 function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | null }) {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -355,20 +415,18 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         const query = item.name && item.address
           ? `${item.name}, ${item.address}`
           : item.name || item.address || `${item.lat},${item.lng}`;
-        return `<br/><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}" target="_blank" rel="noopener noreferrer" style="color:#1a73e8;font-size:12px;">View on Google Maps</a>`;
+        return `<br/><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}" target="_blank" rel="noopener noreferrer" style="color:#0B6E6F;font-size:12px;">View on Google Maps</a>`;
       };
 
-      // Address marker
-      new mapboxgl.Marker({ color: "#000" })
+      new mapboxgl.Marker({ color: "#2D2926" })
         .setLngLat([result.lng, result.lat])
         .setPopup(new mapboxgl.Popup().setText(result.address))
         .addTo(m);
 
-      // Amenity markers
       const amenities = result.amenities as unknown as Record<string, Array<{ name: string; lat: number; lng: number }>>;
       for (const [category, items] of Object.entries(amenities)) {
         if (category === "bikeLanes") continue;
-        const color = AMENITY_COLORS[category] || "#888";
+        const color = AMENITY_COLORS[category] || "#7A4A38";
         for (const item of items) {
           const marker = new mapboxgl.Marker({ color, scale: 0.7 })
             .setLngLat([item.lng, item.lat])
@@ -382,7 +440,6 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         }
       }
 
-      // Draw 0.5mi radius circle
       const radiusKm = 0.8047;
       const points = 64;
       const coords: [number, number][] = [];
@@ -409,7 +466,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         type: "line",
         source: "radius",
         paint: {
-          "line-color": "#9ca3af",
+          "line-color": "#9A9183",
           "line-dasharray": [4, 4],
           "line-width": 1.5,
         },
@@ -435,20 +492,19 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
           "text-anchor": "bottom",
         },
         paint: {
-          "text-color": "#9ca3af",
-          "text-halo-color": "#fff",
+          "text-color": "#9A9183",
+          "text-halo-color": "#F2EBD9",
           "text-halo-width": 1.5,
         },
       });
 
-      // Additional layer markers
       if (layers) {
         const addLayerMarkers = (
           items: any[],
           categoryKey: string,
           popupFn: (item: any) => string
         ) => {
-          const color = LAYER_COLORS[categoryKey] || "#888";
+          const color = LAYER_COLORS[categoryKey] || "#7A4A38";
           for (const item of items) {
             if (item.lat == null || item.lng == null) continue;
             const marker = new mapboxgl.Marker({ color, scale: 0.7 })
@@ -470,7 +526,7 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
             if (item.days) html += `<br/>${item.days}`;
             if (item.hours) html += `<br/>${item.hours}`;
             if (item.acceptsEBT)
-              html += `<br/><span style="background:#059669;color:#fff;padding:1px 6px;border-radius:4px;font-size:11px;">Accepts EBT</span>`;
+              html += `<br/><span style="background:#0B6E6F;color:#F2EBD9;padding:1px 6px;font-size:11px;">Accepts EBT</span>`;
             html += `<br/><span style="color:${LAYER_COLORS.farmersMarkets}">Farmers Market</span>`;
             html += gmapsLink(item);
             return html;
@@ -546,18 +602,20 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold mb-3">Your neighborhood map</h2>
-        <div className="flex flex-wrap gap-2">
+    <div className="border border-ink overflow-hidden">
+      <div className="p-3 border-b-2 border-ink">
+        <h2 className="font-display font-bold text-section uppercase mb-2">
+          Your Neighborhood Map
+        </h2>
+        <div className="flex flex-wrap gap-1.5">
           {Object.entries(AMENITY_LABELS).map(([key, label]) => (
             <button
               key={key}
               onClick={() => toggleLayer(key)}
-              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+              className={`text-tag px-2 py-0.5 transition-colors ${
                 visibleLayers.has(key)
-                  ? "border-transparent text-white"
-                  : "border-gray-300 text-gray-400 bg-white"
+                  ? "text-paper"
+                  : "border border-dashed border-faded text-faded"
               }`}
               style={
                 visibleLayers.has(key)
@@ -571,18 +629,18 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         </div>
         {layers && (
           <>
-            <p className="text-xs text-gray-400 mt-3 mb-1 uppercase tracking-wide font-medium">
+            <p className="text-tag text-faded mt-2 mb-1 uppercase tracking-wide font-bold">
               Community Resources
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {Object.entries(LAYER_LABELS).map(([key, label]) => (
                 <button
                   key={key}
                   onClick={() => toggleLayer(key)}
-                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                  className={`text-tag px-2 py-0.5 transition-colors ${
                     visibleLayers.has(key)
-                      ? "border-transparent text-white"
-                      : "border-gray-300 text-gray-400 bg-white"
+                      ? "text-paper"
+                      : "border border-dashed border-faded text-faded"
                   }`}
                   style={
                     visibleLayers.has(key)
@@ -598,9 +656,9 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
         )}
       </div>
       {MAPBOX_TOKEN ? (
-        <div ref={mapContainer} className="h-[450px] w-full" />
+        <div ref={mapContainer} className="h-[350px] sm:h-[450px] w-full" />
       ) : (
-        <div className="h-[450px] w-full flex items-center justify-center bg-gray-100 text-gray-400">
+        <div className="h-[350px] sm:h-[450px] w-full flex items-center justify-center bg-buff text-faded font-display text-label uppercase tracking-wide">
           Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map
         </div>
       )}
@@ -608,82 +666,82 @@ function AmenityMap({ result, layers }: { result: ScoreResult; layers: any | nul
   );
 }
 
-// --- Equity Panel ---
-
 function EquityPanel({ equity }: { equity: ScoreResult["equity"] }) {
   const incomePct = Math.round(
     (equity.median_income / equity.nyc_median_income) * 100
   );
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">Equity context</h2>
-      <p className="text-sm text-gray-500 mb-4">
+    <div>
+      <h2 className="font-display font-bold text-section uppercase border-b-2 border-ink pb-1 mb-2">
+        Equity Context
+      </h2>
+      <p className="text-body-sm text-faded mb-3">
         Who lives here matters. Scores mean different things in different communities.
       </p>
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-500">Median Household Income</p>
-          <p className="text-2xl font-bold">
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div className="border border-dashed border-faded p-3">
+          <p className="text-tag uppercase text-faded">Median Household Income</p>
+          <p className="font-display font-extrabold text-xl">
             ${equity.median_income.toLocaleString()}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-body-sm text-faded">
             {incomePct}% of NYC median (${equity.nyc_median_income.toLocaleString()})
           </p>
         </div>
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-500">Displacement Risk</p>
-          <p className="text-2xl font-bold capitalize">{equity.displacement_risk}</p>
+        <div className="border border-dashed border-faded p-3">
+          <p className="text-tag uppercase text-faded">Displacement Risk</p>
+          <p className="font-display font-extrabold text-xl capitalize">{equity.displacement_risk}</p>
         </div>
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-500">Rent Burden</p>
-          <p className="text-2xl font-bold">{equity.rent_burden_pct}%</p>
-          <p className="text-sm text-gray-500">
+        <div className="border border-dashed border-faded p-3">
+          <p className="text-tag uppercase text-faded">Rent Burden</p>
+          <p className="font-display font-extrabold text-xl">{equity.rent_burden_pct}%</p>
+          <p className="text-body-sm text-faded">
             of households paying &gt;30% of income on rent
           </p>
         </div>
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-500">% White Population</p>
-          <p className="text-2xl font-bold">{equity.pct_white}%</p>
+        <div className="border border-dashed border-faded p-3">
+          <p className="text-tag uppercase text-faded">% White Population</p>
+          <p className="font-display font-extrabold text-xl">{equity.pct_white}%</p>
         </div>
       </div>
     </div>
   );
 }
 
-// --- Gap List ---
-
 function GapList({ gaps }: { gaps: string[] }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">What&apos;s missing</h2>
-      <p className="text-sm text-gray-500 mb-4">
-        Infrastructure gaps that keep this neighborhood from scoring higher.
-      </p>
+    <div>
+      <h2 className="font-display font-bold text-section uppercase border-b-2 border-ink pb-1 mb-1">
+        What&apos;s Missing
+      </h2>
       {gaps.length === 0 ? (
-        <p className="text-gray-400">No major gaps identified.</p>
+        <p className="text-body-sm text-faded py-2">No major gaps identified.</p>
       ) : (
-        <ul className="space-y-2">
+        <div>
           {gaps.map((gap, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm">
-              <span className="text-red-500 mt-0.5">●</span>
+            <div
+              key={i}
+              className="flex items-start gap-2 py-1.5 border-t border-dashed border-buff text-tag"
+            >
+              <span className="w-[7px] h-[7px] rounded-full bg-coral flex-shrink-0 mt-0.5" />
               <span>{gap}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-      <div className="mt-6 pt-4 border-t border-gray-100 text-sm text-gray-500">
+      <div className="mt-4 pt-3 border-t border-dashed border-buff text-body-sm text-faded">
         <p>
           Report infrastructure needs via{" "}
           <a
             href="https://portal.311.nyc.gov/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-emerald-600 underline"
+            className="text-teal underline underline-offset-2"
           >
             NYC 311
           </a>
           . View the{" "}
-          <Link href="/map" className="text-emerald-600 underline">
+          <Link href="/map" className="text-teal underline underline-offset-2">
             citywide gap map
           </Link>{" "}
           to see how your neighborhood compares.
@@ -692,8 +750,6 @@ function GapList({ gaps }: { gaps: string[] }) {
     </div>
   );
 }
-
-// --- Policy Section ---
 
 interface Initiative {
   title: string;
@@ -704,28 +760,28 @@ interface Initiative {
 
 const INITIATIVES: Initiative[] = [
   {
-    title: "NYC Streets Plan — Protected Bike Lanes Expansion",
+    title: "NYC Streets Plan: Protected Bike Lanes Expansion",
     description:
       "The city is required to build 250 miles of protected bike lanes by 2026 under the Streets Plan law, with a focus on high-injury corridors and transit deserts.",
     timeline: "Ongoing through 2026",
     matchesGap: (g) => /bike lane/i.test(g),
   },
   {
-    title: "Curbside Composting — Citywide Rollout",
+    title: "Curbside Composting: Citywide Rollout",
     description:
       "DSNY's curbside composting program is expanding borough by borough. All five boroughs now have curbside food scrap collection.",
     timeline: "Citywide",
     matchesGap: (g) => /compost/i.test(g),
   },
   {
-    title: "MTA Fast Forward Plan — Subway Accessibility & Frequency",
+    title: "MTA Fast Forward Plan: Subway Accessibility & Frequency",
     description:
       "The MTA's capital plan includes signal modernization on key lines, bus network redesigns, and new ADA-accessible stations to improve transit frequency and coverage.",
     timeline: "Through 2029",
     matchesGap: (g) => /subway|bus|transit/i.test(g),
   },
   {
-    title: "FRESH Program — Grocery Store Incentives",
+    title: "FRESH Program: Grocery Store Incentives",
     description:
       "The Food Retail Expansion to Support Health (FRESH) program offers tax incentives and zoning flexibility to attract grocery stores to underserved neighborhoods.",
     timeline: "Ongoing",
@@ -735,18 +791,18 @@ const INITIATIVES: Initiative[] = [
     title: "Community Health Center Expansion",
     description:
       "NYC Health + Hospitals is expanding Federally Qualified Health Centers in underserved areas, with several new sites planned in Brooklyn and the Bronx.",
-    timeline: "New sites opening 2025–2027",
+    timeline: "New sites opening 2025-2027",
     matchesGap: (g) => /clinic|health/i.test(g),
   },
   {
-    title: "GreenThumb — Community Garden Support",
+    title: "GreenThumb: Community Garden Support",
     description:
       "NYC Parks' GreenThumb program supports 500+ community gardens citywide and is actively helping neighborhoods start new gardens on vacant lots.",
-    timeline: "Ongoing — new gardens each season",
+    timeline: "Ongoing, new gardens each season",
     matchesGap: (g) => /community garden/i.test(g),
   },
   {
-    title: "Zero Waste NYC — Reuse & Refill Infrastructure",
+    title: "Zero Waste NYC: Reuse & Refill Infrastructure",
     description:
       "The city's zero-waste goals include expanding reuse centers, supporting refill shops, and piloting water bottle refill stations at parks and transit hubs.",
     timeline: "Pilots through 2026",
@@ -762,34 +818,34 @@ function PolicySection({ gaps }: { gaps: string[] }) {
   if (relevant.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold mb-1">What&apos;s being done</h2>
-      <p className="text-sm text-gray-500 mb-4">
+    <div>
+      <h2 className="font-display font-bold text-section uppercase border-b-2 border-ink pb-1 mb-1">
+        What&apos;s Being Done
+      </h2>
+      <p className="text-body-sm text-faded mb-3">
         City initiatives working to close these gaps.
       </p>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {relevant.map((init, i) => (
           <div
             key={i}
-            className="border-l-2 border-emerald-400 pl-4 py-1"
+            className="border-l-2 border-teal pl-3 py-1"
           >
             <div className="flex items-start justify-between gap-2">
-              <h3 className="text-sm font-semibold text-gray-900">
+              <h3 className="font-display font-bold text-label uppercase">
                 {init.title}
               </h3>
-              <span className="text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+              <span className="text-tag text-teal border border-dashed border-teal px-1.5 py-0.5 whitespace-nowrap">
                 {init.timeline}
               </span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">{init.description}</p>
+            <p className="text-body-sm text-faded mt-1">{init.description}</p>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
-// --- Main Page ---
 
 export default function ResultsPage({
   params,
@@ -832,32 +888,32 @@ export default function ResultsPage({
   }, [params.address]);
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="border-b border-gray-200 bg-white">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
-          <Link href="/" className="font-semibold text-gray-900">
-            Live Lightly
+    <main className="min-h-screen grain bg-paper">
+      <nav className="max-w-4xl mx-auto px-4">
+        <div className="flex items-center gap-3 py-2.5 border-b-2 border-ink">
+          <Link href="/" className="font-display font-extrabold text-[0.9rem] text-coral">
+            LIVE LIGHTLY
           </Link>
-          <Link href="/map" className="text-sm text-gray-500 hover:text-gray-900">
+          <Link href="/map" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
             Gap Map
           </Link>
-          <Link href="/methodology" className="text-sm text-gray-500 hover:text-gray-900">
-            Methodology
+          <Link href="/methodology" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+            How We Score
           </Link>
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-4xl mx-auto px-4 py-5 space-y-5">
         {loading && (
           <div className="text-center py-20">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" />
-            <p className="mt-4 text-gray-500">Mapping your neighborhood...</p>
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-coral border-t-transparent" />
+            <p className="mt-4 text-faded text-body-sm">Mapping your neighborhood...</p>
           </div>
         )}
         {error && (
           <div className="text-center py-20">
-            <p className="text-red-500 text-lg font-medium">{error}</p>
-            <Link href="/" className="text-emerald-600 underline mt-2 inline-block">
+            <p className="text-coral text-section font-display">{error}</p>
+            <Link href="/" className="text-teal underline underline-offset-2 mt-2 inline-block text-body-sm">
               Try another address
             </Link>
           </div>

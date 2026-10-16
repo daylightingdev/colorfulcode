@@ -1,3 +1,140 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --paper: #F2EBD9;
+    --coral: #E24B3A;
+    --teal: #0B6E6F;
+    --overprint: #7A4A38;
+    --ink: #2D2926;
+    --faded: #9A9183;
+    --buff: #E8DFC8;
+
+    --score-low: #E24B3A;
+    --score-mid: #7A4A38;
+    --score-high: #0B6E6F;
+    --score-excellent: #0B6E6F;
+
+    --font-display: var(--font-syne), 'Syne', sans-serif;
+    --font-body: var(--font-space-mono), 'Space Mono', monospace;
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1E1C18;
+    --coral: #E8614F;
+    --teal: #2CA3A5;
+    --overprint: #B07A5E;
+    --ink: #E8E0D0;
+    --faded: #8A8278;
+    --buff: #2A2720;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1E1C18;
+      --coral: #E8614F;
+      --teal: #2CA3A5;
+      --overprint: #B07A5E;
+      --ink: #E8E0D0;
+      --faded: #8A8278;
+      --buff: #2A2720;
+    }
+  }
+}
+
+/* Grain texture overlay */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Misregistered display type */
+.misregister {
+  position: relative;
+  display: inline-block;
+}
+.misregister::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  color: var(--teal);
+  z-index: -1;
+}
+
+/* Tape border (dashed) */
+.tape-border {
+  border: 2px dashed var(--ink);
+}
+
+/* Stamp card */
+.stamp {
+  border: 1px solid var(--ink);
+  position: relative;
+}
+.stamp::before {
+  content: attr(data-n);
+  position: absolute;
+  top: -7px;
+  right: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--teal);
+  opacity: 0.25;
+}
+
+/* Score bar */
+.score-bar {
+  height: 10px;
+  background: var(--buff);
+}
+
+/* Focus states */
+*:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+
+/* Mapbox overrides */
+.mapboxgl-popup-content {
+  font-family: var(--font-body) !important;
+  font-size: 0.75rem !important;
+  color: var(--ink) !important;
+  background: var(--paper) !important;
+  border: 1px solid var(--ink) !important;
+  border-radius: 0 !important;
+  padding: 0.75rem !important;
+  box-shadow: 3px 3px 0 var(--buff) !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: var(--ink) !important;
+}
+.mapboxgl-popup-close-button {
+  font-size: 1rem !important;
+  color: var(--faded) !important;
+  padding: 0.25rem 0.5rem !important;
+}

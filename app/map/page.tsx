@@ -8,11 +8,11 @@ type TractScores = Record<string, { score: number; lat: number; lng: number }>;
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
 function scoreToColor(score: number): string {
-  if (score >= 75) return "#059669";
-  if (score >= 50) return "#22c55e";
-  if (score >= 35) return "#f59e0b";
-  if (score >= 20) return "#f97316";
-  return "#ef4444";
+  if (score >= 75) return "#0B6E6F";
+  if (score >= 50) return "#2D8A8B";
+  if (score >= 35) return "#7A4A38";
+  if (score >= 20) return "#B5604E";
+  return "#E24B3A";
 }
 
 export default function GapMapPage() {
@@ -37,7 +37,6 @@ export default function GapMapPage() {
     map.current = m;
 
     m.on("load", () => {
-      // Fetch pre-computed tract scores from API
       fetch("/api/tract-scores")
         .then((res) => res.json())
         .then((tractScores: TractScores) => {
@@ -57,38 +56,36 @@ export default function GapMapPage() {
             data: { type: "FeatureCollection", features },
           });
 
-      // Heatmap-like circles as choropleth proxy until we have real tract polygons
-      m.addLayer({
-        id: "tract-circles",
-        type: "circle",
-        source: "tract-scores",
-        paint: {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            9, 12,
-            12, 30,
-            14, 50,
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["get", "score"],
-            0, "#ef4444",
-            25, "#f97316",
-            40, "#f59e0b",
-            60, "#22c55e",
-            80, "#059669",
-          ],
-          "circle-opacity": 0.6,
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "#fff",
-          "circle-stroke-opacity": 0.5,
-        },
-      });
+          m.addLayer({
+            id: "tract-circles",
+            type: "circle",
+            source: "tract-scores",
+            paint: {
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                9, 12,
+                12, 30,
+                14, 50,
+              ],
+              "circle-color": [
+                "interpolate",
+                ["linear"],
+                ["get", "score"],
+                0, "#E24B3A",
+                25, "#B5604E",
+                40, "#7A4A38",
+                60, "#2D8A8B",
+                80, "#0B6E6F",
+              ],
+              "circle-opacity": 0.6,
+              "circle-stroke-width": 1,
+              "circle-stroke-color": "#F2EBD9",
+              "circle-stroke-opacity": 0.5,
+            },
+          });
 
-          // Click handler
           m.on("click", "tract-circles", (e) => {
             if (e.features && e.features[0]) {
               const props = e.features[0].properties!;
@@ -112,17 +109,17 @@ export default function GapMapPage() {
   }, []);
 
   return (
-    <main className="h-screen flex flex-col">
-      <nav className="border-b border-gray-200 bg-white z-10">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
-          <Link href="/" className="font-semibold text-gray-900">
-            Live Lightly
+    <main className="h-screen flex flex-col bg-paper">
+      <nav className="border-b-2 border-ink bg-paper z-10">
+        <div className="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-3">
+          <Link href="/" className="font-display font-extrabold text-[0.9rem] text-coral">
+            LIVE LIGHTLY
           </Link>
-          <span className="text-sm text-emerald-600 font-medium">
+          <span className="text-tag uppercase tracking-wide text-teal font-bold">
             Citywide Gap Map
           </span>
-          <Link href="/methodology" className="text-sm text-gray-500 hover:text-gray-900">
-            Methodology
+          <Link href="/methodology" className="text-tag uppercase tracking-wide text-faded hover:text-ink transition-colors">
+            How We Score
           </Link>
         </div>
       </nav>
@@ -131,60 +128,58 @@ export default function GapMapPage() {
         {MAPBOX_TOKEN ? (
           <div ref={mapContainer} className="absolute inset-0" />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
+          <div className="absolute inset-0 flex items-center justify-center bg-buff text-faded font-display text-label uppercase tracking-wide">
             Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map
           </div>
         )}
 
-        {/* Legend */}
-        <div className="absolute bottom-6 left-4 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-10">
-          <h3 className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+        <div className="absolute bottom-6 left-4 bg-paper border border-ink shadow-[3px_3px_0_var(--buff)] p-3 z-10">
+          <h3 className="font-display font-bold text-tag uppercase tracking-wide text-ink mb-1.5">
             Score
           </h3>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {[
-              { label: "75–100 Excellent", color: "#059669" },
-              { label: "50–74 Moderate", color: "#22c55e" },
-              { label: "35–49 Limited", color: "#f59e0b" },
-              { label: "20–34 Poor", color: "#f97316" },
-              { label: "0–19 Severely underserved", color: "#ef4444" },
+              { label: "75-100 Excellent", color: "#0B6E6F" },
+              { label: "50-74 Moderate", color: "#2D8A8B" },
+              { label: "35-49 Limited", color: "#7A4A38" },
+              { label: "20-34 Poor", color: "#B5604E" },
+              { label: "0-19 Severely underserved", color: "#E24B3A" },
             ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 text-xs">
+              <div key={item.label} className="flex items-center gap-2 text-tag">
                 <div
-                  className="w-3 h-3 rounded-full"
+                  className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-gray-600">{item.label}</span>
+                <span className="text-faded">{item.label}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Selected tract panel */}
         {selectedTract && (
-          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-10 w-64">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-gray-700">
+          <div className="absolute top-4 right-4 bg-paper border border-ink shadow-[3px_3px_0_var(--buff)] p-3 z-10 w-56">
+            <div className="flex items-center justify-between mb-1.5">
+              <h3 className="font-display font-bold text-label uppercase text-ink">
                 Census Tract
               </h3>
               <button
                 onClick={() => setSelectedTract(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+                className="text-faded hover:text-ink text-lg leading-none"
               >
                 &times;
               </button>
             </div>
-            <p className="text-xs text-gray-500 mb-2 font-mono">
+            <p className="text-tag text-faded font-body mb-2">
               {selectedTract.id}
             </p>
-            <div className="text-center py-3">
+            <div className="text-center py-2">
               <div
-                className="text-4xl font-bold"
+                className="font-display font-extrabold text-[2.6rem] leading-none"
                 style={{ color: scoreToColor(selectedTract.score) }}
               >
                 {selectedTract.score}
               </div>
-              <p className="text-xs text-gray-500 mt-1">/ 100</p>
+              <p className="text-tag text-faded mt-1">/ 100</p>
             </div>
           </div>
         )}
