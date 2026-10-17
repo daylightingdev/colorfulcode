@@ -128,6 +128,43 @@
   opacity: 0.25;
 }
 
+/* Zine rotations for visual rhythm */
+.zine-tilt-1 { transform: rotate(-1.2deg); }
+.zine-tilt-2 { transform: rotate(0.8deg); }
+.zine-tilt-3 { transform: rotate(-0.5deg); }
+
+/* Cut corner card */
+.cut-corner {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+/* Torn edge bottom */
+.torn-edge {
+  position: relative;
+}
+.torn-edge::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 3px,
+    var(--ink) 3px 4px,
+    transparent 4px 8px
+  );
+  opacity: 0.3;
+}
+
+/* Pull-quote style */
+.pull-quote {
+  border-left: 4px solid var(--coral);
+  padding-left: 1rem;
+  font-style: italic;
+}
+
 /* Score bar */
 .score-bar {
   height: 10px;

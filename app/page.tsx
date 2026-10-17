@@ -538,7 +538,7 @@ function LandingView({ onSearch }: { onSearch: (address: string) => void }) {
         <SearchBar onSearch={onSearch} />
 
         <div className="flex gap-3 flex-wrap">
-          <div className="stamp flex-1 min-w-[140px] p-3" data-n="01">
+          <div className="stamp zine-tilt-1 flex-1 min-w-[140px] p-3 shadow-[2px_2px_0_var(--buff)]" data-n="01">
             <MapIllustration />
             <h3 className="font-display text-label uppercase text-coral mb-1">
               We map what matters
@@ -547,7 +547,7 @@ function LandingView({ onSearch }: { onSearch: (address: string) => void }) {
               Transit, bike lanes, composting, thrift stores, and more.
             </p>
           </div>
-          <div className="stamp flex-1 min-w-[140px] p-3" data-n="02">
+          <div className="stamp zine-tilt-2 flex-1 min-w-[140px] p-3 bg-buff/30 shadow-[2px_2px_0_var(--buff)]" data-n="02">
             <GaugeIllustration />
             <h3 className="font-display text-label uppercase text-coral mb-1">
               We score the access
@@ -556,7 +556,7 @@ function LandingView({ onSearch }: { onSearch: (address: string) => void }) {
               Five categories. One number. Zero judgment.
             </p>
           </div>
-          <div className="stamp flex-1 min-w-[140px] p-3" data-n="03">
+          <div className="stamp zine-tilt-3 flex-1 min-w-[140px] p-3 shadow-[2px_2px_0_var(--buff)]" data-n="03">
             <GapsIllustration />
             <h3 className="font-display text-label uppercase text-coral mb-1">
               We show the gaps
@@ -1126,7 +1126,7 @@ function ReferenceNeighborhood({ result }: { result: ScoreResult }) {
   const diff = ref.score - result.score;
 
   return (
-    <div className="border border-ink p-4 relative">
+    <div className="border-2 border-ink p-4 relative torn-edge shadow-[3px_3px_0_var(--buff)]">
       <span className="absolute -top-2.5 left-3 bg-paper px-1.5 font-display font-bold text-body-sm tracking-[0.1em] uppercase text-faded">
         How You Compare
       </span>
@@ -1142,7 +1142,7 @@ function ReferenceNeighborhood({ result }: { result: ScoreResult }) {
             {result.score}
           </div>
         </div>
-        <span className="font-display font-extrabold text-body-base text-buff">VS</span>
+        <span className="font-display font-extrabold text-body-base text-buff select-none">VS</span>
         <div className="flex-1 text-center">
           <div className="text-body-sm font-display font-bold uppercase tracking-wide text-faded mb-1">
             {ref.name}
@@ -1185,21 +1185,21 @@ function EquityPanel({ equity }: { equity: ScoreResult["equity"] }) {
         Who lives here matters. Scores mean different things in different communities.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
-        <div className="border border-dashed border-faded p-3">
+        <div className="border border-ink p-3 shadow-[3px_3px_0_var(--buff)] zine-tilt-1">
           <p className="text-body-sm uppercase text-faded font-display font-bold">Median Household Income</p>
           <p className="font-display font-extrabold text-xl">${equity.median_income.toLocaleString()}</p>
           <p className="text-body-sm font-text text-faded">{incomePct}% of NYC median (${equity.nyc_median_income.toLocaleString()})</p>
         </div>
-        <div className="border border-dashed border-faded p-3">
+        <div className="border-2 border-dashed border-coral p-3 bg-coral/5 zine-tilt-2">
           <p className="text-body-sm uppercase text-faded font-display font-bold">Displacement Risk</p>
           <p className="font-display font-extrabold text-xl capitalize">{equity.displacement_risk}</p>
         </div>
-        <div className="border border-dashed border-faded p-3">
+        <div className="tape-border p-3 zine-tilt-3">
           <p className="text-body-sm uppercase text-faded font-display font-bold">Rent Burden</p>
           <p className="font-display font-extrabold text-xl">{equity.rent_burden_pct}%</p>
           <p className="text-body-sm font-text text-faded">of households paying &gt;30% of income on rent</p>
         </div>
-        <div className="border border-dashed border-faded p-3">
+        <div className="border border-dashed border-faded p-3 cut-corner bg-buff/30">
           <p className="text-body-sm uppercase text-faded font-display font-bold">% White Population</p>
           <p className="font-display font-extrabold text-xl">{equity.pct_white}%</p>
         </div>
@@ -1403,8 +1403,11 @@ function ResultsView({
           <AmenityMap result={result} layers={layers} />
           <MergedBreakdown result={result} />
 
-          <div className="border border-dashed border-faded p-4 text-center grain">
-            <p className="text-body-base font-text text-faded mb-2">
+          <div className="tape-border p-5 text-center grain zine-tilt-2 bg-buff/20">
+            <p className="font-display font-bold text-body-sm uppercase tracking-wide text-coral mb-1">
+              Something missing?
+            </p>
+            <p className="text-body-base font-text text-faded mb-3">
               Know a spot that should be on the map?
             </p>
             <Link
