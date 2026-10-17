@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --paper: #F2EBD9;
+    --coral: #E24B3A;
+    --teal: #0B6E6F;
+    --overprint: #7A4A38;
+    --ink: #2D2926;
+    --faded: #9A9183;
+    --buff: #E8DFC8;
+
+    --cat-transit: #0B6E6F;
+    --cat-mobility: #B5604E;
+    --cat-daily: #8B6D2E;
+    --cat-circular: #6B5B95;
+    --cat-food: #3A7D44;
+
+    --score-low: #C0392B;
+    --score-mid: #B5604E;
+    --score-high: #2D8A8B;
+    --score-excellent: #1A6B4B;
+
+    --font-display: var(--font-syne), 'Syne', sans-serif;
+    --font-body: var(--font-space-mono), 'Space Mono', monospace;
+    --font-text: var(--font-inter), 'Inter', sans-serif;
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1E1C18;
+    --coral: #E8614F;
+    --teal: #2CA3A5;
+    --overprint: #B07A5E;
+    --ink: #E8E0D0;
+    --faded: #8A8278;
+    --buff: #2A2720;
+
+    --cat-transit: #2CA3A5;
+    --cat-mobility: #D4836E;
+    --cat-daily: #C4A24E;
+    --cat-circular: #9B8DC4;
+    --cat-food: #5AAD64;
+
+    --score-low: #E05548;
+    --score-mid: #D4836E;
+    --score-high: #3BB0B2;
+    --score-excellent: #3AA06A;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1E1C18;
+      --coral: #E8614F;
+      --teal: #2CA3A5;
+      --overprint: #B07A5E;
+      --ink: #E8E0D0;
+      --faded: #8A8278;
+      --buff: #2A2720;
+
+      --cat-transit: #2CA3A5;
+      --cat-mobility: #D4836E;
+      --cat-daily: #C4A24E;
+      --cat-circular: #9B8DC4;
+      --cat-food: #5AAD64;
+
+      --score-low: #E05548;
+      --score-mid: #D4836E;
+      --score-high: #3BB0B2;
+      --score-excellent: #3AA06A;
+    }
+  }
+}
+
+/* Grain texture overlay */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Misregistered display type */
+.misregister {
+  position: relative;
+  display: inline-block;
+}
+.misregister::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  color: var(--teal);
+  z-index: -1;
+}
+
+/* Tape border (dashed) */
+.tape-border {
+  border: 2px dashed var(--ink);
+}
+
+/* Stamp card */
+.stamp {
+  border: 1px solid var(--ink);
+  position: relative;
+}
+.stamp::before {
+  content: attr(data-n);
+  position: absolute;
+  top: -7px;
+  right: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--teal);
+  opacity: 0.25;
+}
+
+/* Zine rotations for visual rhythm */
+.zine-tilt-1 { transform: rotate(-1.2deg); }
+.zine-tilt-2 { transform: rotate(0.8deg); }
+.zine-tilt-3 { transform: rotate(-0.5deg); }
+
+/* Cut corner card */
+.cut-corner {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+/* Torn edge bottom */
+.torn-edge {
+  position: relative;
+}
+.torn-edge::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 3px,
+    var(--ink) 3px 4px,
+    transparent 4px 8px
+  );
+  opacity: 0.3;
+}
+
+/* Pull-quote style */
+.pull-quote {
+  border-left: 4px solid var(--coral);
+  padding-left: 1rem;
+  font-style: italic;
+}
+
+/* Score bar */
+.score-bar {
+  height: 10px;
+  background: var(--buff);
+}
+
+/* Focus states */
+*:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+
+/* Mapbox overrides */
+.mapboxgl-popup-content {
+  font-family: var(--font-text) !important;
+  font-size: 0.875rem !important;
+  color: var(--ink) !important;
+  background: var(--paper) !important;
+  border: 1px solid var(--ink) !important;
+  border-radius: 0 !important;
+  padding: 0.75rem !important;
+  box-shadow: 3px 3px 0 var(--buff) !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: var(--ink) !important;
+}
+.mapboxgl-popup-close-button {
+  font-size: 1rem !important;
+  color: var(--faded) !important;
+  padding: 0.25rem 0.5rem !important;
+}

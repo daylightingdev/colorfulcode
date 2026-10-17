@@ -1,0 +1,22 @@
+[
+  {"protection_level":"protected","coords":[[-73.9640,40.6800],[-73.9640,40.6900]]},
+  {"protection_level":"protected","coords":[[-73.9640,40.6700],[-73.9640,40.6800]]},
+  {"protection_level":"protected","coords":[[-73.9530,40.6750],[-73.9530,40.6850]]},
+  {"protection_level":"painted","coords":[[-73.9580,40.6700],[-73.9580,40.6800]]},
+  {"protection_level":"painted","coords":[[-73.9500,40.6700],[-73.9600,40.6700]]},
+  {"protection_level":"shared","coords":[[-73.9550,40.6680],[-73.9600,40.6680]]},
+  {"protection_level":"protected","coords":[[-73.9860,40.6870],[-73.9860,40.6970]]},
+  {"protection_level":"protected","coords":[[-73.9710,40.6730],[-73.9710,40.6830]]},
+  {"protection_level":"protected","coords":[[-73.9610,40.7100],[-73.9610,40.7200]]},
+  {"protection_level":"protected","coords":[[-73.9610,40.7200],[-73.9610,40.7300]]},
+  {"protection_level":"painted","coords":[[-73.9900,40.7350],[-73.9900,40.7450]]},
+  {"protection_level":"protected","coords":[[-73.9880,40.7400],[-73.9880,40.7500]]},
+  {"protection_level":"protected","coords":[[-74.0000,40.7410],[-74.0000,40.7510]]},
+  {"protection_level":"protected","coords":[[-73.9800,40.7550],[-73.9800,40.7650]]},
+  {"protection_level":"protected","coords":[[-73.9780,40.7650],[-73.9780,40.7750]]},
+  {"protection_level":"painted","coords":[[-73.9500,40.7950],[-73.9500,40.8050]]},
+  {"protection_level":"shared","coords":[[-73.9300,40.8100],[-73.9300,40.8200]]},
+  {"protection_level":"protected","coords":[[-73.8800,40.7490],[-73.8900,40.7490]]},
+  {"protection_level":"painted","coords":[[-73.8900,40.8200],[-73.8900,40.8300]]},
+  {"protection_level":"shared","coords":[[-74.0770,40.6400],[-74.0770,40.6500]]}
+]
