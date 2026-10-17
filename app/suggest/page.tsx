@@ -6,6 +6,37 @@ import type mapboxgl from "mapbox-gl";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
+function applyBrandBasemap(m: mapboxgl.Map) {
+  try {
+    const style = m.getStyle();
+    if (!style?.layers) return;
+    for (const layer of style.layers) {
+      try {
+        if (layer.id === "background") {
+          m.setPaintProperty(layer.id, "background-color", "#F2EBD9");
+          continue;
+        }
+        if (layer.type === "fill" && layer.id.includes("water")) {
+          m.setPaintProperty(layer.id, "fill-color", "#C8DCDD");
+          continue;
+        }
+        if (layer.type === "line" && layer.id.includes("waterway")) {
+          m.setPaintProperty(layer.id, "line-color", "#B8D0D1");
+          continue;
+        }
+        if (layer.type === "fill" && (layer.id.includes("park") || layer.id.includes("landuse"))) {
+          m.setPaintProperty(layer.id, "fill-color", "#E5DFCA");
+          continue;
+        }
+        if (layer.type === "fill" && layer.id.includes("building")) {
+          m.setPaintProperty(layer.id, "fill-color", "#E6DBC5");
+          continue;
+        }
+      } catch {}
+    }
+  } catch {}
+}
+
 const CATEGORIES = [
   { value: "transit", label: "Transit" },
   { value: "activeMobility", label: "Active Mobility" },
@@ -108,6 +139,10 @@ export default function SuggestSpotPage() {
 
       map.current = m;
       mapboxRef.current = mb.default;
+
+      m.on("load", () => {
+        applyBrandBasemap(m);
+      });
 
       m.on("click", (e) => {
         placePin(e.lngLat.lng, e.lngLat.lat);
