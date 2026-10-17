@@ -24,7 +24,7 @@ Items that need owner review or a decision before shipping.
 - [ ] Dark mode visual testing (tokens are defined, layout untested)
 - [ ] Walking radius label on the amenity map (shows "0.5 mi" near circle edge) could use font-text instead of font-body for readability
 - [ ] Map page (`/map`) uses static `mapbox-gl` import (not lazy-loaded like the main page)
-- [ ] Suggest page map does not have brand basemap applied (still stock light-v11)
+- [x] Suggest page map brand basemap applied
 
 ## Data credibility notes
 
